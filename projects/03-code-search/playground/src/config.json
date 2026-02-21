@@ -1,0 +1,10 @@
+{
+  "port": 3000,
+  "dbName": "todo_app_db",
+  "apiKey": "YOUR_API_KEY_HERE",
+  "maxTodos": 100,
+  "cors": {
+    "origin": "http://localhost:5173",
+    "credentials": true
+  }
+}

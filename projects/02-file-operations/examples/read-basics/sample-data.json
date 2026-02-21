@@ -1,0 +1,39 @@
+{
+  "school": {
+    "name": "클로드 중학교",
+    "location": "서울시 강남구",
+    "established": 2024
+  },
+  "students": [
+    {
+      "name": "김민수",
+      "age": 14,
+      "grade": 2,
+      "scores": {
+        "math": 95,
+        "english": 88,
+        "science": 92
+      }
+    },
+    {
+      "name": "이지영",
+      "age": 13,
+      "grade": 1,
+      "scores": {
+        "math": 78,
+        "english": 95,
+        "science": 85
+      }
+    },
+    {
+      "name": "박하은",
+      "age": 15,
+      "grade": 3,
+      "scores": {
+        "math": 90,
+        "english": 82,
+        "science": 97
+      }
+    }
+  ]
+}

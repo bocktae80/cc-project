@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>할 일 관리 앱</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📝 할 일 관리</h1>
+
+    <!-- 할 일 입력 영역 -->
+    <div class="input-area">
+      <input
+        type="text"
+        id="todo-input"
+        placeholder="할 일을 입력하세요..."
+        autocomplete="off"
+      />
+      <button id="add-btn">추가</button>
+    </div>
+
+    <!-- 할 일 목록 -->
+    <ul id="todo-list"></ul>
+
+    <!-- 비어있을 때 메시지 -->
+    <p id="empty-message" class="empty-message">
+      아직 할 일이 없어요. 위에서 추가해보세요!
+    </p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

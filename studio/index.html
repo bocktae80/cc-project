@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code 학습 스튜디오</title>
+  <meta name="description" content="클로드 코드의 기능을 배우고 활용하는 학습 대시보드" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 스킵 링크 (접근성) -->
+  <a href="#app" class="skip-link">메인 콘텐츠로 건너뛰기</a>
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header__inner container">
+      <div>
+        <h1 class="header__title">Claude Code 학습 스튜디오</h1>
+        <p class="header__subtitle">클로드 코드의 기능을 배우고 활용하는 학습 대시보드</p>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="테마 전환">🌙</button>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 (JS 동적 생성) -->
+  <main id="app" role="main" aria-label="프로젝트 대시보드">
+    <noscript>
+      <p style="text-align: center; padding: 40px; color: #64748B;">
+        JavaScript를 활성화해야 대시보드를 볼 수 있습니다.
+      </p>
+    </noscript>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <div class="container">
+      <p>
+        <strong>CC Project</strong> — Claude Code 학습 프로젝트
+        <br />
+        마지막 업데이트: <span id="last-updated">2026-02-07</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- 스크립트: 데이터 먼저, 앱 나중에 -->
+  <script src="data/projects.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
