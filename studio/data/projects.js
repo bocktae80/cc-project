@@ -4,7 +4,7 @@ window.STUDIO_DATA = {
   meta: {
     title: "Claude Code 학습 스튜디오",
     description: "클로드 코드의 기능을 배우고 활용하는 학습 대시보드",
-    lastUpdated: "2026-02-21"
+    lastUpdated: "2026-02-22"
   },
   phases: [
     {
@@ -247,6 +247,25 @@ window.STUDIO_DATA = {
         { title: "ToolSearch로 도구 찾기", difficulty: 2, status: "completed" }
       ],
       prerequisites: ["07-mcp-server"]
+    },
+    {
+      id: "12-figma-mcp",
+      number: "12",
+      title: "Figma MCP",
+      subtitle: "디자인과 코드를 연결하기",
+      phase: "phase-4",
+      difficulty: 3,
+      status: "completed",
+      description: "Figma MCP로 디자인을 읽고, Code to Canvas로 코드를 Figma에 렌더링하고, 라운드트립 워크플로우로 디자인-코드 동기화를 실습합니다.",
+      concepts: ["Figma MCP", "Code to Canvas", "라운드트립", "디자인 토큰"],
+      path: "../projects/12-figma-mcp/",
+      subExamples: [
+        { title: "개념 (건축가-시공사 비유, 리모트 vs 로컬)", difficulty: 1, status: "completed" },
+        { title: "Figma MCP 설정 & 디자인 읽기", difficulty: 2, status: "completed" },
+        { title: "Code to Canvas (카드 → Figma)", difficulty: 3, status: "completed" },
+        { title: "라운드트립 워크플로우 실습", difficulty: 3, status: "completed" }
+      ],
+      prerequisites: ["07-mcp-server", "11-mcp-connectors"]
     }
   ]
 };

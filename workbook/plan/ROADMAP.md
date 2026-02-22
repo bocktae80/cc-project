@@ -20,6 +20,7 @@
 - [x] 09 — Worktree (안전한 실험 공간) → [`09-worktree`](../../projects/09-worktree/)
 - [x] 10 — CLI 마스터 (터미널 관리) → [`10-cli-master`](../../projects/10-cli-master/)
 - [x] 11 — MCP 커넥터 (claude.ai 도구) → [`11-mcp-connectors`](../../projects/11-mcp-connectors/)
+- [x] 12 — Figma MCP (디자인-코드 연결) → [`12-figma-mcp`](../../projects/12-figma-mcp/)
 
 ## Phase 3: 튜토리얼 시각화
 - [x] 스크린샷 캡처 가이드 → [`assets/screenshot-guide.md`](../../assets/screenshot-guide.md)
