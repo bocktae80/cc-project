@@ -4,7 +4,7 @@ window.STUDIO_DATA = {
   meta: {
     title: "Claude Code 학습 스튜디오",
     description: "클로드 코드의 기능을 배우고 활용하는 학습 대시보드",
-    lastUpdated: "2026-02-22"
+    lastUpdated: "2026-02-27"
   },
   phases: [
     {
@@ -27,6 +27,20 @@ window.STUDIO_DATA = {
       description: "2025 Q1 업데이트 (v2.1.46~2.1.50)의 새로운 기능들",
       order: 4,
       color: "#F59E0B"
+    },
+    {
+      id: "phase-5",
+      name: "Phase 5: 확장 기능",
+      description: "2026 Q1 업데이트 (v2.1.51~2.1.59+)의 세션 이동과 보안 기능",
+      order: 5,
+      color: "#EF4444"
+    },
+    {
+      id: "phase-6",
+      name: "Phase 6: 심화 활용",
+      description: "2025 하반기~2026 Q1 주요 신기능 — 브라우저 자동화, SDK, 플러그인, IDE 통합",
+      order: 6,
+      color: "#10B981"
     }
   ],
   projects: [
@@ -266,6 +280,150 @@ window.STUDIO_DATA = {
         { title: "라운드트립 워크플로우 실습", difficulty: 3, status: "completed" }
       ],
       prerequisites: ["07-mcp-server", "11-mcp-connectors"]
+    },
+    {
+      id: "13-teleport",
+      number: "13",
+      title: "텔레포트",
+      subtitle: "세션을 자유롭게 이동하기",
+      phase: "phase-5",
+      difficulty: 2,
+      status: "completed",
+      description: "& prefix로 작업을 클라우드에 보내고, /teleport로 웹 세션을 터미널로 가져오고, /rc로 원격 조종하는 세션 이동 기능을 배웁니다.",
+      concepts: ["& prefix", "/teleport", "/rc", "세션 공유"],
+      path: "../projects/13-teleport/",
+      subExamples: [
+        { title: "& prefix 실습 (클라우드 전송)", difficulty: 1, status: "completed" },
+        { title: "텔레포트 워크플로우 (웹→터미널)", difficulty: 2, status: "completed" },
+        { title: "리모트 컨트롤 (원격 조종)", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["10-cli-master"]
+    },
+    {
+      id: "14-code-security",
+      number: "14",
+      title: "코드 보안 스캔",
+      subtitle: "AI로 코드의 약점 찾기",
+      phase: "phase-5",
+      difficulty: 3,
+      status: "completed",
+      description: "AI 보안 경비원처럼 코드의 취약점을 찾고, OWASP Top 10을 이해하고, 스캔→검증→수정→재스캔 워크플로우를 체험합니다. Enterprise/Team 전용이지만 개념 학습은 누구나 가능!",
+      concepts: ["OWASP Top 10", "SQL 인젝션", "XSS", "AI 보안 스캔", "보안 체크리스트"],
+      path: "../projects/14-code-security/",
+      subExamples: [
+        { title: "취약 코드 샘플 (SQL인젝션, XSS, 인증우회)", difficulty: 2, status: "completed" },
+        { title: "스캔 + 수정 워크플로우", difficulty: 3, status: "completed" },
+        { title: "보안 체크리스트 만들기", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["02-file-operations"]
+    },
+    {
+      id: "15-browser-automation",
+      number: "15",
+      title: "브라우저 자동화",
+      subtitle: "AI가 브라우저를 조종하기",
+      phase: "phase-6",
+      difficulty: 2,
+      status: "completed",
+      description: "Chrome 확장을 통해 클로드가 브라우저를 제어하는 원리를 이해하고, 페이지 탐색·폼 입력·스크린샷·GIF 녹화 등 실전 자동화를 체험합니다.",
+      concepts: ["Chrome 확장", "브라우저 제어", "스크린샷", "GIF 녹화"],
+      path: "../projects/15-browser-automation/",
+      subExamples: [
+        { title: "Chrome 확장 연결 원리", difficulty: 1, status: "completed" },
+        { title: "페이지 탐색 & 폼 자동 입력", difficulty: 2, status: "completed" },
+        { title: "콘솔/네트워크 모니터링 & GIF 녹화", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["10-cli-master"]
+    },
+    {
+      id: "16-background-agents",
+      number: "16",
+      title: "백그라운드 에이전트",
+      subtitle: "여러 일을 동시에 시키기",
+      phase: "phase-6",
+      difficulty: 2,
+      status: "completed",
+      description: "run_in_background로 명령과 에이전트를 백그라운드에서 실행하고, TaskOutput·TaskStop으로 결과를 관리하는 병렬 작업 패턴을 배웁니다.",
+      concepts: ["run_in_background", "TaskOutput", "TaskStop", "병렬 작업"],
+      path: "../projects/16-background-agents/",
+      subExamples: [
+        { title: "포그라운드 vs 백그라운드 개념", difficulty: 1, status: "completed" },
+        { title: "Bash & 에이전트 백그라운드 실행", difficulty: 2, status: "completed" },
+        { title: "여러 백그라운드 작업 동시 관리", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["05-agent-teams"]
+    },
+    {
+      id: "17-plugin-system",
+      number: "17",
+      title: "플러그인 시스템",
+      subtitle: "기능 꾸러미 설치하고 만들기",
+      phase: "phase-6",
+      difficulty: 3,
+      status: "completed",
+      description: "Skills·Commands·Hooks·Agents를 하나로 묶는 플러그인 시스템의 구조를 이해하고, 직접 플러그인을 만들어 배포하는 과정을 체험합니다.",
+      concepts: ["plugin.json", "Skills", "Commands", "Hooks 번들"],
+      path: "../projects/17-plugin-system/",
+      subExamples: [
+        { title: "플러그인 개념 & plugin.json 구조", difficulty: 1, status: "completed" },
+        { title: "나만의 플러그인 만들기", difficulty: 3, status: "completed" },
+        { title: "플러그인 배포 (npm/git)", difficulty: 3, status: "completed" }
+      ],
+      prerequisites: ["08-skills-commands"]
+    },
+    {
+      id: "18-agent-sdk",
+      number: "18",
+      title: "Agent SDK",
+      subtitle: "나만의 AI 에이전트 만들기",
+      phase: "phase-6",
+      difficulty: 3,
+      status: "completed",
+      description: "Claude Agent SDK로 프로그래밍 방식의 에이전트를 만드는 방법을 배웁니다. Python/TypeScript SDK 기초부터 커스텀 도구, MCP 연동까지 체험합니다.",
+      concepts: ["Agent SDK", "Python SDK", "TypeScript SDK", "커스텀 도구"],
+      path: "../projects/18-agent-sdk/",
+      subExamples: [
+        { title: "Agent SDK 개념 (CLI vs SDK)", difficulty: 1, status: "completed" },
+        { title: "첫 SDK 앱 & 커스텀 도구", difficulty: 3, status: "completed" },
+        { title: "MCP 서버 연동 에이전트", difficulty: 3, status: "completed" }
+      ],
+      prerequisites: ["05-agent-teams", "07-mcp-server"]
+    },
+    {
+      id: "19-permissions-deep",
+      number: "19",
+      title: "권한 심화",
+      subtitle: "보안 울타리 세밀하게 설정하기",
+      phase: "phase-6",
+      difficulty: 2,
+      status: "completed",
+      description: "4가지 권한 모드, 와일드카드 패턴, deny→ask→allow 평가 순서를 이해하고, 안전한 개발 환경을 설계하는 방법을 배웁니다.",
+      concepts: ["권한 모드", "와일드카드", "deny/allow", "settings.json"],
+      path: "../projects/19-permissions-deep/",
+      subExamples: [
+        { title: "권한 모드 4가지 이해", difficulty: 1, status: "completed" },
+        { title: "와일드카드 패턴 실습", difficulty: 2, status: "completed" },
+        { title: "deny + allow 조합 전략", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["06-hooks"]
+    },
+    {
+      id: "20-ide-integration",
+      number: "20",
+      title: "IDE 통합",
+      subtitle: "VS Code에서 클로드 쓰기",
+      phase: "phase-6",
+      difficulty: 1,
+      status: "completed",
+      description: "VS Code, Cursor, JetBrains에서 클로드 코드를 사용하는 방법을 배웁니다. @-mention, 플랜 리뷰, 멀티탭 등 IDE 네이티브 기능을 체험합니다.",
+      concepts: ["VS Code 확장", "@-mention", "Cursor", "JetBrains"],
+      path: "../projects/20-ide-integration/",
+      subExamples: [
+        { title: "CLI vs IDE 통합 비교", difficulty: 1, status: "completed" },
+        { title: "VS Code 설치 & @-mention", difficulty: 1, status: "completed" },
+        { title: "플랜 리뷰 & 수락 워크플로우", difficulty: 1, status: "completed" }
+      ],
+      prerequisites: []
     }
   ]
 };

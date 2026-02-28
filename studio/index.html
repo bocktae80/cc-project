@@ -6,6 +6,11 @@
   <title>Claude Code 학습 스튜디오</title>
   <meta name="description" content="클로드 코드의 기능을 배우고 활용하는 학습 대시보드" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/learn.css" />
+  <link rel="stylesheet" href="css/sandbox.css" />
+
+  <!-- Prism.js 코드 하이라이트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
 </head>
 <body>
   <!-- 스킵 링크 (접근성) -->
@@ -18,7 +23,10 @@
         <h1 class="header__title">Claude Code 학습 스튜디오</h1>
         <p class="header__subtitle">클로드 코드의 기능을 배우고 활용하는 학습 대시보드</p>
       </div>
-      <button class="theme-toggle" id="theme-toggle" aria-label="테마 전환">🌙</button>
+      <div class="header__controls">
+        <div id="level-picker-mount"></div>
+        <button class="theme-toggle" id="theme-toggle" aria-label="테마 전환">🌙</button>
+      </div>
     </div>
   </header>
 
@@ -37,13 +45,54 @@
       <p>
         <strong>CC Project</strong> — Claude Code 학습 프로젝트
         <br />
-        마지막 업데이트: <span id="last-updated">2026-02-07</span>
+        마지막 업데이트: <span id="last-updated">2026-02-28</span>
       </p>
     </div>
   </footer>
 
-  <!-- 스크립트: 데이터 먼저, 앱 나중에 -->
+  <!-- 라이브러리 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+  <!-- 데이터 -->
   <script src="data/projects.js"></script>
+
+  <!-- 콘텐츠 (프로젝트별) -->
+  <script src="data/content/content-01.js"></script>
+  <script src="data/content/content-02.js"></script>
+  <script src="data/content/content-03.js"></script>
+  <script src="data/content/content-03d.js"></script>
+  <script src="data/content/content-04.js"></script>
+  <script src="data/content/content-05.js"></script>
+  <script src="data/content/content-06.js"></script>
+  <script src="data/content/content-07.js"></script>
+  <script src="data/content/content-08.js"></script>
+  <script src="data/content/content-09.js"></script>
+  <script src="data/content/content-10.js"></script>
+  <script src="data/content/content-11.js"></script>
+  <script src="data/content/content-12.js"></script>
+  <script src="data/content/content-13.js"></script>
+  <script src="data/content/content-14.js"></script>
+  <script src="data/content/content-15.js"></script>
+  <script src="data/content/content-16.js"></script>
+  <script src="data/content/content-17.js"></script>
+  <script src="data/content/content-18.js"></script>
+  <script src="data/content/content-19.js"></script>
+  <script src="data/content/content-20.js"></script>
+
+  <!-- 앱 -->
+  <script src="js/sandbox-engine.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/level-system.js"></script>
+  <script src="js/challenges.js"></script>
+  <script src="js/learn.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

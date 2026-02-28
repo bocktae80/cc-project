@@ -1,8 +1,8 @@
 # CC Project 상태
 
 ## 현재 단계
-- **Phase:** 전체 완료 (Phase 1 + Phase 2 + Phase 3)
-- **진행률:** 8/8 프로젝트 완료, Phase 3 시각화 완료
+- **Phase:** 전체 완료 (Phase 1 + Phase 2 + Phase 3 + Phase 4)
+- **진행률:** 11/11 프로젝트 완료, Phase 3 시각화 완료, Phase 4 최신 기능 완료
 
 ## 예제 프로젝트 현황
 
@@ -17,6 +17,9 @@
 | 06 | [Hooks](../../projects/06-hooks/) | 완료 |
 | 07 | [MCP 서버](../../projects/07-mcp-server/) | 완료 |
 | 08 | [Skills & 커맨드](../../projects/08-skills-commands/) | 완료 |
+| 09 | [Worktree](../../projects/09-worktree/) | 완료 |
+| 10 | [CLI 마스터](../../projects/10-cli-master/) | 완료 |
+| 11 | [MCP 커넥터](../../projects/11-mcp-connectors/) | 완료 |
 
 ### 01-memory-system 세부 현황
 
@@ -109,6 +112,36 @@
 | 예제: 첫 번째 스킬 (greet) | 완료 |
 | 예제: 실용 스킬 4종 (review, explain, test-gen, summarize) | 완료 |
 | reference/ (커맨드 목록, 트러블슈팅) | 완료 |
+
+### 09-worktree 세부 현황
+
+| 구성 | 상태 |
+|------|------|
+| 메인 README.md (⭐⭐) | 완료 |
+| concepts/ (워크트리 개념, 브랜치 비교) | 완료 |
+| tutorial/ (3단계 따라하기) | 완료 |
+| 예제: 기본 워크트리 체험 | 완료 |
+| 예제: 워크트리 훅 | 완료 |
+| 예제: 에이전트 격리 | 완료 |
+
+### 10-cli-master 세부 현황
+
+| 구성 | 상태 |
+|------|------|
+| 메인 README.md (⭐) | 완료 |
+| 예제: 인증 관리 (auth) | 완료 |
+| 예제: 에이전트 & /rename | 완료 |
+| 예제: PDF 페이지 읽기 | 완료 |
+
+### 11-mcp-connectors 세부 현황
+
+| 구성 | 상태 |
+|------|------|
+| 메인 README.md (⭐⭐) | 완료 |
+| concepts/ (커넥터 개념, 수동 vs 커넥터) | 완료 |
+| tutorial/ (3단계 따라하기) | 완료 |
+| 예제: Slack 커넥터 | 완료 |
+| 예제: Notion 커넥터 | 완료 |
 
 ## 인프라
 

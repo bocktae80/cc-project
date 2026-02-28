@@ -22,6 +22,10 @@
 - [x] 11 — MCP 커넥터 (claude.ai 도구) → [`11-mcp-connectors`](../../projects/11-mcp-connectors/)
 - [x] 12 — Figma MCP (디자인-코드 연결) → [`12-figma-mcp`](../../projects/12-figma-mcp/)
 
+## Phase 5: 확장 기능 (v2.1.51~2.1.59+)
+- [x] 13 — 텔레포트 (세션 이동: &, /teleport, /rc) → [`13-teleport`](../../projects/13-teleport/)
+- [x] 14 — 코드 보안 스캔 (AI 보안 스캔, OWASP Top 10) → [`14-code-security`](../../projects/14-code-security/)
+
 ## Phase 3: 튜토리얼 시각화
 - [x] 스크린샷 캡처 가이드 → [`assets/screenshot-guide.md`](../../assets/screenshot-guide.md)
 - [x] 단계별 플로우 다이어그램 (Mermaid) → [`assets/diagrams/`](../../assets/diagrams/)
