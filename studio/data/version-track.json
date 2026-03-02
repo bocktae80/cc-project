@@ -1,0 +1,139 @@
+{
+  "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
+  "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
+  "lastChecked": "2026-02-28",
+  "currentCLI": "2.1.63",
+  "sdkVersions": {
+    "python": "0.1.44",
+    "typescript": "0.2.61"
+  },
+  "tutorials": {
+    "01-memory-system": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["CLAUDE.md", "auto-memory", "project settings", "/memory command"],
+      "notes": "v2.1.63 갱신: auto-memory 개선, 워크트리 세션 공유, 크로스 레퍼런스"
+    },
+    "02-file-operations": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["Read", "Write", "Edit", "parallel operations"],
+      "notes": "v2.1.63 갱신: 병렬 처리 에러 격리, 대용량 결과 디스크 저장"
+    },
+    "03-code-search": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["Glob", "Grep", "pre-warming", "gitignore"],
+      "notes": "v2.1.63 갱신: 파일 제안 프리워밍, gitignore 처리 개선"
+    },
+    "03d-debug-features": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["--debug flag", "/debug command"],
+      "notes": "v2.1.63 갱신: 버전 문자열 갱신"
+    },
+    "04-web-search": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["WebSearch", "WebFetch", "domain filtering"],
+      "notes": "v2.1.63 갱신: 컷오프 확인, WebFetch 인증 제한 명확화"
+    },
+    "05-agent-teams": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["TeamCreate", "Task", "SendMessage", "TaskList", "worktree isolation", "background agents", "claude agents CLI"],
+      "notes": "v2.1.63 갱신: 워크트리 격리, 백그라운드 에이전트, claude agents CLI, 크로스 레퍼런스"
+    },
+    "06-hooks": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["PreToolUse", "PostToolUse", "hooks settings", "HTTP hooks", "WorktreeCreate", "WorktreeRemove"],
+      "notes": "v2.1.63 갱신: HTTP hooks, WorktreeCreate/Remove 이벤트, workspace trust, 크로스 레퍼런스"
+    },
+    "07-mcp-server": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["MCP protocol", "stdio/SSE", "custom server", "claude.ai connectors", "OAuth"],
+      "notes": "v2.1.63 갱신: claude.ai MCP 커넥터, OAuth 개선, ENABLE_CLAUDEAI_MCP_SERVERS, 크로스 레퍼런스"
+    },
+    "08-skills-commands": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-03-02",
+      "trackedFeatures": ["Skills", "slash commands", "custom commands", "/simplify", "/batch", "/copy", "plugin skills"],
+      "notes": "v2.1.63 갱신: 신규 커맨드, YAML 파싱 개선, 플러그인 스킬, 크로스 레퍼런스"
+    },
+    "09-worktree": {
+      "basedOn": "2.1.46",
+      "lastUpdated": "2026-02-26",
+      "trackedFeatures": ["git worktree", "agent isolation"],
+      "notes": "Phase 4"
+    },
+    "10-cli-master": {
+      "basedOn": "2.1.46",
+      "lastUpdated": "2026-02-26",
+      "trackedFeatures": ["claude auth", "claude agents", "PDF read", "/rename"],
+      "notes": "Phase 4"
+    },
+    "11-mcp-connectors": {
+      "basedOn": "2.1.50",
+      "lastUpdated": "2026-02-26",
+      "trackedFeatures": ["MCP connectors", "OAuth", "ToolSearch", "Slack/Notion"],
+      "notes": "Phase 4"
+    },
+    "12-figma-mcp": {
+      "basedOn": "2.1.50",
+      "lastUpdated": "2026-02-27",
+      "trackedFeatures": ["Figma MCP", "Code to Canvas", "round-trip workflow"],
+      "notes": "Phase 4"
+    },
+    "13-teleport": {
+      "basedOn": "2.1.55",
+      "lastUpdated": "2026-02-27",
+      "trackedFeatures": ["& prefix", "/teleport", "/rc"],
+      "notes": "Phase 5"
+    },
+    "14-code-security": {
+      "basedOn": "2.1.55",
+      "lastUpdated": "2026-02-27",
+      "trackedFeatures": ["security scan", "OWASP", "vulnerability detection"],
+      "notes": "Phase 5"
+    },
+    "15-browser-automation": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["Chrome extension", "browser control", "screenshot", "GIF recording"],
+      "notes": "Phase 6 신규"
+    },
+    "16-background-agents": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["run_in_background", "TaskOutput", "TaskStop", "task_progress"],
+      "notes": "Phase 6 신규"
+    },
+    "17-plugin-system": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["plugin.json", "claude plugin add", "plugin bundle", "npm/git publish"],
+      "notes": "Phase 6 신규"
+    },
+    "18-agent-sdk": {
+      "basedOn": "2.1.63",
+      "sdkVersions": { "python": "0.1.44", "typescript": "0.2.61" },
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["Agent SDK", "effort/thinking", "tools array", "MCP annotations", "structured output", "session API", "CLI bundling"],
+      "notes": "Phase 6 신규, 최신 SDK 업데이트 반영 완료"
+    },
+    "19-permissions-deep": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["permission modes", "wildcard patterns", "deny/ask/allow", "settings.json"],
+      "notes": "Phase 6 신규"
+    },
+    "20-ide-integration": {
+      "basedOn": "2.1.63",
+      "lastUpdated": "2026-02-28",
+      "trackedFeatures": ["VS Code extension", "@-mention", "Cursor", "JetBrains", "plan review"],
+      "notes": "Phase 6 신규"
+    }
+  }
+}

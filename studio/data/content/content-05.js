@@ -23,6 +23,16 @@ window.STUDIO_CONTENT["05-agent-teams"] = {
 - **TaskCreate/TaskUpdate**: 할 일을 만들고 진행 상태를 관리합니다
 - **SendMessage**: 에이전트끼리 메시지를 주고받습니다
 
+### v2.1.63 새 기능
+
+| 기능 | 설명 |
+|------|------|
+| **워크트리 격리** | 에이전트가 독립된 git worktree에서 작업 (충돌 방지) |
+| **백그라운드 실행** | 에이전트를 백그라운드에서 실행하고 나중에 결과 확인 |
+| **\`claude agents\` CLI** | 터미널에서 활성 에이전트 목록을 확인하는 CLI 명령 |
+| **Ctrl+F** | 에이전트를 빠르게 종료하는 키바인딩 |
+| **Shift+Down** | 에이전트 사이를 탐색하는 네비게이션 |
+
 > 주의: Agent Teams는 아직 실험 기능이며, 토큰 사용량이 많습니다. 작은 작업부터 시작하세요!`,
 
   concepts: [
@@ -61,7 +71,41 @@ Agent Teams에도 비슷한 구조가 있습니다.
 
 1. **팀 리더**가 작업을 분배하고 전체를 조율합니다
 2. **팀원**은 맡은 태스크를 수행하고 완료하면 보고합니다
-3. 모든 팀원은 **이름(name)**으로 서로를 부릅니다 (UUID 아님!)`
+3. 모든 팀원은 **이름(name)**으로 서로를 부릅니다 (UUID 아님!)
+
+#### 워크트리 격리 모드 (v2.1.63)
+
+에이전트를 별도의 git worktree에서 실행하면, 각자 독립된 코드 복사본에서 작업합니다.
+서로의 코드 변경이 충돌하지 않아요!
+
+\`\`\`json
+Agent({
+  "name": "frontend-dev",
+  "isolation": "worktree",
+  "prompt": "Button 컴포넌트를 만들어줘"
+})
+\`\`\`
+
+#### 백그라운드 에이전트 (v2.1.63)
+
+에이전트를 백그라운드에서 실행하고, 다른 작업을 하면서 결과를 나중에 확인할 수 있습니다:
+
+\`\`\`json
+Agent({
+  "name": "researcher",
+  "run_in_background": true,
+  "prompt": "프로젝트 구조를 분석해줘"
+})
+\`\`\`
+
+#### \`claude agents\` CLI
+
+터미널에서 현재 활성화된 에이전트 목록을 확인할 수 있습니다:
+
+\`\`\`bash
+claude agents
+# 활성 에이전트 목록과 상태가 표시됩니다
+\`\`\``
     },
     {
       id: "task-management",
@@ -399,6 +443,19 @@ SendMessage({
         "서브에이전트와 Agent Teams의 차이를 설명할 수 있다",
         "상황에 따라 어떤 방식을 선택할지 판단할 수 있다"
       ]
+    },
+    {
+      id: "cross-reference",
+      title: "더 알아보기",
+      content: `## 관련 튜토리얼
+
+| 튜토리얼 | 관련 내용 |
+|----------|----------|
+| **09-worktree** | 워크트리 격리 모드 심화 학습 |
+| **16-background-agents** | 백그라운드 에이전트 활용법 |
+| **18-agent-sdk** | Agent SDK로 커스텀 에이전트 빌드하기 |
+| **10-cli-master** | \`claude agents\` CLI 명령 상세 |`,
+      checklist: []
     }
   ],
 

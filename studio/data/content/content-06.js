@@ -38,6 +38,8 @@ window.STUDIO_CONTENT["06-hooks"] = {
 | **PostToolUse** | 도구 사용 **후** | X | 문 닫은 후 센서 |
 | **Notification** | 알림 발생 시 | X | 알림 벨 |
 | **Stop** | 대화 종료 시 | X | 하교 벨 |
+| **WorktreeCreate** | 워크트리 생성 시 | X | 새 교실 열기 |
+| **WorktreeRemove** | 워크트리 삭제 시 | X | 교실 정리하기 |
 
 #### 가장 중요한 차이: 차단 기능
 
@@ -109,6 +111,36 @@ exit 2  ->  "이건 안 돼!" (차단)
 | **type** | 훅 종류 | \`"command"\` (쉘 명령어) |
 | **command** | 실행할 명령어 | \`"echo 'hello'"\`, \`"bash script.sh"\` |
 
+#### 훅 타입: command vs http (v2.1.63)
+
+v2.1.63부터 **HTTP 훅**이 추가되었습니다. 쉘 명령어 대신 HTTP 요청을 보내는 방식이에요!
+
+\`\`\`json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://localhost:3000/hooks/pre-write",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
+
+| 타입 | 장점 | 단점 |
+|------|------|------|
+| \`command\` | 간단, 스크립트 직접 실행 | OS 의존적 |
+| \`http\` | 언어 무관, 서버 기반 | 서버 실행 필요 |
+
+HTTP 훅은 JSON으로 입력을 받고 JSON으로 응답합니다. 응답에 \`"decision": "block"\`을 포함하면 차단됩니다.
+
 #### matcher 패턴 예시
 
 \`\`\`
@@ -117,7 +149,11 @@ exit 2  ->  "이건 안 돼!" (차단)
 "Write|Edit" -> Write 또는 Edit 감지
 ".*"        -> 모든 도구 감지
 "Bash"      -> Bash(터미널) 도구만 감지
-\`\`\``
+\`\`\`
+
+#### Workspace Trust
+
+훅은 **workspace trust** 컨텍스트에서 실행됩니다. 신뢰할 수 없는 프로젝트에서는 훅이 제한될 수 있어요.`
     },
     {
       id: "env-variables",
@@ -381,8 +417,21 @@ exit 0
         "exit 0(허용)과 exit 2(차단)의 역할을 알았다",
         "settings.json에서 matcher 패턴 설정 방법을 알았다",
         "환경변수(CLAUDE_TOOL_NAME, CLAUDE_TOOL_INPUT)를 활용할 수 있다",
-        ".claude/settings.json 파일의 위치를 알았다"
+        ".claude/settings.json 파일의 위치를 알았다",
+        "HTTP 훅과 command 훅의 차이를 이해했다"
       ]
+    },
+    {
+      id: "cross-reference",
+      title: "더 알아보기",
+      content: `## 관련 튜토리얼
+
+| 튜토리얼 | 관련 내용 |
+|----------|----------|
+| **09-worktree** | WorktreeCreate/Remove 훅과 워크트리 연동 |
+| **19-permissions-deep** | 권한 설정과 훅의 관계 |
+| **07-mcp-server** | MCP 서버와 훅 조합 활용 |`,
+      checklist: []
     }
   ],
 

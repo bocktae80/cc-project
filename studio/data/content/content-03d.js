@@ -172,7 +172,7 @@ head -30 ~/.claude/debug/latest
         {
           command: "claude --debug",
           output: `╭──────────────────────────────────────────────╮
-│ Claude Code v2.1.50                          │
+│ Claude Code v2.1.63                          │
 │ Debug logging enabled                        │
 │ Log file: ~/.claude/debug/a1b2c3-d4e5f6.txt  │
 ╰──────────────────────────────────────────────╯
@@ -243,7 +243,7 @@ head -30 ~/.claude/debug/latest
         {
           command: "claude --debug \"api\"",
           output: `╭──────────────────────────────────────────────╮
-│ Claude Code v2.1.50                          │
+│ Claude Code v2.1.63                          │
 │ Debug logging enabled (filter: api)          │
 │ Log file: ~/.claude/debug/f7g8h9-i0j1k2.txt  │
 ╰──────────────────────────────────────────────╯

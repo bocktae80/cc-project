@@ -55,18 +55,29 @@ window.STUDIO_CONTENT["08-skills-commands"] = {
 | \`/permissions\` | 권한 설정 | 게임 설정 |
 | \`/config\` | 설정 변경 | 옵션 메뉴 |
 
+#### v2.1.63에서 추가된 커맨드
+
+| 커맨드 | 기능 | 설명 |
+|--------|------|------|
+| \`/simplify\` | 코드 간소화 | 최근 변경된 코드를 리뷰하고 단순하게 개선 |
+| \`/batch\` | 일괄 작업 | 여러 작업을 한 번에 실행 |
+| \`/copy\` | 인터랙티브 복사 | 파일, 코드 블록 등을 선택해서 클립보드에 복사 (피커 UI 제공) |
+| \`/memory\` | 메모리 편집 | CLAUDE.md 파일을 에디터에서 바로 열기 |
+
 #### 사용법
 
 터미널에서 클로드 코드 대화 중에 슬래시(\`/\`)를 입력하면 목록이 나옵니다:
 
 \`\`\`
 > /help
-Claude Code v2.1.x
+Claude Code v2.1.63
 
 사용 가능한 커맨드:
   /help         도움말
   /cost         현재 세션의 토큰 사용량
   /compact      대화 내용 압축
+  /simplify     코드 간소화
+  /copy         인터랙티브 복사
   ...
 \`\`\``
     },
@@ -111,7 +122,30 @@ Claude Code v2.1.x
 | \`greet.md\` | \`/greet\` |
 | \`review.md\` | \`/review\` |
 | \`explain.md\` | \`/explain\` |
-| \`test-gen.md\` | \`/test-gen\` |`
+| \`test-gen.md\` | \`/test-gen\` |
+
+#### YAML 프론트매터 지원
+
+스킬 파일 상단에 YAML 메타데이터를 추가할 수 있습니다:
+
+\`\`\`markdown
+---
+description: "코드를 리뷰합니다"
+---
+아래 파일을 코드 리뷰해주세요: $ARGUMENTS
+\`\`\`
+
+> v2.1.63에서 YAML 파싱이 개선되어, 프론트매터의 설명이 \`/\` 입력 시 자동 완성 목록에 표시됩니다.
+
+#### 플러그인 스킬
+
+v2.1.63부터 **플러그인**을 통해 다른 사람이 만든 스킬을 설치할 수도 있습니다:
+
+\`\`\`bash
+claude plugin add @example/my-skills
+\`\`\`
+
+> 플러그인 시스템에 대한 자세한 내용은 **17-plugin-system** 튜토리얼을 참고하세요!`
     },
     {
       id: "arguments",
@@ -401,6 +435,18 @@ $ARGUMENTS
         "프로젝트 스킬과 개인 스킬의 저장 위치 차이를 안다",
         "git을 통해 팀원과 스킬을 공유하는 방법을 안다"
       ]
+    },
+    {
+      id: "cross-reference",
+      title: "더 알아보기",
+      content: `## 관련 튜토리얼
+
+| 튜토리얼 | 관련 내용 |
+|----------|----------|
+| **01-memory-system** | \`/memory\` 커맨드와 메모리 관리 |
+| **17-plugin-system** | 플러그인으로 스킬 배포/설치하기 |
+| **10-cli-master** | CLI 고급 커맨드와 설정 |`,
+      checklist: []
     }
   ],
 
