@@ -208,6 +208,13 @@
   font-size: 0.75rem;
 }
 
+/* --- 소요 시간 --- */
+.learn-header__time {
+  opacity: 0.7;
+  font-size: 0.85rem;
+  margin-left: 4px;
+}
+
 /* --- 탭 바 --- */
 .learn-tab-bar {
   display: flex;
@@ -787,6 +794,53 @@
 .sandbox__hint-chip:hover {
   background: #45475a;
   border-color: #89b4fa;
+}
+
+/* --- 관련 튜토리얼 --- */
+.learn-related__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.learn-related__card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.learn-related__card:hover {
+  border-color: var(--phase-1);
+  background: rgba(59, 130, 246, 0.04);
+  transform: translateY(-2px);
+}
+
+.learn-related__number {
+  font-size: 2rem;
+  font-weight: 800;
+  opacity: 0.1;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  line-height: 1;
+}
+
+.learn-related__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.learn-related__sub {
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 
 /* --- 에러 화면 --- */

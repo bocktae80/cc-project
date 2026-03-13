@@ -1,12 +1,21 @@
 window.STUDIO_CONTENT = window.STUDIO_CONTENT || {};
 window.STUDIO_CONTENT["17-plugin-system"] = {
-  overview: `## 플러그인 시스템 — 앱스토어처럼 기능 설치하기
+  overview: `## 플러그인 시스템 — 기능 꾸러미 설치하고 만들기
 
 스마트폰에 **앱스토어**가 있잖아요? 게임, 카메라, 계산기 앱을 따로 설치해서 쓰듯,
 클로드 코드에도 **필요한 기능을 설치해서 쓸 수 있는 시스템**이 있어요!
 
-지금까지 배운 Skills(08), Hooks(06), Agents(05)를 각각 설치했다면,
-플러그인은 이것들을 **한 번에 묶어서 설치**할 수 있는 번들이에요.
+### 이런 상황에서 유용해요
+- **팀 도구 통합**: "배포 스킬, 린트 훅, 리뷰 에이전트를 한 번에 설치하고 싶어" — 플러그인 하나로 해결
+- **반복 설정 제거**: "새 프로젝트마다 같은 설정을 반복하기 귀찮아" — 플러그인으로 원클릭 설치
+- **기능 공유**: "내가 만든 도구를 팀원에게 공유하고 싶어" — npm/GitHub으로 배포
+
+### 이 튜토리얼에서 배우는 것
+| 순서 | 내용 | 탭 |
+|------|------|-----|
+| 1 | 플러그인 개념과 plugin.json 매니페스트 구조 | 💡 개념 |
+| 2 | 플러그인 검색, 설치, 직접 만들기, 배포 | 🔧 실습 |
+| 3 | 기존 Skills+Hooks 패키징 & 커뮤니티 플러그인 활용 | 💻 예제 |
 
 ### 개별 설치 vs 플러그인 (앱 번들)
 
@@ -55,16 +64,23 @@ window.STUDIO_CONTENT["17-plugin-system"] = {
     └── 갤러리 앱                      └── Agent: deploy-checker
 \`\`\`
 
-#### 플러그인이 포함할 수 있는 것
+#### 플러그인이 포함할 수 있는 것 (v2.1.70)
 
 \`\`\`
-plugin.json (설명서)
-├── skills/           슬래시 커맨드 (/deploy, /test 등)
-├── hooks/            이벤트 반응 (저장 시 실행 등)
-├── agents/           특수 에이전트 (리뷰어, 테스터 등)
-├── commands/         자동 실행 명령
-└── settings/         기본 설정값
+.claude-plugin/
+  plugin.json         설명서 (매니페스트)
+skills/               SKILL.md 디렉토리 구조 스킬
+commands/             레거시 마크다운 커맨드
+hooks/                이벤트 반응 (hooks.json)
+agents/               특수 에이전트 (마크다운)
+.mcp.json             MCP 서버 설정
+.lsp.json             LSP 서버 설정 (코드 인텔리전스)
+settings.json         기본 설정값
 \`\`\`
+
+> v2.1.69 추가: **LSP 서버** (코드 인텔리전스), **output styles** (출력 스타일)
+> v2.1.69 추가: \`/reload-plugins\` — 재시작 없이 플러그인 변경 적용
+> v2.1.69 추가: \`git-subdir\` 소스 타입 — git 저장소의 하위 디렉토리에서 플러그인 로드\`\`\`
 
 #### 왜 플러그인을 쓸까?
 
@@ -76,7 +92,10 @@ plugin.json (설명서)
 | 의존성 | 직접 관리 | 자동 해결 |
 | 제거 | 파일마다 삭제 | 한 번에 |
 
-> **정리**: 플러그인 = 관련 기능을 하나로 묶어서 설치/관리/공유를 쉽게!`
+> **정리**: 플러그인 = 관련 기능을 하나로 묶어서 설치/관리/공유를 쉽게!
+
+> **핵심 요약**: 플러그인은 Skills, Hooks, Agents, MCP/LSP 서버를 하나로 묶은 앱 번들입니다.
+> 개별 설치 대신 한 번에 설치/업데이트/제거가 가능하며, plugin.json이 매니페스트 역할을 합니다.`
     },
     {
       id: "plugin-manifest",
@@ -93,31 +112,13 @@ plugin.json (설명서)
   "name": "my-deploy-plugin",
   "version": "1.0.0",
   "description": "배포 자동화 플러그인",
-  "author": "홍길동",
-
-  "skills": [
-    {
-      "name": "deploy",
-      "description": "프로젝트를 배포합니다",
-      "path": "./skills/deploy.md"
-    }
-  ],
-
-  "hooks": [
-    {
-      "event": "pre-commit",
-      "command": "npm run lint",
-      "description": "커밋 전 린트 검사"
-    }
-  ],
-
-  "agents": [
-    {
-      "name": "deploy-checker",
-      "description": "배포 전 체크리스트 검증",
-      "path": "./agents/deploy-checker.md"
-    }
-  ]
+  "author": {
+    "name": "홍길동",
+    "email": "hong@example.com"
+  },
+  "repository": "https://github.com/hong/deploy-plugin",
+  "license": "MIT",
+  "keywords": ["deployment", "ci-cd"]
 }
 \`\`\`
 
@@ -139,10 +140,18 @@ plugin.json 필드 맵
   agents ───── 에이전트 목록
   commands ─── 자동 실행 명령 목록
 
+[컴포넌트 경로]
+  skills ────── SKILL.md 디렉토리 경로
+  agents ────── 에이전트 마크다운 경로
+  hooks ─────── hooks.json 경로
+  mcpServers ── MCP 서버 설정 경로
+  lspServers ── LSP 서버 설정 경로
+  outputStyles  출력 스타일 경로
+
 [메타 정보]
-  dependencies  의존하는 다른 플러그인
   repository ── GitHub 저장소 URL
   license ───── 라이선스 (MIT 등)
+  keywords ──── 검색 태그
 \`\`\`
 
 #### 앱 정보 페이지와 비교
@@ -154,7 +163,10 @@ plugin.json 필드 맵
 | 버전 | version | 업데이트 관리 |
 | 개발자 | author | 누가 만들었는지 |
 | 권한 | hooks (이벤트) | 어떤 이벤트에 반응하는지 |
-| 스크린샷 | (README.md) | 사용 예시 |`
+| 스크린샷 | (README.md) | 사용 예시 |
+
+> **핵심 요약**: plugin.json은 앱 정보 페이지처럼 이름, 버전, 설명, 포함 기능 목록을 정의합니다.
+> 기본 정보(name/version/description), 기능 목록(skills/hooks/agents), 컴포넌트 경로, 메타 정보로 구성됩니다.`
     },
     {
       id: "install-update-remove",
@@ -232,7 +244,32 @@ claude plugin remove @team/deploy-plugin
 |------|------|------|------|
 | npm | \`plugin add @scope/name\` | 버전 관리, 자동 업데이트 | npm 계정 필요 |
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
-| 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |`
+| 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
+
+#### v2.1.74 플러그인 개선사항
+
+**\`--plugin-dir\` 로컬 우선 오버라이드**: 로컬에서 개발 중인 플러그인이 같은 이름의 마켓플레이스 버전보다 **항상 우선** 적용됩니다.
+
+\`\`\`
+비유: 앱스토어 앱 vs 직접 만든 앱
+
+기존: 앱스토어 버전과 내가 만든 버전이 충돌!
+     → 어떤 게 실행될지 모름
+
+이후: --plugin-dir로 지정한 내 버전이 항상 우선!
+     → 마켓 버전 삭제할 필요 없이 바로 테스트
+\`\`\`
+
+\`\`\`bash
+# 로컬 개발 중인 플러그인으로 실행
+claude --plugin-dir ./my-plugin-dev
+# → 같은 이름의 마켓플레이스 플러그인이 설치돼 있어도 로컬이 우선!
+\`\`\`
+
+**마켓플레이스 submodule 동기화**: \`claude plugin marketplace update\` 실행 시 git submodule도 자동으로 동기화됩니다. 이전에는 submodule을 사용하는 플러그인이 업데이트 후 깨지는 문제가 있었어요.
+
+> **핵심 요약**: \`claude plugin add/list/update/remove\` 명령으로 플러그인 전체 라이프사이클을 관리합니다.
+> npm, GitHub, 로컬 폴더 3가지 소스에서 설치 가능하며, \`--plugin-dir\`로 로컬 개발 버전을 우선 적용할 수 있습니다.`
     }
   ],
 

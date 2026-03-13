@@ -1,12 +1,21 @@
 window.STUDIO_CONTENT = window.STUDIO_CONTENT || {};
 window.STUDIO_CONTENT["18-agent-sdk"] = {
-  overview: `## Agent SDK — 코드로 나만의 AI 에이전트 만들기
+  overview: `## Agent SDK — 나만의 AI 에이전트 만들기
 
 **로봇 조립 키트**를 상상해보세요! 키트에는 팔, 다리, 센서, 모터 같은 부품이 들어있고,
-설명서대로 조합하면 나만의 로봇이 완성돼요.
+설명서대로 조합하면 나만의 로봇이 완성돼요. Agent SDK도 똑같아요!
 
-Agent SDK도 똑같아요! SDK가 제공하는 부품(대화, 도구, 설정)을 코드로 조합하면,
-터미널에서 직접 대화하지 않아도 **프로그램이 알아서 클로드를 호출**하고 결과를 받아올 수 있어요.
+### 이런 상황에서 유용해요
+- **자동 코드 리뷰**: "PR이 올라올 때마다 자동으로 분석해줬으면" — SDK로 봇 구축
+- **데이터 파이프라인**: "매일 데이터를 분석하고 보고서를 만들어야 해" — SDK로 자동화
+- **커스텀 에이전트**: "우리 팀 전용 AI 도구를 만들고 싶어" — SDK로 맞춤 앱 개발
+
+### 이 튜토리얼에서 배우는 것
+| 순서 | 내용 | 탭 |
+|------|------|-----|
+| 1 | SDK 개념과 CLI 대비 장점, 핵심 구성 요소 | 💡 개념 |
+| 2 | Python/TypeScript SDK 설치부터 MCP 연동까지 실습 | 🔧 실습 |
+| 3 | 파일 정리 에이전트 & 코드 리뷰 에이전트 만들기 | 💻 예제 |
 
 ### CLI (직접 대화) vs SDK (코드로 자동화)
 
@@ -29,7 +38,21 @@ CLI (터미널에서 직접)                SDK (코드로 자동화)
 | SDK 클라이언트 | 클로드와 연결하는 통로 | 로봇의 두뇌 |
 | 메시지 | 클로드에게 보내는 요청 | 로봇에게 주는 명령 |
 | 커스텀 도구 | 추가 기능 (함수) | 로봇에 붙이는 센서/팔 |
-| MCP 서버 | 외부 서비스 연결 | 로봇의 Wi-Fi 연결 |`,
+| MCP 서버 | 외부 서비스 연결 | 로봇의 Wi-Fi 연결 |
+| 사고 제어 | 추론 깊이 조절 (effort/thinking) | 로봇의 생각 속도 조절 |
+| 구조화 출력 | JSON 스키마에 맞는 결과 반환 | 정해진 양식에 맞춰 보고서 작성 |
+
+### 2025~2026 주요 업데이트
+
+| 기능 | 설명 |
+|------|------|
+| \`thinking\` 옵션 | adaptive/enabled/disabled 3모드로 추론 깊이 세밀 제어 |
+| \`effort\` 옵션 | low/medium/high/max 4단계 사고 깊이 |
+| \`tools\` 배열 | 빌트인 도구를 허용 목록으로 제한 (보안 강화) |
+| MCP 어노테이션 | 도구에 readOnly/destructive 힌트 부여 |
+| 세션 관리 API | listSessions(), getSessionMessages()로 이력 탐색 |
+| 구조화 출력 | JSON 스키마 검증된 결과 반환 |
+| CLI 번들링 | SDK에 Claude Code CLI가 기본 포함 (별도 설치 불필요) |`,
 
   concepts: [
     {
@@ -79,7 +102,10 @@ Agent SDK는 **코드로 클로드를 조종**하는 방법이에요.
 
 4. 파일 정리 에이전트
    폴더 감시 -> 새 파일 감지 -> SDK가 분류 요청 -> 자동 이동
-\`\`\``
+\`\`\`
+
+> **핵심 요약**: Agent SDK는 CLI처럼 사람이 직접 대화하는 게 아니라, 코드로 클로드를 호출하여 자동화하는 방식입니다.
+> 레고 블록처럼 클라이언트, 메시지, 도구, 설정을 조합하면 나만의 AI 앱을 만들 수 있어요.`
     },
     {
       id: "python-vs-typescript",
@@ -91,15 +117,19 @@ Agent SDK는 **Python**과 **TypeScript** 두 가지 버전이 있어요.
 어떤 언어를 선택하든 결과물은 같아요!
 
 \`\`\`
-Python SDK                          TypeScript SDK
-───────────                         ────────────────
+Python SDK (v0.1.44)                TypeScript SDK (v0.2.61)
+────────────────────                ────────────────────────
 pip install                         npm install
-claude-code-sdk                     @anthropic-ai/claude-code
+claude-code-sdk                     @anthropic-ai/claude-agent-sdk
 
 데이터 분석에 강함                    웹 앱 개발에 강함
 Jupyter 노트북 호환                  Next.js/React 통합
 ML 라이브러리 풍부                   프론트엔드 생태계
+                                    세션 관리 API (listSessions 등)
 \`\`\`
+
+> **참고**: 두 SDK 모두 Claude Code CLI를 **기본 번들링**합니다.
+> 별도로 CLI를 설치할 필요가 없어요!
 
 #### 설치 및 기본 코드 비교
 
@@ -109,10 +139,14 @@ ML 라이브러리 풍부                   프론트엔드 생태계
 # 설치: pip install claude-code-sdk
 from claude_code_sdk import query, ClaudeCodeOptions
 
-# 기본 대화
+# 기본 대화 — thinking과 effort로 사고 깊이 조절 가능!
 result = await query(
     prompt="Hello! What can you do?",
-    options=ClaudeCodeOptions(max_turns=3)
+    options=ClaudeCodeOptions(
+        max_turns=3,
+        effort="high",          # low/medium/high/max
+        thinking={"type": "adaptive"}  # adaptive/enabled/disabled
+    )
 )
 
 # 결과 처리
@@ -124,13 +158,17 @@ for message in result:
 **TypeScript:**
 
 \`\`\`typescript
-// 설치: npm install @anthropic-ai/claude-code
-import { query, type ClaudeCodeOptions } from "@anthropic-ai/claude-code";
+// 설치: npm install @anthropic-ai/claude-agent-sdk
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
-// 기본 대화
+// 기본 대화 — 사고 제어 + 도구 제한 예시
 const result = await query({
   prompt: "Hello! What can you do?",
-  options: { maxTurns: 3 }
+  options: {
+    maxTurns: 3,
+    effort: "high",
+    tools: ["Read", "Bash", "Edit"]  // 빌트인 도구를 이 3개로 제한
+  }
 });
 
 // 결과 처리
@@ -141,6 +179,15 @@ for (const message of result) {
 }
 \`\`\`
 
+#### effort 옵션 — 사고 깊이 조절
+
+\`\`\`
+effort: "low"     빠르게 답변, 간단한 작업에 적합
+effort: "medium"  적당한 깊이, 일반적인 작업
+effort: "high"    깊이 사고, 복잡한 분석
+effort: "max"     최대한 깊이, 어려운 문제 해결
+\`\`\`
+
 #### 선택 가이드
 
 \`\`\`
@@ -149,11 +196,16 @@ for (const message of result) {
 │   └── Python SDK
 ├── 웹 앱 / API 서버?
 │   └── TypeScript SDK
+├── 세션 이력 탐색이 필요?
+│   └── TypeScript SDK (listSessions/getSessionMessages)
 ├── 스크립트 / 자동화?
 │   └── 둘 다 OK (본인이 편한 언어)
 └── 잘 모르겠다?
     └── Python SDK (시작하기 쉬움)
-\`\`\``
+\`\`\`
+
+> **핵심 요약**: Python SDK와 TypeScript SDK 모두 동일한 기능을 제공하며, CLI가 기본 번들링됩니다.
+> effort/thinking 옵션으로 사고 깊이를 조절하고, 데이터 분석은 Python, 웹 앱은 TypeScript가 유리합니다.`
     },
     {
       id: "custom-tools-mcp",
@@ -177,7 +229,7 @@ for (const message of result) {
 #### 커스텀 도구 구조
 
 \`\`\`python
-# 도구 정의 = 이름 + 설명 + 입력 스키마
+# 도구 정의 = 이름 + 설명 + 입력 스키마 + 어노테이션
 {
     "name": "get_weather",
     "description": "도시의 날씨 정보를 가져옵니다",
@@ -198,7 +250,49 @@ def get_weather(city):
     return {"temp": 22, "condition": "sunny"}
 \`\`\`
 
-#### MCP 서버 연동
+#### MCP 도구 어노테이션 (신규!)
+
+도구에 **메타데이터 힌트**를 붙일 수 있어요. 클로드가 도구 사용을 판단할 때 참고합니다.
+
+\`\`\`python
+from claude_agent_sdk import tool, ToolAnnotations
+
+@tool(annotations={
+    "readOnlyHint": True,       # 읽기 전용 (데이터 변경 안 함)
+    "destructiveHint": False,   # 파괴적이지 않음
+    "idempotentHint": True,     # 여러 번 실행해도 결과 동일
+    "openWorldHint": False      # 외부 네트워크 접근 안 함
+})
+def read_config(path: str) -> str:
+    """설정 파일을 읽어옵니다"""
+    with open(path) as f:
+        return f.read()
+\`\`\`
+
+\`\`\`
+어노테이션 종류:
+readOnlyHint      이 도구는 읽기만 하나요?
+destructiveHint   데이터를 삭제/변경하나요?
+idempotentHint    반복 실행해도 같은 결과인가요?
+openWorldHint     외부 네트워크에 접근하나요?
+\`\`\`
+
+#### tools 옵션으로 빌트인 도구 제한 (신규!)
+
+보안이 중요한 에이전트에서 사용할 수 있는 도구를 **배열로 제한**할 수 있어요.
+
+\`\`\`python
+# 읽기만 허용하는 안전한 에이전트
+result = await query(
+    prompt="코드를 분석해줘",
+    options=ClaudeCodeOptions(
+        tools=["Read", "Glob", "Grep"]  # 이 3개만 사용 가능!
+        # tools=[]  # 빈 배열 = 빌트인 도구 전부 비활성화
+    )
+)
+\`\`\`
+
+#### MCP 서버 연동 + 런타임 관리
 
 07번에서 배운 MCP 서버를 SDK 앱에 연결할 수 있어요!
 
@@ -226,6 +320,36 @@ result = await query(
 )
 \`\`\`
 
+\`\`\`typescript
+// TypeScript: MCP 서버 런타임 관리 (v0.2.21+)
+// 실행 중에 MCP 서버를 재연결하거나 끄고 켤 수 있어요!
+await session.reconnectMcpServer("github");      // 재연결
+await session.toggleMcpServer("slack", false);    // 끄기
+const status = await session.mcpServerStatus();   // 상태 조회
+\`\`\`
+
+#### 구조화 출력 (신규!)
+
+JSON 스키마를 지정하면, 결과가 **검증된 JSON**으로 반환돼요.
+
+\`\`\`typescript
+// 정해진 형식으로 결과 받기
+const result = await query({
+  prompt: "이 코드의 품질을 분석해줘",
+  options: {
+    outputSchema: {
+      type: "object",
+      properties: {
+        score: { type: "number" },
+        issues: { type: "array", items: { type: "string" } },
+        recommendation: { type: "string" }
+      }
+    }
+  }
+});
+// result = { score: 85, issues: ["..."], recommendation: "..." }
+\`\`\`
+
 #### 도구 추가의 효과
 
 | 도구 없음 | 도구 있음 |
@@ -233,9 +357,13 @@ result = await query(
 | 대화만 가능 | 파일 읽기/쓰기 |
 | 추측으로 답변 | 실제 데이터 기반 답변 |
 | 한정된 기능 | 무한 확장 가능 |
+| 결과 형식 불확실 | 구조화 출력으로 정확한 JSON |
 
 > **비유**: 기본 로봇은 말만 할 수 있지만, 팔(도구)을 붙이면 물건을 집을 수 있고,
-> 센서(MCP)를 붙이면 주변을 감지할 수 있어요!`
+> 센서(MCP)를 붙이면 주변을 감지하고, 어노테이션은 도구의 "사용 설명서"예요!
+
+> **핵심 요약**: 커스텀 도구로 클로드에게 실제 작업 능력을 부여하고, MCP 서버로 외부 서비스와 연결합니다.
+> 어노테이션으로 도구 특성을 알려주고, tools 옵션으로 사용 가능한 도구를 제한하며, 구조화 출력으로 정확한 JSON을 받을 수 있어요.`
     }
   ],
 
@@ -269,8 +397,10 @@ async def main():
     result = await query(
         prompt="이 폴더에 어떤 파일들이 있는지 알려줘",
         options=ClaudeCodeOptions(
-            max_turns=3,          # 최대 3번 대화
-            cwd="/path/to/project" # 작업 디렉토리
+            max_turns=3,            # 최대 3번 대화
+            cwd="/path/to/project", # 작업 디렉토리
+            effort="high",          # 사고 깊이 (low/medium/high/max)
+            thinking={"type": "adaptive"}  # 추론 모드
         )
     )
 
@@ -282,6 +412,9 @@ async def main():
 asyncio.run(main())
 \`\`\`
 
+> **참고**: SDK에 Claude Code CLI가 기본 번들링되어 있어요.
+> 별도로 CLI를 설치할 필요가 없습니다!
+
 #### 3단계: 실행
 
 \`\`\`bash
@@ -289,15 +422,16 @@ python my_first_agent.py
 \`\`\`
 
 > **포인트**: \`query()\` 함수 하나로 클로드와 대화할 수 있어요!
-> \`prompt\`에 질문을 넣고, \`options\`로 세부 설정을 조절하면 됩니다.`,
+> \`prompt\`에 질문, \`options\`로 세부 설정, \`effort\`로 사고 깊이를 조절하면 됩니다.`,
       terminals: [
         {
           command: "# Python SDK 설치 및 첫 실행",
           output: `$ pip install claude-code-sdk
 Collecting claude-code-sdk
-  Downloading claude_code_sdk-0.1.12-py3-none-any.whl (45 kB)
+  Downloading claude_code_sdk-0.1.44-py3-none-any.whl (52 kB)
 Installing collected packages: claude-code-sdk
-Successfully installed claude-code-sdk-0.1.12
+Successfully installed claude-code-sdk-0.1.44
+(Claude Code CLI v2.1.59 번들 포함)
 
 $ python my_first_agent.py
 
@@ -332,34 +466,25 @@ $ python my_first_agent.py
     },
     {
       id: "step-02",
-      title: "커스텀 도구 추가하기",
-      content: `### 로봇에 새로운 기능 붙이기
+      title: "커스텀 도구 & 어노테이션 추가하기",
+      content: `### 로봇에 새로운 기능 붙이기 (+ 사용 설명서)
 
 기본 SDK는 대화만 가능해요. 커스텀 도구를 추가하면
 클로드가 **실제 작업**을 수행할 수 있어요!
+어노테이션을 붙이면 도구의 **특성**도 알려줄 수 있어요.
 
-#### 도구 정의 구조
+#### 도구 정의 + 어노테이션
 
 \`\`\`python
-# 1. 도구 스키마 정의 (설명서 만들기)
-weather_tool = {
-    "name": "get_weather",
-    "description": "도시의 현재 날씨를 조회합니다",
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "city": {
-                "type": "string",
-                "description": "날씨를 조회할 도시 이름"
-            }
-        },
-        "required": ["city"]
-    }
-}
+from claude_agent_sdk import tool
 
-# 2. 도구 실행 함수 (실제 동작)
-def handle_weather(city: str) -> str:
-    # 실제로는 API를 호출하지만, 예시로 간단하게
+# @tool 데코레이터 + annotations로 도구 특성 힌트
+@tool(annotations={
+    "readOnlyHint": True,       # 읽기만 함
+    "destructiveHint": False    # 데이터 변경 없음
+})
+def get_weather(city: str) -> str:
+    """도시의 현재 날씨를 조회합니다"""
     weather_data = {
         "서울": "맑음, 22도",
         "부산": "흐림, 19도"
@@ -367,34 +492,23 @@ def handle_weather(city: str) -> str:
     return weather_data.get(city, "정보 없음")
 \`\`\`
 
-#### 실전 예제: 파일 분석 도구
+> **어노테이션**: 클로드가 이 도구를 "읽기 전용이고 안전하다"고 판단해서
+> 더 적극적으로 사용할 수 있어요. 파괴적인 도구는 더 신중하게 사용하고요.
+
+#### tools 옵션으로 빌트인 도구 제한
 
 \`\`\`python
 import asyncio
 from claude_code_sdk import query, ClaudeCodeOptions
 
-# 파일 크기를 확인하는 커스텀 도구
-file_size_tool = {
-    "name": "check_file_size",
-    "description": "파일의 크기를 바이트 단위로 확인합니다",
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "path": {
-                "type": "string",
-                "description": "확인할 파일 경로"
-            }
-        },
-        "required": ["path"]
-    }
-}
-
 async def main():
+    # 읽기 전용 에이전트 — 파일 수정 불가!
     result = await query(
-        prompt="src 폴더에서 가장 큰 파일을 찾아줘",
+        prompt="src 폴더의 코드를 분석해줘",
         options=ClaudeCodeOptions(
             max_turns=5,
-            allowed_tools=["Read", "Bash", "check_file_size"]
+            tools=["Read", "Glob", "Grep"]  # 이 3개만 허용
+            # Bash, Write, Edit 등은 사용 불가
         )
     )
     for msg in result:
@@ -404,7 +518,16 @@ async def main():
 asyncio.run(main())
 \`\`\`
 
-> **비유**: 도구 = 로봇의 팔. 팔이 없으면 말만 하지만, 팔을 붙이면 물건을 집을 수 있어요!`,
+\`\`\`
+tools 옵션 사용법:
+─────────────────────────────────────
+tools=["Read", "Bash"]   이 2개만 허용
+tools=[]                 빌트인 도구 전부 비활성
+(생략)                    모든 빌트인 도구 허용
+\`\`\`
+
+> **비유**: 도구 = 로봇의 팔, 어노테이션 = 팔의 사용 설명서.
+> tools 옵션 = "이 팔만 사용해!" 라고 제한하는 것!`,
       terminals: [
         {
           command: "# 커스텀 도구가 있는 앱 실행",
@@ -490,6 +613,41 @@ options = ClaudeCodeOptions(
 )
 \`\`\`
 
+#### MCP 서버 런타임 관리 (TypeScript v0.2.21+)
+
+실행 중에 MCP 서버를 **재연결하거나 끄고 켤 수** 있어요!
+
+\`\`\`typescript
+// MCP 서버 상태 조회 (연결된 도구 목록 포함)
+const status = await session.mcpServerStatus();
+// { github: { status: "connected", tools: [...] } }
+
+// MCP 서버 재연결 (연결 끊겼을 때)
+await session.reconnectMcpServer("github");
+
+// MCP 서버 끄기/켜기
+await session.toggleMcpServer("slack", false);  // 끄기
+await session.toggleMcpServer("slack", true);   // 다시 켜기
+\`\`\`
+
+#### 세션 관리 API (TypeScript v0.2.53+)
+
+과거 세션 이력을 프로그래밍으로 탐색할 수 있어요!
+
+\`\`\`typescript
+import { listSessions, getSessionMessages } from "@anthropic-ai/claude-agent-sdk";
+
+// 과거 세션 목록 조회
+const sessions = await listSessions();
+// [{ id: "ses_abc", summary: "코드 리뷰", ... }, ...]
+
+// 특정 세션의 대화 이력 읽기 (페이지네이션 지원)
+const messages = await getSessionMessages("ses_abc", {
+  limit: 50,
+  offset: 0
+});
+\`\`\`
+
 #### 흐름도
 
 \`\`\`
@@ -505,10 +663,12 @@ options = ClaudeCodeOptions(
    |
    v
 [결과 반환]
+   |
+   |-- listSessions()으로 과거 분석 이력 조회 가능!
 \`\`\`
 
 > **비유**: MCP 서버 = 로봇의 Wi-Fi. 연결하면 인터넷에서 정보를 가져오고,
-> 다른 서비스에 메시지를 보낼 수 있어요!`,
+> 세션 API = 로봇의 일기장. 이전에 뭘 했는지 다시 볼 수 있어요!`,
       terminals: [
         {
           command: "# MCP 서버 연동 앱 실행",
@@ -752,26 +912,6 @@ src/utils/format.ts:
       explanation: "CLI는 사람이 터미널에서 직접 대화하는 방식이고, SDK는 코드로 클로드를 호출하여 자동화할 수 있습니다. 로봇이 리모컨을 조작하는 것과 같아요."
     },
     {
-      question: "Python SDK와 TypeScript SDK 중 웹 앱 개발에 더 적합한 것은?",
-      options: [
-        "Python SDK",
-        "TypeScript SDK",
-        "둘 다 동일하다"
-      ],
-      answer: 1,
-      explanation: "TypeScript SDK는 Next.js, React 등 웹 프레임워크와 자연스럽게 통합되므로 웹 앱 개발에 더 적합합니다. Python SDK는 데이터 분석이나 ML에 강합니다."
-    },
-    {
-      question: "커스텀 도구를 추가하면 어떤 점이 달라지나요?",
-      options: [
-        "클로드의 대화 속도가 빨라진다",
-        "클로드가 외부 시스템과 상호작용하며 실제 작업을 수행할 수 있다",
-        "클로드의 답변 품질이 향상된다"
-      ],
-      answer: 1,
-      explanation: "커스텀 도구는 로봇의 팔과 같아요. 도구 없이는 대화만 가능하지만, 도구를 추가하면 파일을 읽거나 API를 호출하는 등 실제 작업을 수행할 수 있습니다."
-    },
-    {
       question: "MCP 서버를 SDK에 연결하는 이유는?",
       options: [
         "SDK의 실행 속도를 높이기 위해",
@@ -782,14 +922,34 @@ src/utils/format.ts:
       explanation: "MCP 서버는 로봇의 Wi-Fi와 같아요. 연결하면 클로드가 GitHub에서 이슈를 가져오거나, Slack에 메시지를 보내거나, DB에서 데이터를 조회할 수 있게 됩니다."
     },
     {
-      question: "코드 리뷰 에이전트를 CI/CD에 연결하면?",
+      question: "effort 옵션의 역할은?",
       options: [
-        "코드가 자동으로 수정된다",
-        "PR이 올라올 때마다 자동으로 코드 리뷰가 실행된다",
-        "테스트가 자동으로 작성된다"
+        "클로드의 응답 길이를 제한한다",
+        "클로드가 얼마나 깊이 생각할지 조절한다 (low/medium/high/max)",
+        "클로드의 실행 속도를 높인다"
       ],
       answer: 1,
-      explanation: "코드 리뷰 에이전트를 GitHub Actions 등 CI/CD에 연결하면, 새 PR이 올라올 때마다 자동으로 코드를 분석하고 리뷰 코멘트를 작성합니다."
+      explanation: "effort 옵션은 클로드의 사고 깊이를 조절합니다. 'low'는 빠르게 간단한 답변, 'max'는 최대한 깊이 사고하여 복잡한 문제를 해결합니다."
+    },
+    {
+      question: "tools 옵션에 ['Read', 'Glob']을 넣으면?",
+      options: [
+        "Read와 Glob만 비활성화된다",
+        "Read와 Glob만 사용 가능하고, 나머지 빌트인 도구는 비활성화된다",
+        "에러가 발생한다"
+      ],
+      answer: 1,
+      explanation: "tools 배열에 도구 이름을 넣으면 해당 도구만 사용 가능합니다. 보안이 중요한 읽기 전용 에이전트를 만들 때 유용해요."
+    },
+    {
+      question: "MCP 도구 어노테이션의 readOnlyHint: true는 무슨 뜻인가요?",
+      options: [
+        "이 도구는 데이터를 삭제할 수 있다",
+        "이 도구는 읽기 전용이라 데이터를 변경하지 않는다",
+        "이 도구는 한 번만 실행할 수 있다"
+      ],
+      answer: 1,
+      explanation: "readOnlyHint: true는 이 도구가 데이터를 읽기만 하고 변경하지 않는다는 힌트입니다. 클로드가 이 도구를 더 적극적으로 안전하게 사용할 수 있게 됩니다."
     }
   ]
 };

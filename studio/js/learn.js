@@ -199,6 +199,12 @@
     phaseEl.className = "learn-header__phase";
     phaseEl.textContent = phaseName;
     meta.appendChild(phaseEl);
+    if (project.estimatedMinutes) {
+      var timeEl = document.createElement("span");
+      timeEl.className = "learn-header__time";
+      timeEl.textContent = "\u23F1 ~" + project.estimatedMinutes + "\uBD84";
+      meta.appendChild(timeEl);
+    }
     header.appendChild(meta);
 
     return header;
@@ -227,7 +233,7 @@
       case "overview": return renderOverview(content);
       case "concepts": return renderConcepts(content);
       case "tutorials": return renderTutorials(content);
-      case "examples": return renderExamples(content);
+      case "examples": return renderExamples(project, content);
       case "quiz": return renderQuiz(project, content);
       default: return renderOverview(content);
     }
@@ -325,9 +331,9 @@
       '</section>';
   }
 
-  function renderExamples(content) {
+  function renderExamples(project, content) {
     if (!content.examples || content.examples.length === 0) return '<p>예제가 없습니다.</p>';
-    return content.examples.map(function(ex) {
+    var html = content.examples.map(function(ex) {
       var checklistHTML = "";
       if (ex.checklist && ex.checklist.length > 0) {
         checklistHTML = '<div class="learn-checklist">' +
@@ -345,6 +351,25 @@
         '<div class="learn-article">' + renderMarkdown(ex.content) + '</div>' +
         checklistHTML + '</section>';
     }).join('<hr class="learn-divider" />');
+
+    if (project.relatedProjects && project.relatedProjects.length > 0) {
+      html += '<hr class="learn-divider" />';
+      html += '<section class="learn-section learn-related">';
+      html += '<h2 class="learn-section__title">\uAD00\uB828 \uD29C\uD1A0\uB9AC\uC5BC</h2>';
+      html += '<div class="learn-related__grid">';
+      project.relatedProjects.forEach(function(rid) {
+        var rp = window.STUDIO_DATA.projects.find(function(p) { return p.id === rid; });
+        if (!rp) return;
+        html += '<a href="#learn/' + escapeAttr(rid) + '/overview" class="learn-related__card">';
+        html += '<span class="learn-related__number">' + escapeHtml(rp.number) + '</span>';
+        html += '<span class="learn-related__title">' + escapeHtml(rp.title) + '</span>';
+        html += '<span class="learn-related__sub">' + escapeHtml(rp.subtitle || '') + '</span>';
+        html += '</a>';
+      });
+      html += '</div></section>';
+    }
+
+    return html;
   }
 
   function renderQuiz(project, content) {
