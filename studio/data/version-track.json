@@ -1,139 +1,370 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-02-28",
-  "currentCLI": "2.1.63",
+  "lastChecked": "2026-03-14",
+  "currentCLI": "2.1.76",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["CLAUDE.md", "auto-memory", "project settings", "/memory command"],
-      "notes": "v2.1.63 갱신: auto-memory 개선, 워크트리 세션 공유, 크로스 레퍼런스"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "CLAUDE.md",
+        "auto-memory (proactive save)",
+        "project settings",
+        "/memory command",
+        "worktree shared configs",
+        "subagent persistent memory",
+        "HTML comments hidden on auto-inject",
+        "autoMemoryDirectory setting (custom path)",
+        "1M context window strategy changes"
+      ],
+      "notes": "v2.1.76 갱신: 1M 컨텍스트 시대의 메모리 전략 변화 (compaction 감소, 긴 세션)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["Read", "Write", "Edit", "parallel operations"],
-      "notes": "v2.1.63 갱신: 병렬 처리 에러 격리, 대용량 결과 디스크 저장"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Read",
+        "Write",
+        "Edit",
+        "parallel operations"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "03-code-search": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["Glob", "Grep", "pre-warming", "gitignore"],
-      "notes": "v2.1.63 갱신: 파일 제안 프리워밍, gitignore 처리 개선"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Glob",
+        "Grep",
+        "pre-warming",
+        "gitignore"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["--debug flag", "/debug command"],
-      "notes": "v2.1.63 갱신: 버전 문자열 갱신"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "--debug flag",
+        "/debug command"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["WebSearch", "WebFetch", "domain filtering"],
-      "notes": "v2.1.63 갱신: 컷오프 확인, WebFetch 인증 제한 명확화"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "WebSearch",
+        "WebFetch",
+        "domain filtering"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["TeamCreate", "Task", "SendMessage", "TaskList", "worktree isolation", "background agents", "claude agents CLI"],
-      "notes": "v2.1.63 갱신: 워크트리 격리, 백그라운드 에이전트, claude agents CLI, 크로스 레퍼런스"
+      "basedOn": "2.1.74",
+      "lastUpdated": "2026-03-13",
+      "trackedFeatures": [
+        "TeamCreate",
+        "Task",
+        "SendMessage",
+        "TaskList",
+        "worktree isolation",
+        "background agents",
+        "claude agents CLI",
+        "Agent model parameter (per-invocation override)",
+        "Full model IDs in agent frontmatter/--agents JSON"
+      ],
+      "notes": "v2.1.74 갱신: 에이전트 model: 필드에 풀 모델 ID(claude-opus-4-6 등) 허용"
     },
     "06-hooks": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["PreToolUse", "PostToolUse", "hooks settings", "HTTP hooks", "WorktreeCreate", "WorktreeRemove"],
-      "notes": "v2.1.63 갱신: HTTP hooks, WorktreeCreate/Remove 이벤트, workspace trust, 크로스 레퍼런스"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "16 hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
+        "4 hook types (command, http, prompt, agent)",
+        "InstructionsLoaded, ConfigChange events",
+        "SubagentStart/Stop events",
+        "JSON stdin input (agent_id, agent_type, worktree fields)",
+        "hooks in skills/agents frontmatter",
+        "WorktreeCreate/Remove",
+        "SessionEnd hooks timeout (CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS)",
+        "SessionStart hook double-fire on --resume fix",
+        "Elicitation hook (MCP input request interception)",
+        "ElicitationResult hook (response modification)",
+        "PostCompact hook (after compaction)"
+      ],
+      "notes": "v2.1.76 갱신: Elicitation, ElicitationResult, PostCompact 3개 훅 이벤트 추가"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["MCP protocol", "stdio/SSE", "custom server", "claude.ai connectors", "OAuth"],
-      "notes": "v2.1.63 갱신: claude.ai MCP 커넥터, OAuth 개선, ENABLE_CLAUDEAI_MCP_SERVERS, 크로스 레퍼런스"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "MCP protocol",
+        "stdio/SSE",
+        "custom server",
+        "claude.ai connectors",
+        "OAuth",
+        "MCP Elicitation (structured input request mid-task)"
+      ],
+      "notes": "v2.1.76 갱신: MCP Elicitation 지원 (서버가 작업 중 사용자에게 폼/브라우저 입력 요청)"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-03-02",
-      "trackedFeatures": ["Skills", "slash commands", "custom commands", "/simplify", "/batch", "/copy", "plugin skills"],
-      "notes": "v2.1.63 갱신: 신규 커맨드, YAML 파싱 개선, 플러그인 스킬, 크로스 레퍼런스"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "SKILL.md directory structure",
+        "Agent Skills open standard",
+        "frontmatter fields (disable-model-invocation, user-invocable, allowed-tools, context, agent, hooks)",
+        "string substitutions ($ARGUMENTS, $ARGUMENTS[N], ${CLAUDE_SKILL_DIR}, ${CLAUDE_SESSION_ID})",
+        "dynamic context injection (!`command`)",
+        "context: fork subagent execution",
+        "bundled skills (/simplify, /batch, /debug, /claude-api)",
+        "skill lifecycle (invocation control, retirement, persistent memory)",
+        "plugin skills namespace",
+        "nested directory auto-discovery"
+      ],
+      "notes": "v2.1.70 전면 재작성: commands/ 레거시화, SKILL.md 디렉토리 구조, 프론트매터 확장, 서브에이전트 실행, 동적 주입, Agent Skills 표준"
     },
     "09-worktree": {
-      "basedOn": "2.1.46",
-      "lastUpdated": "2026-02-26",
-      "trackedFeatures": ["git worktree", "agent isolation"],
-      "notes": "Phase 4"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "git worktree",
+        "agent isolation",
+        "shared project configs and auto-memory across worktrees",
+        "ExitWorktree tool",
+        "worktree.sparsePaths (sparse checkout for monorepos)",
+        "stale worktree auto-cleanup"
+      ],
+      "notes": "v2.1.76 갱신: sparsePaths 설정 (모노레포 부분 체크아웃), stale 워크트리 자동 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.46",
-      "lastUpdated": "2026-02-26",
-      "trackedFeatures": ["claude auth", "claude agents", "PDF read", "/rename"],
-      "notes": "Phase 4"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "claude auth",
+        "claude agents",
+        "PDF read",
+        "/rename",
+        "/copy interactive picker",
+        "/copy w key (write to file)",
+        "/color command",
+        "/reload-plugins",
+        "/context (actionable suggestions v2.1.74)",
+        "Opus 4.6 medium effort default",
+        "effort simplification (low/medium/high, /effort auto)",
+        "/effort mid-response change + slash command",
+        "/plan with description argument",
+        "ExitWorktree tool",
+        "Agent model parameter",
+        "modelOverrides setting (Bedrock ARN, Vertex region)",
+        "/output-style deprecated → /config",
+        "Full model IDs in agent frontmatter",
+        "-n / --name session display name",
+        "1M context window (Opus 4.6)"
+      ],
+      "notes": "v2.1.76 갱신: -n/--name 세션 이름, /effort 슬래시 커맨드, 1M 컨텍스트"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.50",
-      "lastUpdated": "2026-02-26",
-      "trackedFeatures": ["MCP connectors", "OAuth", "ToolSearch", "Slack/Notion"],
-      "notes": "Phase 4"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "MCP connectors",
+        "OAuth",
+        "ToolSearch",
+        "Slack/Notion/Gmail/Calendar/Figma/Linear/Vercel/AWS Marketplace",
+        "ToolSearch schema persistence after compaction"
+      ],
+      "notes": "v2.1.76 갱신: ToolSearch 지연 도구 스키마가 compaction 후에도 유지"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.50",
-      "lastUpdated": "2026-02-27",
-      "trackedFeatures": ["Figma MCP", "Code to Canvas", "round-trip workflow"],
-      "notes": "Phase 4"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Figma MCP",
+        "Code to Canvas",
+        "round-trip workflow",
+        "Code Connect",
+        "generate_diagram (FigJam)"
+      ],
+      "notes": "v2.1.70 갱신: Code Connect 매핑, FigJam 다이어그램 생성 추가"
     },
     "13-teleport": {
-      "basedOn": "2.1.55",
-      "lastUpdated": "2026-02-27",
-      "trackedFeatures": ["& prefix", "/teleport", "/rc"],
-      "notes": "Phase 5"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "& prefix",
+        "/teleport",
+        "/rc"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "14-code-security": {
-      "basedOn": "2.1.55",
-      "lastUpdated": "2026-02-27",
-      "trackedFeatures": ["security scan", "OWASP", "vulnerability detection"],
-      "notes": "Phase 5"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "security scan",
+        "OWASP",
+        "vulnerability detection"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["Chrome extension", "browser control", "screenshot", "GIF recording"],
-      "notes": "Phase 6 신규"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Chrome extension",
+        "browser control",
+        "screenshot",
+        "GIF recording"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["run_in_background", "TaskOutput", "TaskStop", "task_progress"],
-      "notes": "Phase 6 신규"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        "run_in_background",
+        "TaskOutput",
+        "TaskStop",
+        "task_progress",
+        "partial results preserved on kill"
+      ],
+      "notes": "v2.1.76 갱신: 백그라운드 에이전트 kill 시 부분 결과 보존"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["plugin.json", "claude plugin add", "plugin bundle", "npm/git publish"],
-      "notes": "Phase 6 신규"
+      "basedOn": "2.1.76",
+      "lastUpdated": "2026-03-14",
+      "trackedFeatures": [
+        ".claude-plugin/plugin.json manifest",
+        "claude plugin install/uninstall/enable/disable/update",
+        "skills/ directory structure",
+        "LSP servers (.lsp.json)",
+        "output styles",
+        "/reload-plugins",
+        "git-subdir source type",
+        "plugin marketplaces",
+        "--plugin-dir local override (v2.1.74)",
+        "marketplace update git submodule sync (v2.1.74)",
+        "--plugin-dir single path per flag (v2.1.76)"
+      ],
+      "notes": "v2.1.76 갱신: --plugin-dir 단일 경로만 허용, 반복 사용으로 다중 지정"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.63",
-      "sdkVersions": { "python": "0.1.44", "typescript": "0.2.61" },
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["Agent SDK", "effort/thinking", "tools array", "MCP annotations", "structured output", "session API", "CLI bundling"],
-      "notes": "Phase 6 신규, 최신 SDK 업데이트 반영 완료"
+      "basedOn": "2.1.70",
+      "sdkVersions": {
+        "python": "0.1.44",
+        "typescript": "0.2.61"
+      },
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Agent SDK",
+        "effort/thinking",
+        "tools array",
+        "MCP annotations",
+        "structured output",
+        "session API",
+        "CLI bundling"
+      ],
+      "notes": "v2.1.70 버전 범프 (SDK 버전 변경 없음)"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["permission modes", "wildcard patterns", "deny/ask/allow", "settings.json"],
-      "notes": "Phase 6 신규"
+      "basedOn": "2.1.74",
+      "lastUpdated": "2026-03-13",
+      "trackedFeatures": [
+        "permission modes",
+        "wildcard patterns",
+        "deny/ask/allow",
+        "settings.json",
+        "expanded bash auto-approval (lsof, pgrep, tput, ss, fd, fdfind)",
+        "managed policy ask rules no longer bypassed by user allow/skill allowed-tools"
+      ],
+      "notes": "v2.1.74 갱신: managed policy ask 규칙이 user allow/skill allowed-tools로 우회 불가 (보안 수정)"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.63",
-      "lastUpdated": "2026-02-28",
-      "trackedFeatures": ["VS Code extension", "@-mention", "Cursor", "JetBrains", "plan review"],
-      "notes": "Phase 6 신규"
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "VS Code extension",
+        "@-mention",
+        "Cursor",
+        "JetBrains",
+        "plan review",
+        "spark icon in activity bar",
+        "markdown plan view with comments",
+        "native MCP management dialog"
+      ],
+      "notes": "v2.1.70 갱신: VS Code 스파크 아이콘, 마크다운 플랜 뷰, MCP 관리 다이얼로그"
+    },
+    "21-simplify": {
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "/simplify",
+        "code quality",
+        "5 principles",
+        "PR routine"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+    },
+    "22-batch-mode": {
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "-p pipe mode",
+        "output format",
+        "pipe chaining",
+        "CI/CD integration"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+    },
+    "23-ralph-loop": {
+      "basedOn": "2.1.70",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Ralph Loop",
+        "PRD",
+        "prd.json",
+        "progress.txt",
+        "auto development"
+      ],
+      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+    },
+    "24-loop-cron": {
+      "basedOn": "2.1.74",
+      "lastUpdated": "2026-03-13",
+      "trackedFeatures": [
+        "/loop command",
+        "CronCreate",
+        "CronList",
+        "CronDelete",
+        "one-time reminders",
+        "session-scoped scheduling",
+        "3-day expiry",
+        "jitter",
+        "CLAUDE_CODE_DISABLE_CRON mid-session stop",
+        "/loop available on Bedrock/Vertex/Foundry (v2.1.73)"
+      ],
+      "notes": "v2.1.74 갱신: /loop이 Bedrock/Vertex/Foundry에서도 사용 가능, 기본 Opus 모델 4.6 업데이트"
+    },
+    "25-skills-2.0": {
+      "basedOn": "2.1.71",
+      "lastUpdated": "2026-03-07",
+      "trackedFeatures": [
+        "Progressive Disclosure 3-level",
+        "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
+        "disable-model-invocation",
+        "user-invocable",
+        "Skill Creator plugin (Evals, A/B Testing, Description Optimization)",
+        "Capability Uplift vs Workflow classification",
+        "team marketplace deployment (extraKnownMarketplaces, enabledPlugins)"
+      ],
+      "notes": "v2.1.71 신규: Skills 2.0 아키텍처 + Skill Creator 통합 튜토리얼"
     }
   }
 }

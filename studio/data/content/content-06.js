@@ -90,6 +90,14 @@ exit 2  ->  "이건 안 돼!" (차단)
     +-- exit 2 (차단) --> "수정할 수 없습니다" (도구 실행 안 됨)
 \`\`\`
 
+### v2.1.76 새 훅 이벤트
+
+| 이벤트 | 발동 시점 | 용도 |
+|--------|----------|------|
+| \`Elicitation\` | MCP 서버가 사용자 입력을 요청할 때 | 입력 요청을 가로채서 자동 응답 |
+| \`ElicitationResult\` | 사용자가 입력을 완료한 후 | 응답을 수정/검증하고 서버에 전달하기 전 처리 |
+| \`PostCompact\` | 컨텍스트 압축(compaction) 완료 후 | 압축 후 정리 작업, 로그 기록 |
+
 > **핵심 요약**: 클로드 코드에는 16가지 훅 이벤트가 있으며, 핵심 6개(PreToolUse, PostToolUse, Stop, SessionStart, SessionEnd, UserPromptSubmit)를 주로 사용합니다. PreToolUse만 \`exit 2\`로 도구 실행을 차단할 수 있습니다.`
     },
     {

@@ -268,6 +268,18 @@ claude --plugin-dir ./my-plugin-dev
 
 **마켓플레이스 submodule 동기화**: \`claude plugin marketplace update\` 실행 시 git submodule도 자동으로 동기화됩니다. 이전에는 submodule을 사용하는 플러그인이 업데이트 후 깨지는 문제가 있었어요.
 
+### v2.1.76 변경사항
+
+- **\`--plugin-dir\` 단일 경로**: 하나의 \`--plugin-dir\` 플래그에 하나의 경로만 지정합니다. 여러 디렉토리를 지정하려면 플래그를 반복 사용하세요.
+
+\`\`\`bash
+# v2.1.76 이전
+claude --plugin-dir path1,path2
+
+# v2.1.76 이후
+claude --plugin-dir path1 --plugin-dir path2
+\`\`\`
+
 > **핵심 요약**: \`claude plugin add/list/update/remove\` 명령으로 플러그인 전체 라이프사이클을 관리합니다.
 > npm, GitHub, 로컬 폴더 3가지 소스에서 설치 가능하며, \`--plugin-dir\`로 로컬 개발 버전을 우선 적용할 수 있습니다.`
     }
