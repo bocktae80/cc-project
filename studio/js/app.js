@@ -1,482 +1,491 @@
-// Claude Code 학습 스튜디오 — 메인 앱
+// Claude Code 학습 스튜디오 — 메인 앱 (v3 통합 셸)
 (function () {
   "use strict";
 
   // --- 데이터 ---
-  const data = window.STUDIO_DATA;
+  var data = window.STUDIO_DATA;
   if (!data) {
     document.getElementById("app").innerHTML =
-      '<p style="text-align:center;padding:40px;color:red;">데이터를 불러올 수 없습니다. projects.js 파일을 확인하세요.</p>';
+      '<p style="text-align:center;padding:40px;color:red;">데이터를 불러올 수 없습니다.</p>';
     return;
   }
 
   // --- 상태 ---
-  let currentStatusFilter = "all";
-  let currentDifficultyFilter = "all";
-  let searchQuery = "";
+  var currentStatusFilter = "all";
+  var currentDifficultyFilter = "all";
+  var currentPhaseFilter = "all";
+  var searchQuery = "";
 
-  // --- DOM 참조 ---
-  const app = document.getElementById("app");
+  var app = document.getElementById("app");
+
+  var statusLabels = { completed: "완료", "in-progress": "진행중", planned: "예정" };
+
+  var LEARN_TABS = [
+    { id: "overview", label: "개요" },
+    { id: "concepts", label: "개념" },
+    { id: "tutorials", label: "실습" },
+    { id: "examples", label: "예제" },
+    { id: "quiz", label: "퀴즈" }
+  ];
 
   // --- 유틸 ---
-  const statusLabels = {
-    completed: "완료",
-    "in-progress": "진행중",
-    planned: "예정",
+  function getPhaseById(id) { return data.phases.find(function (p) { return p.id === id; }); }
+
+  function hexToRgba(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  function getPhaseProgress(phaseId) {
+    var pp = data.projects.filter(function (p) { return p.phase === phaseId; });
+    return { completed: pp.filter(function (p) { return p.status === "completed"; }).length, total: pp.length };
+  }
+
+  var phaseGradients = {
+    "phase-1": { start: "#3B82F6", end: "#60A5FA" },
+    "phase-2": { start: "#8B5CF6", end: "#A78BFA" },
+    "phase-3": { start: "#EC4899", end: "#F472B6" },
+    "phase-4": { start: "#F59E0B", end: "#FBBF24" },
+    "phase-5": { start: "#EF4444", end: "#F87171" },
+    "phase-6": { start: "#10B981", end: "#34D399" }
   };
-
-  function difficultyStars(n) {
-    return "⭐".repeat(n);
-  }
-
-  function getPhaseById(id) {
-    return data.phases.find((p) => p.id === id);
-  }
 
   // --- 테마 ---
   function initTheme() {
-    const saved = localStorage.getItem("studio-theme");
-    if (saved) {
-      document.documentElement.setAttribute("data-theme", saved);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.documentElement.setAttribute("data-theme", "dark");
-    }
+    var saved = localStorage.getItem("studio-theme");
+    document.documentElement.setAttribute("data-theme", saved || "dark");
     updateThemeIcon();
   }
 
   function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
+    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("studio-theme", next);
     updateThemeIcon();
   }
 
+  var SVG_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+  var SVG_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
   function updateThemeIcon() {
-    const btn = document.getElementById("theme-toggle");
+    var btn = document.getElementById("theme-toggle");
     if (!btn) return;
-    const isDark =
-      document.documentElement.getAttribute("data-theme") === "dark";
-    btn.textContent = isDark ? "☀️" : "🌙";
-    btn.setAttribute(
-      "aria-label",
-      isDark ? "라이트 모드로 전환" : "다크 모드로 전환"
-    );
+    var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    btn.innerHTML = isDark ? SVG_SUN : SVG_MOON; // eslint-disable-line no-unsanitized/property
+    btn.setAttribute("aria-label", isDark ? "라이트 모드로 전환" : "다크 모드로 전환");
   }
 
   // --- 라우터 ---
   function parseHash() {
-    const hash = window.location.hash.slice(1) || "catalog";
-    const parts = hash.split("/");
-
+    var hash = window.location.hash.slice(1) || "catalog";
+    var parts = hash.split("/");
     if (parts[0] === "learn" && parts[1]) {
-      return {
-        view: "learn",
-        projectId: parts[1],
-        tab: parts[2] || "overview",
-        itemId: parts[3] || null,
-      };
+      return { view: "learn", projectId: parts[1], tab: parts[2] || "overview", itemId: parts[3] || null };
     }
     return { view: "catalog" };
   }
 
-  function navigateTo(hash) {
-    window.location.hash = hash;
-  }
+  function navigateTo(hash) { window.location.hash = hash; }
 
-  function handleRoute() {
-    var route = parseHash();
-    var footer = document.querySelector(".footer");
-
-    if (route.view === "learn") {
-      if (footer) footer.style.display = "none";
-      renderLearnView(route);
-    } else {
-      if (footer) footer.style.display = "";
-      renderCatalog();
-    }
-  }
-
-  // --- 학습 뷰 렌더링 ---
-  function renderLearnView(route) {
-    const project = data.projects.find((p) => p.id === route.projectId);
-    if (!project) {
-      navigateTo("catalog");
-      return;
-    }
-
-    const content =
-      window.STUDIO_CONTENT && window.STUDIO_CONTENT[route.projectId];
-    if (!content) {
-      app.innerHTML = '<div class="learn-error container">' +
-        '<p>콘텐츠를 불러올 수 없습니다.</p>' +
-        '<a href="#catalog">대시보드로 돌아가기</a></div>';
-      return;
-    }
-
-    // 헤더 업데이트
-    document.querySelector(".header__title").textContent = project.title;
-    document.querySelector(".header__subtitle").textContent =
-      project.subtitle || project.description;
-
-    // learn.js의 렌더 함수 호출
-    if (window.StudioLearn) {
-      window.StudioLearn.render(app, project, content, route);
-    }
-  }
-
-  // --- 온보딩 웰컴 ---
-  function renderWelcome() {
-    if (localStorage.getItem("studio-welcome-dismissed")) return "";
-
-    return '<section class="welcome-section" aria-label="환영 메시지">' +
-      '<div class="container"><div class="welcome-box">' +
-      '<button class="welcome-box__close js-welcome-close" aria-label="환영 메시지 닫기">닫기</button>' +
-      '<div class="welcome-box__title">👋 처음 오셨나요?</div>' +
-      '<p class="welcome-box__text">' +
-      '이 대시보드는 <strong>클로드 코드 학습 프로젝트</strong>입니다.<br/>' +
-      '카드를 클릭하면 <strong>브라우저 안에서</strong> 튜토리얼을 읽고, 코드를 체험하고, 퀴즈를 풀 수 있어요!<br/>' +
-      '⭐ = 쉬움, ⭐⭐ = 보통, ⭐⭐⭐ = 어려움</p>' +
-      '</div></div></section>';
-  }
-
-  // --- 진행률 ---
-  function renderProgress() {
-    var projects = data.projects;
-    var total = projects.length;
-    var completed = projects.filter(function(p) { return p.status === "completed"; }).length;
-    var inProgress = projects.filter(function(p) { return p.status === "in-progress"; }).length;
-    var planned = projects.filter(function(p) { return p.status === "planned"; }).length;
-    var pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-    var learnProgress = getOverallLearnProgress();
-    var learnHTML = learnProgress.total > 0
-      ? '<span class="progress-stat"><span class="progress-dot" style="background:var(--phase-1)"></span> 학습 ' + learnProgress.completed + '/' + learnProgress.total + ' 탭</span>'
-      : "";
-
-    return '<section class="progress-section" aria-label="전체 진행률"><div class="container">' +
-      '<div class="progress-bar-wrapper" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="전체 진행률 ' + pct + '%">' +
-      '<div class="progress-bar-fill" style="width: ' + pct + '%"></div></div>' +
-      '<div class="progress-stats">' +
-      '<span class="progress-stat"><span class="progress-dot progress-dot--completed"></span> 완료 ' + completed + '/' + total + '</span>' +
-      '<span class="progress-stat"><span class="progress-dot progress-dot--in-progress"></span> 진행중 ' + inProgress + '/' + total + '</span>' +
-      '<span class="progress-stat"><span class="progress-dot progress-dot--planned"></span> 예정 ' + planned + '/' + total + '</span>' +
-      learnHTML +
-      '</div></div></section>';
-  }
-
-  // --- 학습 진행률 계산 (StudioChallenges 연동) ---
-  function getOverallLearnProgress() {
-    if (window.StudioChallenges) {
-      return window.StudioChallenges.getOverallProgress(data.projects);
-    }
-    var total = 0;
-    var completed = 0;
-    var tabs = ["overview", "concepts", "tutorials", "examples", "quiz"];
-
-    for (var i = 0; i < data.projects.length; i++) {
-      for (var j = 0; j < tabs.length; j++) {
-        total++;
-        var key = "studio-progress-" + data.projects[i].id + "-" + tabs[j];
-        if (localStorage.getItem(key) === "done") {
-          completed++;
-        }
-      }
-    }
-    return { total: total, completed: completed };
-  }
-
+  // --- 학습 진행률 ---
   function getProjectLearnProgress(projectId) {
-    if (window.StudioChallenges) {
-      return window.StudioChallenges.getProjectProgress(projectId);
-    }
+    if (window.StudioChallenges) return window.StudioChallenges.getProjectProgress(projectId);
     var tabs = ["overview", "concepts", "tutorials", "examples", "quiz"];
     var completed = 0;
     for (var j = 0; j < tabs.length; j++) {
-      var key = "studio-progress-" + projectId + "-" + tabs[j];
-      if (localStorage.getItem(key) === "done") {
-        completed++;
-      }
+      if (localStorage.getItem("studio-progress-" + projectId + "-" + tabs[j]) === "done") completed++;
     }
     return { completed: completed, total: tabs.length };
   }
 
-  // --- 퀴즈 점수 가져오기 ---
-  function getQuizScore(projectId) {
-    var raw = localStorage.getItem("studio-quiz-" + projectId);
-    if (!raw) return null;
-    try { return JSON.parse(raw); }
-    catch (e) { return null; }
+  // --- SVG 진행률 링 ---
+  function renderProgressRing(pct, size, color) {
+    var r = (size - 4) / 2, c = 2 * Math.PI * r;
+    var offset = c - (pct / 100) * c;
+    var sw = size >= 40 ? 4 : 3;
+    var strokeColor = color || "var(--color-completed)";
+    var text = size >= 40
+      ? '<text x="' + size/2 + '" y="' + (size/2 + 1) + '" text-anchor="middle" dominant-baseline="middle" font-size="' + Math.round(size * 0.22) + '" font-weight="700">' + pct + '%</text>'
+      : '';
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" class="progress-ring">' +
+      '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="var(--border-default)" stroke-width="' + sw + '"/>' +
+      '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="' + strokeColor + '" stroke-width="' + sw + '" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + offset.toFixed(1) + '" transform="rotate(-90 ' + size/2 + ' ' + size/2 + ')"/>' +
+      text + '</svg>';
   }
 
-  // --- 필터 바 ---
-  function renderFilterBar() {
-    var statusOptions = [
-      { value: "all", label: "전체" },
-      { value: "completed", label: "완료" },
-      { value: "in-progress", label: "진행중" },
-      { value: "planned", label: "예정" }
-    ];
-    var difficultyOptions = [
-      { value: "all", label: "난이도" },
-      { value: "1", label: "⭐" },
-      { value: "2", label: "⭐⭐" },
-      { value: "3", label: "⭐⭐⭐" }
-    ];
+  // ============================================================
+  // 통합 셸 렌더링
+  // ============================================================
 
-    var statusBtns = statusOptions.map(function(o) {
-      return '<button class="filter-btn js-status-filter' + (currentStatusFilter === o.value ? " active" : "") + '" data-filter-status="' + o.value + '">' + o.label + '</button>';
-    }).join("");
-
-    var diffBtns = difficultyOptions.map(function(o) {
-      return '<button class="filter-btn js-difficulty-filter' + (currentDifficultyFilter === o.value ? " active" : "") + '" data-filter-difficulty="' + o.value + '">' + o.label + '</button>';
-    }).join("");
-
-    return '<div class="filter-bar container" role="search" aria-label="프로젝트 필터">' +
-      '<input type="search" class="search-input" id="search-input" placeholder="프로젝트 검색 (제목, 설명, 개념...)" aria-label="프로젝트 검색" />' +
-      '<div class="filter-group" role="group" aria-label="상태 필터">' + statusBtns + '</div>' +
-      '<div class="filter-group" role="group" aria-label="난이도 필터">' + diffBtns + '</div></div>';
+  function handleRoute() {
+    var route = parseHash();
+    var footer = document.querySelector(".footer");
+    if (footer) footer.style.display = route.view === "learn" ? "none" : "";
+    renderShell(route);
   }
 
-  // --- 프로젝트 카드 ---
-  function renderCard(project) {
-    var subExamples = project.subExamples || [];
-    var subCompleted = subExamples.filter(function(s) { return s.status === "completed"; }).length;
-    var subTotal = subExamples.length;
+  function renderShell(route) {
+    // 헤더: 항상 고정 텍스트 (learn 뷰에서도 변경하지 않음)
+    var titleEl = document.querySelector(".header__title");
+    var subEl = document.querySelector(".header__subtitle");
+    if (route.view === "learn") {
+      var proj = data.projects.find(function (p) { return p.id === route.projectId; });
+      if (!proj) { navigateTo("catalog"); return; }
+    }
+    if (titleEl) titleEl.textContent = "Claude Code 학습 스튜디오";
+    if (subEl) subEl.textContent = "클로드 코드의 기능을 배우고 활용하는 학습 대시보드";
 
-    var subProgressHTML = "";
-    if (subTotal > 0) {
-      var subPct = Math.round((subCompleted / subTotal) * 100);
-      subProgressHTML = '<div class="card__sub-progress">' +
-        '<div class="sub-progress-bar"><div class="sub-progress-fill" style="width: ' + subPct + '%"></div></div>' +
-        '<span class="sub-progress-text">' + subCompleted + '/' + subTotal + ' 완료</span></div>';
+    // 모바일 탭
+    var tabsHTML = route.view === "learn"
+      ? renderLearnMobileTabs(route)
+      : renderCatalogMobileTabs();
+
+    // 사이드바
+    var sidebarHTML = route.view === "learn"
+      ? renderLearnSidebar(route)
+      : renderCatalogSidebar();
+
+    // 셸 조립
+    app.innerHTML = tabsHTML +
+      '<div class="catalog">' + sidebarHTML +
+      '<div class="catalog-main" id="shell-main"></div></div>';
+
+    // 메인 콘텐츠 채우기
+    var mainEl = document.getElementById("shell-main");
+    if (route.view === "learn") {
+      fillLearnMain(mainEl, route);
+    } else {
+      fillCatalogMain(mainEl);
+      bindCatalogEvents();
+    }
+  }
+
+  // ============================================================
+  // 모바일 탭
+  // ============================================================
+
+  function renderCatalogMobileTabs() {
+    var sorted = data.phases.slice().sort(function (a, b) { return a.order - b.order; });
+    var html = '<div class="catalog-tabs" role="tablist" aria-label="페이즈 선택">';
+    html += '<button class="catalog-tab js-phase-tab' + (currentPhaseFilter === "all" ? " catalog-tab--active" : "") + '" data-phase="all">전체</button>';
+    for (var i = 0; i < sorted.length; i++) {
+      var ph = sorted[i];
+      html += '<button class="catalog-tab js-phase-tab' + (currentPhaseFilter === ph.id ? " catalog-tab--active" : "") +
+        '" data-phase="' + ph.id + '">' + ph.name.replace(/Phase (\d+): (.*)/, "P$1 $2") + '</button>';
+    }
+    return html + '</div>';
+  }
+
+  function renderLearnMobileTabs(route) {
+    var project = data.projects.find(function (p) { return p.id === route.projectId; });
+    if (!project) return "";
+    var html = '<div class="catalog-tabs" role="tablist" aria-label="학습 탭">';
+    html += '<a href="#catalog" class="catalog-tab">\u2190</a>';
+    for (var i = 0; i < LEARN_TABS.length; i++) {
+      var t = LEARN_TABS[i];
+      html += '<a href="#learn/' + project.id + '/' + t.id + '" class="catalog-tab' +
+        (t.id === route.tab ? " catalog-tab--active" : "") + '">' + t.label + '</a>';
+    }
+    return html + '</div>';
+  }
+
+  // ============================================================
+  // 카탈로그 사이드바
+  // ============================================================
+
+  function renderFilterPills() {
+    var sp = [{ v: "all", l: "전체" }, { v: "completed", l: "완료" }, { v: "in-progress", l: "진행중" }, { v: "planned", l: "예정" }]
+      .map(function (o) { return '<button class="filter-pill js-status-pill' + (currentStatusFilter === o.v ? " filter-pill--active" : "") + '" data-status="' + o.v + '">' + o.l + '</button>'; }).join("");
+    var dp = [{ v: "all", l: "전체" }, { v: "1", l: "쉬움" }, { v: "2", l: "보통" }, { v: "3", l: "어려움" }]
+      .map(function (o) { return '<button class="filter-pill js-diff-pill' + (currentDifficultyFilter === o.v ? " filter-pill--active" : "") + '" data-difficulty="' + o.v + '">' + o.l + '</button>'; }).join("");
+    return '<div class="filter-pills-group">' + sp + '</div><div class="filter-pills-group">' + dp + '</div>';
+  }
+
+  function renderCatalogSidebar() {
+    var total = data.projects.length;
+    var completed = data.projects.filter(function (p) { return p.status === "completed"; }).length;
+    var pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    var sorted = data.phases.slice().sort(function (a, b) { return a.order - b.order; });
+
+    var nav = '<button class="catalog-nav-item js-phase-nav' + (currentPhaseFilter === "all" ? " catalog-nav-item--active" : "") +
+      '" data-phase="all"><div class="catalog-nav-item__indicator" style="background:var(--accent-primary)"></div>' +
+      '<div class="catalog-nav-item__label"><span class="catalog-nav-item__name">전체 보기</span>' +
+      '<span class="catalog-nav-item__count">' + total + '</span></div></button>';
+
+    for (var i = 0; i < sorted.length; i++) {
+      var ph = sorted[i], prog = getPhaseProgress(ph.id);
+      nav += '<button class="catalog-nav-item js-phase-nav' + (currentPhaseFilter === ph.id ? " catalog-nav-item--active" : "") +
+        '" data-phase="' + ph.id + '"><div class="catalog-nav-item__indicator" style="background:' + ph.color + '"></div>' +
+        '<div class="catalog-nav-item__label"><span class="catalog-nav-item__name">' + ph.name.replace(/Phase \d+: /, "") +
+        '</span><span class="catalog-nav-item__count">' + prog.completed + '/' + prog.total + '</span></div></button>';
     }
 
-    // 학습 진행률 뱃지
-    var learnProg = getProjectLearnProgress(project.id);
-    var learnBadgeHTML = "";
-    if (learnProg.completed > 0) {
-      var learnPct = Math.round((learnProg.completed / learnProg.total) * 100);
-      learnBadgeHTML = '<span class="card__learn-badge" title="학습 진행률 ' + learnPct + '%">' + learnPct + '%</span>';
-    }
-
-    // 퀴즈 점수 뱃지
-    var quizScore = getQuizScore(project.id);
-    var quizBadgeHTML = "";
-    if (quizScore) {
-      quizBadgeHTML = '<span class="card__quiz-badge" title="퀴즈 ' + quizScore.score + '/' + quizScore.total + '">' + quizScore.score + '/' + quizScore.total + '</span>';
-    }
-
-    var subtitleHTML = project.subtitle ? '<p class="card__subtitle">' + project.subtitle + '</p>' : "";
-
-    var hasContent = window.STUDIO_CONTENT && window.STUDIO_CONTENT[project.id];
-
-    var linkHTML = "";
-    if (hasContent) {
-      linkHTML = '<a href="#learn/' + project.id + '" class="card__link" aria-label="' + project.title + ' 학습 시작하기">학습 시작하기 📚</a>';
-    } else if (project.path) {
-      linkHTML = '<a href="' + project.path + '" class="card__link" aria-label="' + project.title + ' 폴더 열기">폴더 열기</a>';
-    }
-
-    var conceptsHTML = project.concepts.map(function(c) { return '<span class="concept-tag">' + c + '</span>'; }).join("");
-
-    return '<article class="project-card project-card--' + project.status + '" data-id="' + project.id + '" data-status="' + project.status + '" data-difficulty="' + project.difficulty + '" data-phase="' + project.phase + '" tabindex="0" aria-label="' + project.title + ' 프로젝트">' +
-      '<div class="card__top">' +
-      '<span class="card__badge card__badge--' + project.status + '">' + statusLabels[project.status] + '</span>' +
-      '<div class="card__top-right">' + learnBadgeHTML + quizBadgeHTML + '<span class="card__number">#' + project.number + '</span></div></div>' +
-      '<h3 class="card__title">' + project.title + '</h3>' +
-      subtitleHTML +
-      '<div class="card__difficulty" aria-label="난이도 ' + project.difficulty + '">' + difficultyStars(project.difficulty) + '</div>' +
-      '<p class="card__description">' + project.description + '</p>' +
-      '<div class="card__concepts" aria-label="관련 개념">' + conceptsHTML + '</div>' +
-      subProgressHTML +
-      linkHTML +
-      '</article>';
+    return '<aside class="catalog-sidebar" aria-label="카탈로그 네비게이션">' +
+      '<div class="catalog-sidebar__stats">' + renderProgressRing(pct, 64) +
+      '<div class="catalog-sidebar__stats-text">' + completed + '/' + total + ' 완료</div></div>' +
+      '<nav class="catalog-sidebar__nav">' + nav + '</nav>' +
+      '<div class="catalog-sidebar__search"><input type="search" class="catalog-sidebar__search-input js-search-input" id="search-desktop" placeholder="검색..." aria-label="프로젝트 검색" /></div>' +
+      '<div class="catalog-sidebar__filters">' + renderFilterPills() + '</div></aside>';
   }
 
-  // --- 페이즈별 렌더링 ---
-  function renderPhases(filteredProjects) {
-    var sortedPhases = data.phases.slice().sort(function(a, b) { return a.order - b.order; });
-    var html = "";
+  // ============================================================
+  // 학습 사이드바 (같은 .catalog-sidebar 컨테이너)
+  // ============================================================
 
-    for (var i = 0; i < sortedPhases.length; i++) {
-      var phase = sortedPhases[i];
-      var phaseProjects = filteredProjects.filter(function(p) { return p.phase === phase.id; });
-      if (phaseProjects.length === 0) continue;
+  function renderLearnSidebar(route) {
+    var project = data.projects.find(function (p) { return p.id === route.projectId; });
+    if (!project) return "";
+    var phase = getPhaseById(project.phase);
+    var phaseColor = phase ? phase.color : "#6366F1";
+    var progress = getProjectLearnProgress(project.id);
+    var pct = progress.total > 0 ? Math.round((progress.completed / progress.total) * 100) : 0;
+    var Challenges = window.StudioChallenges;
 
-      html += '<section class="phase-section" aria-label="' + phase.name + '"><div class="container">' +
-        '<div class="phase-header">' +
-        '<div class="phase-indicator" style="background: ' + phase.color + '"></div>' +
-        '<h2 class="phase-name">' + phase.name + '</h2>' +
-        '<span class="phase-desc">' + phase.description + '</span></div>' +
-        '<div class="card-grid">' + phaseProjects.map(renderCard).join("") + '</div>' +
-        '</div></section>';
+    var tabItems = LEARN_TABS.map(function (t) {
+      var isActive = t.id === route.tab;
+      var isDone = Challenges ? Challenges.isTabComplete(project.id, t.id) :
+        localStorage.getItem("studio-progress-" + project.id + "-" + t.id) === "done";
+      var indColor = isDone ? "var(--color-completed)" : isActive ? phaseColor : "var(--border-default)";
+      var checkHTML = isDone ? '<span class="catalog-nav-item__count" style="color:var(--color-completed)">\u2713</span>' : '';
+      return '<a href="#learn/' + project.id + '/' + t.id + '" class="catalog-nav-item' +
+        (isActive ? ' catalog-nav-item--active' : '') + '" data-tab="' + t.id + '">' +
+        '<div class="catalog-nav-item__indicator" style="background:' + indColor + '"></div>' +
+        '<div class="catalog-nav-item__label"><span class="catalog-nav-item__name">' + t.label + '</span>' +
+        checkHTML + '</div></a>';
+    }).join('');
+
+    var phaseName = phase ? phase.name.replace(/Phase \d+: /, "") : "";
+
+    return '<aside class="catalog-sidebar" aria-label="학습 네비게이션">' +
+      '<div class="catalog-sidebar__stats">' + renderProgressRing(pct, 64, phaseColor) +
+      '<div class="catalog-sidebar__stats-number" style="color:' + phaseColor + '">' + project.number + '</div>' +
+      '<div class="catalog-sidebar__stats-text" title="' + project.title + '">' + project.title + '</div></div>' +
+      '<a href="#catalog" class="catalog-nav-item">' +
+      '<div class="catalog-nav-item__indicator" style="background:var(--text-muted)"></div>' +
+      '<div class="catalog-nav-item__label"><span class="catalog-nav-item__name">\u2190 대시보드</span></div></a>' +
+      '<nav class="catalog-sidebar__nav" aria-label="' + phaseName + ' 탭">' + tabItems + '</nav></aside>';
+  }
+
+  // ============================================================
+  // 카탈로그 메인 콘텐츠
+  // ============================================================
+
+  var cardIndex = 0;
+
+  function fillCatalogMain(el) {
+    cardIndex = 0;
+    var filtered = getFilteredProjects();
+    var sorted = data.phases.slice().sort(function (a, b) { return a.order - b.order; });
+
+    var html = renderPhaseHero(currentPhaseFilter);
+    html += renderNextRecommendation();
+
+    // 모바일 필터
+    html += '<div class="catalog-mobile-filters">' +
+      '<input type="search" class="catalog-sidebar__search-input js-search-input" id="search-mobile" placeholder="검색..." aria-label="프로젝트 검색" />' +
+      '<div class="catalog-mobile-filters__pills">' + renderFilterPills() + '</div></div>';
+
+    if (filtered.length > 0) {
+      if (currentPhaseFilter === "all") {
+        for (var i = 0; i < sorted.length; i++) {
+          var phase = sorted[i];
+          var pp = filtered.filter(function (p) { return p.phase === phase.id; });
+          if (pp.length === 0) continue;
+          html += '<div class="phase-group"><div class="phase-group__label"><div class="phase-group__dot" style="background:' +
+            phase.color + '"></div><span>' + phase.name + '</span></div>' +
+            '<div class="card-grid">' + pp.map(renderCardV3).join("") + '</div></div>';
+        }
+      } else {
+        html += '<div class="card-grid">' + filtered.map(renderCardV3).join("") + '</div>';
+      }
+      html += renderLearningPath();
+    } else {
+      html += renderEmptyState();
     }
-
-    return html;
+    el.innerHTML = html; // eslint-disable-line no-unsanitized/property
   }
 
-  // --- 빈 상태 ---
-  function renderEmptyState() {
-    return '<div class="empty-state container">' +
-      '<div class="empty-state__icon">🔍</div>' +
-      '<p class="empty-state__text">검색 결과가 없습니다</p>' +
-      '<p class="empty-state__hint">다른 키워드나 필터를 시도해보세요</p></div>';
-  }
-
-  // --- 학습 경로 타임라인 ---
-  function renderTimeline() {
-    var sorted = data.projects.slice().sort(function(a, b) { return a.number.localeCompare(b.number); });
-
-    var items = sorted.map(function(project, i) {
-      var isLast = i === sorted.length - 1;
-      var connectorClass = project.status === "completed" ? "timeline-connector--completed" : "timeline-connector--default";
-      var tooltipText = "난이도: " + difficultyStars(project.difficulty) + " / 상태: " + statusLabels[project.status];
-      var connector = !isLast ? '<div class="timeline-connector ' + connectorClass + '"></div>' : "";
-
-      return '<div class="timeline-item">' +
-        '<a href="#learn/' + project.id + '" class="timeline-node timeline-node--' + project.status + '" title="' + tooltipText + '" aria-label="' + project.number + ' ' + project.title + ' (' + statusLabels[project.status] + ')">' + project.number + '</a>' +
-        connector +
-        '<span class="timeline-label">' + project.title + '</span></div>';
-    }).join("");
-
-    return '<section class="timeline-section" aria-label="학습 경로"><div class="container">' +
-      '<h2 class="timeline-title">학습 경로</h2>' +
-      '<div class="timeline">' + items + '</div></div></section>';
-  }
-
-  // --- 필터 로직 ---
   function getFilteredProjects() {
-    return data.projects.filter(function(p) {
+    return data.projects.filter(function (p) {
+      if (currentPhaseFilter !== "all" && p.phase !== currentPhaseFilter) return false;
       if (currentStatusFilter !== "all" && p.status !== currentStatusFilter) return false;
       if (currentDifficultyFilter !== "all" && p.difficulty !== Number(currentDifficultyFilter)) return false;
-
       if (searchQuery) {
         var q = searchQuery.toLowerCase();
-        var haystack = [p.title, p.subtitle, p.description].concat(p.concepts).join(" ").toLowerCase();
-        if (haystack.indexOf(q) === -1) return false;
+        if ([p.title, p.subtitle, p.description].concat(p.concepts).join(" ").toLowerCase().indexOf(q) === -1) return false;
       }
       return true;
     });
   }
 
-  // --- 카탈로그 렌더링 ---
-  function renderCatalog() {
-    // 헤더 복원
-    document.querySelector(".header__title").textContent = "Claude Code 학습 스튜디오";
-    document.querySelector(".header__subtitle").textContent = "클로드 코드의 기능을 배우고 활용하는 학습 대시보드";
-
-    var filtered = getFilteredProjects();
-    var content = renderWelcome();
-    content += renderProgress();
-    content += renderFilterBar();
-
-    if (filtered.length > 0) {
-      content += renderPhases(filtered);
+  function renderPhaseHero(phaseId) {
+    var total, completed, pct, grad, color, label, title, desc;
+    if (phaseId === "all") {
+      total = data.projects.length;
+      completed = data.projects.filter(function (p) { return p.status === "completed"; }).length;
+      pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+      grad = phaseGradients["phase-1"];
+      label = "전체 커리큘럼"; title = "Claude Code 학습 스튜디오";
+      desc = "클로드 코드의 핵심 도구들부터 심화 활용까지 단계별로 배워보세요";
     } else {
-      content += renderEmptyState();
+      var phase = getPhaseById(phaseId);
+      if (!phase) return "";
+      var prog = getPhaseProgress(phaseId);
+      total = prog.total; completed = prog.completed;
+      pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+      grad = phaseGradients[phaseId] || { start: phase.color, end: phase.color };
+      label = phase.name.split(":")[0]; title = phase.name.replace(/Phase \d+: /, ""); desc = phase.description;
     }
-    content += renderTimeline();
-
-    app.innerHTML = content;
-    bindCatalogEvents();
+    return '<div class="catalog-hero" style="background:linear-gradient(135deg,' + hexToRgba(grad.start, 0.1) + ',' + hexToRgba(grad.end, 0.05) + ')">' +
+      '<div class="catalog-hero__number" style="color:' + grad.start + '">' + label + '</div>' +
+      '<div class="catalog-hero__title">' + title + '</div>' +
+      '<div class="catalog-hero__desc">' + desc + '</div>' +
+      '<div class="catalog-hero__progress"><div class="catalog-hero__progress-bar" style="background:' + hexToRgba(grad.start, 0.15) + '">' +
+      '<div class="catalog-hero__progress-fill" style="width:' + pct + '%;background:linear-gradient(90deg,' + grad.start + ',' + grad.end + ')"></div></div>' +
+      '<span class="catalog-hero__progress-text">' + completed + '/' + total + ' 완료</span></div></div>';
   }
 
-  // --- 카탈로그 이벤트 바인딩 ---
+  function renderNextRecommendation() {
+    var sorted = data.projects.slice().sort(function (a, b) { return a.number.localeCompare(b.number); });
+    var next = sorted.find(function (p) { return p.status === "in-progress"; }) || sorted.find(function (p) { return p.status === "planned"; });
+    if (!next) return "";
+    return '<div class="catalog-next js-next-recommend" data-id="' + next.id + '" tabindex="0" role="link" aria-label="다음 추천: ' + next.title + '">' +
+      '<div><div class="catalog-next__label">다음 추천</div><div class="catalog-next__card">' + next.number + ' ' + next.title + '</div></div>' +
+      '<span class="catalog-next__arrow">\u2192</span></div>';
+  }
+
+  function renderCardV3(project) {
+    var phase = getPhaseById(project.phase);
+    var phaseColor = phase ? phase.color : "#94A3B8";
+    var grad = phaseGradients[project.phase] || { start: "#6366F1", end: "#A855F7" };
+    var diffBlocks = "";
+    for (var i = 1; i <= 3; i++) diffBlocks += '<div class="card-v3__diff-block' + (i <= project.difficulty ? " card-v3__diff-block--filled" : "") + '"></div>';
+    var learnProg = getProjectLearnProgress(project.id);
+    var learnPct = learnProg.total > 0 ? Math.round((learnProg.completed / learnProg.total) * 100) : 0;
+    var progressHTML = learnPct > 0 ? '<div class="card-v3__progress-ring" title="학습 ' + learnPct + '%">' + renderProgressRing(learnPct, 28) + '</div>' : '';
+    var delay = (cardIndex++ * 0.04).toFixed(2);
+    return '<article class="card-v3" data-id="' + project.id + '" data-status="' + project.status + '" data-difficulty="' + project.difficulty +
+      '" data-phase="' + project.phase + '" tabindex="0" aria-label="' + project.title +
+      '" style="--card-phase-start:' + grad.start + ';--card-phase-end:' + grad.end + ';--card-glow:' + hexToRgba(phaseColor, 0.15) + ';animation-delay:' + delay + 's">' +
+      '<div class="card-v3__header"><span class="card-v3__number">' + project.number + '</span>' +
+      '<span class="card-v3__status-dot card-v3__status-dot--' + project.status + '" title="' + statusLabels[project.status] + '"></span></div>' +
+      '<div class="card-v3__title">' + project.title + '</div>' +
+      '<div class="card-v3__subtitle">' + (project.subtitle || '') + '</div>' +
+      '<div class="card-v3__footer"><div class="card-v3__diff-bar" aria-label="난이도 ' + project.difficulty + '">' + diffBlocks + '</div>' + progressHTML + '</div></article>';
+  }
+
+  function renderLearningPath() {
+    var sorted = data.phases.slice().sort(function (a, b) { return a.order - b.order; });
+    var html = '<div class="learning-path"><h3 class="learning-path__title">학습 경로</h3>';
+    for (var i = 0; i < sorted.length; i++) {
+      var phase = sorted[i];
+      var pp = data.projects.filter(function (p) { return p.phase === phase.id; }).sort(function (a, b) { return a.number.localeCompare(b.number); });
+      if (pp.length === 0) continue;
+      html += '<div class="path-group"><div class="path-group__header"><div class="path-group__indicator" style="background:' + phase.color + '"></div>' + phase.name + '</div><div class="path-nodes">';
+      for (var j = 0; j < pp.length; j++) {
+        html += '<a href="#learn/' + pp[j].id + '" class="path-node path-node--' + pp[j].status + '">' +
+          '<span class="path-node__number">' + pp[j].number + '</span><span class="path-node__title">' + pp[j].title + '</span></a>';
+      }
+      html += '</div></div>';
+    }
+    return html + '</div>';
+  }
+
+  function renderEmptyState() {
+    return '<div class="empty-state"><div class="empty-state__icon">\uD83D\uDD0D</div><p class="empty-state__text">검색 결과가 없습니다</p><p class="empty-state__hint">다른 키워드나 필터를 시도해보세요</p></div>';
+  }
+
+  // ============================================================
+  // 학습 메인 콘텐츠
+  // ============================================================
+
+  function fillLearnMain(mainEl, route) {
+    var project = data.projects.find(function (p) { return p.id === route.projectId; });
+    if (!project) { navigateTo("catalog"); return; }
+    var content = window.STUDIO_CONTENT && window.STUDIO_CONTENT[route.projectId];
+    if (!content) {
+      mainEl.innerHTML = '<div class="empty-state"><p>콘텐츠를 불러올 수 없습니다.</p><a href="#catalog">대시보드로 돌아가기</a></div>'; // eslint-disable-line no-unsanitized/property
+      return;
+    }
+    // Phase 색상을 CSS 변수로 전달
+    var phase = getPhaseById(project.phase);
+    var phaseColor = phase ? phase.color : "#6366F1";
+    var grad = phaseGradients[project.phase] || { start: "#6366F1", end: "#A855F7" };
+    mainEl.style.setProperty("--learn-phase-color", phaseColor);
+    mainEl.style.setProperty("--learn-phase-start", grad.start);
+    mainEl.style.setProperty("--learn-phase-end", grad.end);
+
+    if (window.StudioLearn) {
+      window.StudioLearn.render(mainEl, project, content, route);
+    }
+  }
+
+  // ============================================================
+  // 이벤트 바인딩 (카탈로그)
+  // ============================================================
+
   function bindCatalogEvents() {
-    var welcomeClose = document.querySelector(".js-welcome-close");
-    if (welcomeClose) {
-      welcomeClose.addEventListener("click", function() {
-        localStorage.setItem("studio-welcome-dismissed", "true");
-        renderCatalog();
-      });
-    }
-
-    var searchInput = document.getElementById("search-input");
-    if (searchInput) {
-      searchInput.value = searchQuery;
-      searchInput.addEventListener("input", function(e) {
+    document.querySelectorAll(".js-search-input").forEach(function (input) {
+      input.value = searchQuery;
+      input.addEventListener("input", function (e) {
         searchQuery = e.target.value.trim();
-        renderCatalog();
-        var newInput = document.getElementById("search-input");
-        if (newInput) {
-          newInput.focus();
-          newInput.setSelectionRange(newInput.value.length, newInput.value.length);
-        }
+        var inputId = e.target.id;
+        renderShell(parseHash());
+        var el = document.getElementById(inputId);
+        if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
       });
+    });
+
+    document.querySelectorAll(".js-phase-nav").forEach(function (btn) {
+      btn.addEventListener("click", function () { currentPhaseFilter = btn.dataset.phase; renderShell(parseHash()); });
+    });
+    document.querySelectorAll(".js-phase-tab").forEach(function (btn) {
+      btn.addEventListener("click", function () { currentPhaseFilter = btn.dataset.phase; renderShell(parseHash()); });
+    });
+    document.querySelectorAll(".js-status-pill").forEach(function (btn) {
+      btn.addEventListener("click", function () { currentStatusFilter = btn.dataset.status; renderShell(parseHash()); });
+    });
+    document.querySelectorAll(".js-diff-pill").forEach(function (btn) {
+      btn.addEventListener("click", function () { currentDifficultyFilter = btn.dataset.difficulty; renderShell(parseHash()); });
+    });
+
+    var nextRec = document.querySelector(".js-next-recommend");
+    if (nextRec) {
+      nextRec.addEventListener("click", function () { navigateTo("learn/" + nextRec.dataset.id); });
+      nextRec.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); nextRec.click(); } });
     }
 
-    document.querySelectorAll(".js-status-filter").forEach(function(btn) {
-      btn.addEventListener("click", function() {
-        currentStatusFilter = btn.dataset.filterStatus;
-        renderCatalog();
+    document.querySelectorAll(".card-v3").forEach(function (card) {
+      card.addEventListener("click", function () {
+        var pid = card.dataset.id;
+        if (window.STUDIO_CONTENT && window.STUDIO_CONTENT[pid]) { navigateTo("learn/" + pid); }
+        else { var p = data.projects.find(function (x) { return x.id === pid; }); if (p && p.path) window.location.href = p.path; }
       });
-    });
-
-    document.querySelectorAll(".js-difficulty-filter").forEach(function(btn) {
-      btn.addEventListener("click", function() {
-        currentDifficultyFilter = btn.dataset.filterDifficulty;
-        renderCatalog();
-      });
-    });
-
-    document.querySelectorAll(".project-card").forEach(function(card) {
-      card.addEventListener("click", function(e) {
-        if (e.target.closest(".card__link")) return;
-        var projectId = card.dataset.id;
-        var hasContent = window.STUDIO_CONTENT && window.STUDIO_CONTENT[projectId];
-        if (hasContent) {
-          navigateTo("learn/" + projectId);
-        } else {
-          var project = data.projects.find(function(p) { return p.id === projectId; });
-          if (project && project.path) window.location.href = project.path;
-        }
-      });
-
-      card.addEventListener("keydown", function(e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          card.click();
-        }
-      });
+      card.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); card.click(); } });
     });
   }
 
-  // --- 테마 토글 바인딩 ---
+  // --- 테마 토글 ---
   function bindThemeToggle() {
-    var themeBtn = document.getElementById("theme-toggle");
-    if (themeBtn) {
-      themeBtn.addEventListener("click", toggleTheme);
-    }
+    var btn = document.getElementById("theme-toggle");
+    if (btn) btn.addEventListener("click", toggleTheme);
   }
 
   // --- 초기화 ---
   function init() {
     initTheme();
     bindThemeToggle();
-
-    // 레벨 피커 마운트
     if (window.StudioLevel) {
       var mount = document.getElementById("level-picker-mount");
       if (mount) mount.appendChild(window.StudioLevel.renderLevelPicker());
     }
-
-    // Mermaid 초기화
     if (window.mermaid) {
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "default"
-      });
+      mermaid.initialize({ startOnLoad: false, theme: document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "default" });
     }
-
-    // 라우팅
     window.addEventListener("hashchange", handleRoute);
     handleRoute();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();

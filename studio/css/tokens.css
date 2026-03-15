@@ -1,0 +1,269 @@
+/* ========================================
+   Design Tokens — Dark Modern Theme
+   ======================================== */
+
+/* --- 토큰 --- */
+:root {
+  /* 배경 */
+  --bg-root: #0A0A0F;
+  --bg-surface: #12121A;
+  --bg-elevated: #1A1A25;
+  --bg-hover: #22222E;
+
+  /* 텍스트 */
+  --text-primary: #E8E8ED;
+  --text-secondary: #8B8B9E;
+  --text-muted: #56566A;
+
+  /* 보더 */
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.04);
+  --border-focus: rgba(99, 102, 241, 0.5);
+
+  /* 악센트 */
+  --accent-primary: #6366F1;
+  --accent-secondary: #A855F7;
+  --accent-gradient: linear-gradient(135deg, #6366F1, #A855F7);
+
+  /* 상태 색상 */
+  --color-completed: #10B981;
+  --color-completed-bg: rgba(16, 185, 129, 0.12);
+  --color-in-progress: #F59E0B;
+  --color-in-progress-bg: rgba(245, 158, 11, 0.12);
+  --color-planned: #56566A;
+  --color-planned-bg: rgba(86, 86, 106, 0.12);
+
+  /* Phase 그래디언트 */
+  --phase-1-start: #3B82F6;
+  --phase-1-end: #60A5FA;
+  --phase-2-start: #8B5CF6;
+  --phase-2-end: #A78BFA;
+  --phase-3-start: #EC4899;
+  --phase-3-end: #F472B6;
+  --phase-4-start: #F59E0B;
+  --phase-4-end: #FBBF24;
+  --phase-5-start: #EF4444;
+  --phase-5-end: #F87171;
+  --phase-6-start: #10B981;
+  --phase-6-end: #34D399;
+
+  /* Phase 단색 (호환) */
+  --phase-1: #3B82F6;
+  --phase-2: #8B5CF6;
+  --phase-3: #EC4899;
+  --phase-4: #F59E0B;
+  --phase-5: #EF4444;
+  --phase-6: #10B981;
+
+  /* 글래스 */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur: 20px;
+
+  /* Glow */
+  --glow-accent: 0 0 24px rgba(99, 102, 241, 0.15);
+  --glow-sm: 0 0 12px;
+  --glow-md: 0 0 24px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* 간격 (8px 기반) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 타이포 */
+  --font-display: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+
+  /* 레이아웃 */
+  --header-height: 56px;
+  --sidebar-width: 260px;
+  --max-width: 1200px;
+
+  /* 반경 */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* 트랜지션 */
+  --transition: 200ms ease;
+  --transition-slow: 400ms ease;
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- 라이트 테마 오버라이드 --- */
+[data-theme="light"] {
+  --bg-root: #F8F9FC;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #F1F3F8;
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+
+  --border-default: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.04);
+  --border-focus: rgba(99, 102, 241, 0.4);
+
+  --color-completed-bg: #ECFDF5;
+  --color-in-progress-bg: #FFFBEB;
+  --color-planned: #94A3B8;
+  --color-planned-bg: #F8FAFC;
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
+
+  --glow-accent: 0 0 24px rgba(99, 102, 241, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* --- CSS 리셋 --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-root);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- 유틸리티 --- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+}
+
+/* 스킵 링크 */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 200;
+  padding: var(--space-3) var(--space-6);
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* 스크린리더 전용 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --- 키프레임 --- */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: var(--glow-sm) var(--glow-color, rgba(99,102,241,0.15)); }
+  50% { box-shadow: var(--glow-md) var(--glow-color, rgba(99,102,241,0.25)); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.15) rotate(-3deg); }
+  50% { transform: scale(1.2) rotate(3deg); }
+  75% { transform: scale(1.1) rotate(-2deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* --- 접근성 --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* SVG 진행률 링 */
+.progress-ring text {
+  fill: var(--text-primary);
+}

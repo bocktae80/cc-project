@@ -11,30 +11,34 @@
     { id: "quiz", label: "퀴즈", icon: "❓" }
   ];
 
+  // Phase 그래디언트 맵
+  var PHASE_GRADIENTS = {
+    "phase-1": { start: "#3B82F6", end: "#60A5FA" },
+    "phase-2": { start: "#8B5CF6", end: "#A78BFA" },
+    "phase-3": { start: "#EC4899", end: "#F472B6" },
+    "phase-4": { start: "#F59E0B", end: "#FBBF24" },
+    "phase-5": { start: "#EF4444", end: "#F87171" },
+    "phase-6": { start: "#10B981", end: "#34D399" }
+  };
+
   function render(container, project, content, route) {
     var tab = route.tab || "overview";
 
     var phase = window.STUDIO_DATA.phases.find(function(p) { return p.id === project.phase; });
     var phaseName = phase ? phase.name : "";
+    var phaseColor = phase ? phase.color : "#6366F1";
+    var grad = PHASE_GRADIENTS[project.phase] || { start: "#6366F1", end: "#A855F7" };
 
-    var sidebarItems = buildSidebarItems(content, tab);
     var progress = getProgress(project.id);
 
-    // DOM API로 구조 생성
-    var layout = document.createElement("div");
-    layout.className = "learn-layout";
-    layout.appendChild(buildSidebarDOM(project, tab, sidebarItems, progress, phaseName));
+    // 히어로 배너 (catalog-hero 재사용)
+    container.appendChild(buildHeroDOM(project, phaseName, phaseColor, grad, progress));
 
-    var main = document.createElement("div");
-    main.className = "learn-main";
-    main.appendChild(buildHeaderDOM(project, phaseName));
-    main.appendChild(buildTabBarDOM(project.id, tab));
-
+    // 콘텐츠
     var contentEl = document.createElement("div");
     contentEl.className = "learn-content";
     contentEl.dataset.project = project.id;
     contentEl.dataset.tab = tab;
-    // 탭 콘텐츠는 마크다운이므로 DOMPurify를 통해 sanitize된 HTML 삽입
     var sanitizedContent = renderTabContent(project, content, tab);
     if (window.DOMPurify) {
       contentEl.innerHTML = window.DOMPurify.sanitize(sanitizedContent, {
@@ -50,12 +54,7 @@
     } else {
       contentEl.innerHTML = sanitizedContent;
     }
-
-    main.appendChild(contentEl);
-    layout.appendChild(main);
-
-    container.textContent = "";
-    container.appendChild(layout);
+    container.appendChild(contentEl);
 
     postRender(project, content, tab);
   }
@@ -77,156 +76,75 @@
     }
   }
 
-  function buildSidebarItems(content, tab) {
-    switch (tab) {
-      case "concepts":
-        return (content.concepts || []).map(function(c) { return { id: c.id, title: c.title }; });
-      case "tutorials":
-        return (content.tutorials || []).map(function(t) { return { id: t.id, title: t.title }; });
-      case "examples":
-        return (content.examples || []).map(function(e) { return { id: e.id, title: e.title }; });
-      case "quiz":
-        return (content.quiz || []).map(function(q, i) { return { id: "q" + i, title: "문제 " + (i + 1) }; });
-      default:
-        return [];
-    }
+  function hexToRgba(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16);
+    var g = parseInt(hex.slice(3, 5), 16);
+    var b = parseInt(hex.slice(5, 7), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
   }
 
-  function buildSidebarDOM(project, activeTab, items, progress, phaseName) {
-    var Challenges = window.StudioChallenges;
-    var aside = document.createElement("aside");
-    aside.className = "learn-sidebar";
-
-    var back = document.createElement("a");
-    back.href = "#catalog";
-    back.className = "learn-sidebar__back";
-    back.textContent = "← 대시보드";
-    aside.appendChild(back);
-
-    var tabsWrap = document.createElement("div");
-    tabsWrap.className = "learn-sidebar__tabs";
-
-    TABS.forEach(function(t) {
-      var isActive = t.id === activeTab;
-      var isDone = Challenges ? Challenges.isTabComplete(project.id, t.id) :
-        localStorage.getItem("studio-progress-" + project.id + "-" + t.id) === "done";
-
-      var a = document.createElement("a");
-      a.href = "#learn/" + project.id + "/" + t.id;
-      a.className = "learn-sidebar__tab" + (isActive ? " learn-sidebar__tab--active" : "") + (isDone ? " learn-sidebar__tab--done" : "");
-      a.dataset.tab = t.id;
-
-      var icon = document.createElement("span");
-      icon.className = "learn-sidebar__tab-icon";
-      icon.textContent = t.icon;
-      a.appendChild(icon);
-
-      var label = document.createElement("span");
-      label.textContent = t.label;
-      a.appendChild(label);
-
-      if (isDone) {
-        var check = document.createElement("span");
-        check.className = "learn-sidebar__check";
-        check.textContent = "✓";
-        a.appendChild(check);
-      }
-      tabsWrap.appendChild(a);
-    });
-    aside.appendChild(tabsWrap);
-
-    if (items.length > 0) {
-      var itemsWrap = document.createElement("div");
-      itemsWrap.className = "learn-sidebar__items";
-      items.forEach(function(item) {
-        var a2 = document.createElement("a");
-        a2.href = "#" + item.id;
-        a2.className = "learn-sidebar__item";
-        a2.dataset.item = item.id;
-        a2.textContent = item.title;
-        itemsWrap.appendChild(a2);
-      });
-      aside.appendChild(itemsWrap);
-    }
-
-    var pct = Math.round((progress.completed / progress.total) * 100);
-    var progWrap = document.createElement("div");
-    progWrap.className = "learn-sidebar__progress";
-
-    var progLabel = document.createElement("div");
-    progLabel.className = "learn-sidebar__progress-label";
-    progLabel.textContent = "진행률";
-    progWrap.appendChild(progLabel);
-
-    var progBar = document.createElement("div");
-    progBar.className = "learn-sidebar__progress-bar";
-    var progFill = document.createElement("div");
-    progFill.className = "learn-sidebar__progress-fill";
-    progFill.style.width = pct + "%";
-    progBar.appendChild(progFill);
-    progWrap.appendChild(progBar);
-
-    var progText = document.createElement("div");
-    progText.className = "learn-sidebar__progress-text";
-    progText.textContent = pct + "% (" + progress.completed + "/" + progress.total + ")";
-    progWrap.appendChild(progText);
-
-    aside.appendChild(progWrap);
-    return aside;
-  }
-
-  function buildHeaderDOM(project, phaseName) {
+  function buildHeroDOM(project, phaseName, phaseColor, grad, progress) {
     var header = document.createElement("div");
-    header.className = "learn-header";
+    header.className = "learn-hero";
+    header.style.background = "linear-gradient(135deg, " +
+      hexToRgba(grad.start, 0.08) + ", " + hexToRgba(grad.end, 0.02) + ")";
 
-    var back = document.createElement("a");
-    back.href = "#catalog";
-    back.className = "learn-header__back";
-    back.textContent = "← 대시보드";
-    header.appendChild(back);
+    // 장식 번호
+    var bigNum = document.createElement("div");
+    bigNum.className = "learn-hero__bg-number";
+    bigNum.textContent = project.number;
+    bigNum.style.color = phaseColor;
+    header.appendChild(bigNum);
 
+    // 상단 라인: Phase + 메타 (한 줄)
+    var topLine = document.createElement("div");
+    topLine.className = "learn-hero__top";
+
+    var phaseTag = document.createElement("span");
+    phaseTag.className = "learn-hero__phase";
+    phaseTag.style.color = phaseColor;
+    phaseTag.textContent = phaseName.replace(/Phase \d+: /, "");
+    topLine.appendChild(phaseTag);
+
+    // 난이도 도트
+    var diffWrap = document.createElement("span");
+    diffWrap.className = "learn-hero__diff";
+    for (var i = 1; i <= 3; i++) {
+      var block = document.createElement("span");
+      block.className = "learn-hero__diff-dot" + (i <= project.difficulty ? " learn-hero__diff-dot--filled" : "");
+      if (i <= project.difficulty) block.style.background = phaseColor;
+      diffWrap.appendChild(block);
+    }
+    topLine.appendChild(diffWrap);
+
+    if (project.estimatedMinutes) {
+      var timeEl = document.createElement("span");
+      timeEl.className = "learn-hero__time";
+      timeEl.textContent = "~" + project.estimatedMinutes + "\uBD84";
+      topLine.appendChild(timeEl);
+    }
+
+    header.appendChild(topLine);
+
+    // 타이틀
     var title = document.createElement("h1");
-    title.className = "learn-header__title";
+    title.className = "learn-hero__title";
     title.textContent = project.title;
     header.appendChild(title);
 
-    var meta = document.createElement("div");
-    meta.className = "learn-header__meta";
-    var stars = document.createElement("span");
-    stars.textContent = "⭐".repeat(project.difficulty);
-    meta.appendChild(stars);
-    var phaseEl = document.createElement("span");
-    phaseEl.className = "learn-header__phase";
-    phaseEl.textContent = phaseName;
-    meta.appendChild(phaseEl);
-    if (project.estimatedMinutes) {
-      var timeEl = document.createElement("span");
-      timeEl.className = "learn-header__time";
-      timeEl.textContent = "\u23F1 ~" + project.estimatedMinutes + "\uBD84";
-      meta.appendChild(timeEl);
+    // 서브타이틀 (짧게)
+    if (project.subtitle) {
+      var sub = document.createElement("p");
+      sub.className = "learn-hero__subtitle";
+      sub.textContent = project.subtitle;
+      header.appendChild(sub);
     }
-    header.appendChild(meta);
 
     return header;
   }
 
-  function buildTabBarDOM(projectId, activeTab) {
-    var nav = document.createElement("nav");
-    nav.className = "learn-tab-bar";
-    nav.setAttribute("role", "tablist");
-
-    TABS.forEach(function(t) {
-      var a = document.createElement("a");
-      a.href = "#learn/" + projectId + "/" + t.id;
-      a.className = "learn-tab" + (t.id === activeTab ? " learn-tab--active" : "");
-      a.setAttribute("role", "tab");
-      a.setAttribute("aria-selected", String(t.id === activeTab));
-      a.textContent = t.icon + " " + t.label;
-      nav.appendChild(a);
-    });
-
-    return nav;
-  }
+  // 구 함수명 호환 (다른 곳에서 참조할 경우 대비)
+  var buildHeaderDOM = buildHeroDOM;
 
   function renderTabContent(project, content, tab) {
     switch (tab) {
@@ -449,15 +367,6 @@
       });
     });
 
-    // 사이드바 아이템 → 스크롤
-    document.querySelectorAll(".learn-sidebar__item").forEach(function(item) {
-      item.addEventListener("click", function(e) {
-        e.preventDefault();
-        var target = document.getElementById(item.dataset.item);
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    });
-
     // 기존 터미널
     if (window.StudioTerminal) window.StudioTerminal.bindEvents();
 
@@ -466,23 +375,21 @@
       window.StudioQuiz.bindEvents(project.id, content.quiz);
     }
 
-    // 탭 완료 이벤트 → 사이드바 실시간 업데이트
+    // 탭 완료 이벤트 → 사이드바 indicator 업데이트
     window.addEventListener("tab-complete", function onComplete(e) {
       if (e.detail && e.detail.projectId === project.id) {
-        var tabEl = document.querySelector('.learn-sidebar__tab[data-tab="' + e.detail.tab + '"]');
-        if (tabEl && !tabEl.classList.contains("learn-sidebar__tab--done")) {
-          tabEl.classList.add("learn-sidebar__tab--done");
-          var check = document.createElement("span");
-          check.className = "learn-sidebar__check";
-          check.textContent = "✓";
-          tabEl.appendChild(check);
-
-          var prog = getProgress(project.id);
-          var pct = Math.round((prog.completed / prog.total) * 100);
-          var fillEl = document.querySelector(".learn-sidebar__progress-fill");
-          var textEl = document.querySelector(".learn-sidebar__progress-text");
-          if (fillEl) fillEl.style.width = pct + "%";
-          if (textEl) textEl.textContent = pct + "% (" + prog.completed + "/" + prog.total + ")";
+        var navItem = document.querySelector('.catalog-nav-item[data-tab="' + e.detail.tab + '"]');
+        if (navItem) {
+          var ind = navItem.querySelector(".catalog-nav-item__indicator");
+          if (ind) ind.style.background = "var(--color-completed)";
+          var label = navItem.querySelector(".catalog-nav-item__label");
+          if (label && !label.querySelector(".catalog-nav-item__count")) {
+            var check = document.createElement("span");
+            check.className = "catalog-nav-item__count";
+            check.style.color = "var(--color-completed)";
+            check.textContent = "\u2713";
+            label.appendChild(check);
+          }
         }
       }
     });
