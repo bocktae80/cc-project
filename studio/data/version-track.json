@@ -1,8 +1,8 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-03-14",
-  "currentCLI": "2.1.76",
+  "lastChecked": "2026-03-17",
+  "currentCLI": "2.1.77",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
@@ -66,8 +66,8 @@
       "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.74",
-      "lastUpdated": "2026-03-13",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -82,8 +82,8 @@
       "notes": "v2.1.74 갱신: 에이전트 model: 필드에 풀 모델 ID(claude-opus-4-6 등) 허용"
     },
     "06-hooks": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         "16 hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -131,8 +131,8 @@
       "notes": "v2.1.70 전면 재작성: commands/ 레거시화, SKILL.md 디렉토리 구조, 프론트매터 확장, 서브에이전트 실행, 동적 주입, Agent Skills 표준"
     },
     "09-worktree": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -144,8 +144,8 @@
       "notes": "v2.1.76 갱신: sparsePaths 설정 (모노레포 부분 체크아웃), stale 워크트리 자동 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -238,8 +238,8 @@
       "notes": "v2.1.76 갱신: 백그라운드 에이전트 kill 시 부분 결과 보존"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -313,8 +313,8 @@
       "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.77",
+      "lastUpdated": "2026-03-17",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",

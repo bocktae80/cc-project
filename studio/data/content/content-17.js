@@ -280,6 +280,25 @@ claude --plugin-dir path1,path2
 claude --plugin-dir path1 --plugin-dir path2
 \`\`\`
 
+### v2.1.77 변경사항
+
+| 변경 | 설명 |
+|------|------|
+| **\`claude plugin validate\` 강화** | skill, agent, command 프론트매터 + \`hooks/hooks.json\`까지 YAML 파싱 에러와 스키마 위반을 검증 |
+| **git-subdir 캐시 충돌 수정** | 같은 모노레포의 다른 하위 디렉토리에서 플러그인을 로드할 때 캐시가 충돌하던 버그 수정 |
+
+##### \`claude plugin validate\` 강화 (v2.1.77)
+
+\`\`\`
+비유: 앱 등록 전 자동 품질 검사가 더 꼼꼼해짐!
+
+이전: plugin.json만 검사
+이후: plugin.json + 스킬 프론트매터 + 에이전트 프론트매터
+      + 커맨드 프론트매터 + hooks.json 까지 전부 검사!
+\`\`\`
+
+> 배포 전에 \`claude plugin validate\`를 실행하면 YAML 문법 오류나 스키마 문제를 사전에 잡을 수 있어요!
+
 > **핵심 요약**: \`claude plugin add/list/update/remove\` 명령으로 플러그인 전체 라이프사이클을 관리합니다.
 > npm, GitHub, 로컬 폴더 3가지 소스에서 설치 가능하며, \`--plugin-dir\`로 로컬 개발 버전을 우선 적용할 수 있습니다.`
     }

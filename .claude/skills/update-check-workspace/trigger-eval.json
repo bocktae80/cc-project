@@ -1,0 +1,78 @@
+[
+  {
+    "query": "클로드 코드 새 버전 나온 것 같은데 뭐가 바뀌었는지 확인해줘. 튜토리얼에 넣을 만한 거 있으면 알려줘",
+    "should_trigger": true
+  },
+  {
+    "query": "업데이트 체크해줘",
+    "should_trigger": true
+  },
+  {
+    "query": "claude가 2.1.75로 올라갔는데 changelog 분석해서 우리 콘텐츠 중 갱신할 거 정리해줘",
+    "should_trigger": true
+  },
+  {
+    "query": "check-updates.js 돌려봤더니 CLI가 업데이트됐다고 나오는데, 새 기능 중에 tutorial worthy한 거 뭐 있어?",
+    "should_trigger": true
+  },
+  {
+    "query": "version-track.json이랑 실제 설치된 버전이 다른데, 변경사항 분석해서 어떤 튜토리얼을 업데이트해야 하는지 알려줘",
+    "should_trigger": true
+  },
+  {
+    "query": "새 기능 확인하고 콘텐츠 반영할 거 정리해줘",
+    "should_trigger": true
+  },
+  {
+    "query": "SDK 버전도 올라갔나? Python이랑 TypeScript SDK changelog도 같이 봐줘",
+    "should_trigger": true
+  },
+  {
+    "query": "what changed in the latest claude code release? anything we should add to our tutorials?",
+    "should_trigger": true
+  },
+  {
+    "query": "최근 릴리스 노트 확인해서 content 파일 갱신 필요한 항목 테이블로 정리해줘",
+    "should_trigger": true
+  },
+  {
+    "query": "튜토리얼 25번 Skills 2.0 내용을 수정해줘. Progressive Disclosure 설명이 좀 부족해",
+    "should_trigger": false
+  },
+  {
+    "query": "studio/data/projects.js에 새 프로젝트 항목 추가해줘. 26번 튜토리얼이야",
+    "should_trigger": false
+  },
+  {
+    "query": "스튜디오 브라우저에서 카드 클릭했을 때 learn 뷰로 안 넘어가는 버그가 있어",
+    "should_trigger": false
+  },
+  {
+    "query": "content-10.js에서 PDF 읽기 설명 부분을 좀 더 쉽게 다시 써줘",
+    "should_trigger": false
+  },
+  {
+    "query": "커밋하고 로드맵이랑 캐시도 갱신해줘",
+    "should_trigger": false
+  },
+  {
+    "query": "node studio/data/check-updates.js --bump 2.1.75 실행해줘",
+    "should_trigger": false
+  },
+  {
+    "query": "로드맵 열어줘",
+    "should_trigger": false
+  },
+  {
+    "query": "claude --version 이 뭔지 설명해줘. 초보자용으로",
+    "should_trigger": false
+  },
+  {
+    "query": "CLAUDE.md를 개선해줘. 규칙이 좀 오래됐어",
+    "should_trigger": false
+  },
+  {
+    "query": "GitHub에서 claude-code 레포 이슈 목록 좀 봐줘",
+    "should_trigger": false
+  }
+]

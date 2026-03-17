@@ -98,6 +98,22 @@ exit 2  ->  "이건 안 돼!" (차단)
 | \`ElicitationResult\` | 사용자가 입력을 완료한 후 | 응답을 수정/검증하고 서버에 전달하기 전 처리 |
 | \`PostCompact\` | 컨텍스트 압축(compaction) 완료 후 | 압축 후 정리 작업, 로그 기록 |
 
+### v2.1.77 보안 수정
+
+**PreToolUse \`allow\` 반환이 \`deny\` 권한을 우회하던 버그가 수정**되었습니다.
+
+\`\`\`
+이전 (v2.1.76까지):
+  PreToolUse 훅이 "allow" 반환 → deny 권한 규칙도 무시됨! (보안 취약점)
+  예: .env 파일 쓰기를 deny로 막아놨는데, 훅이 allow하면 통과되버림
+
+이후 (v2.1.77+):
+  deny 권한 규칙은 훅의 allow보다 항상 우선! (올바른 동작)
+  예: .env 파일 쓰기 deny → 훅이 뭘 반환하든 차단됨 ✓
+\`\`\`
+
+> 엔터프라이즈 관리 설정(managed settings)에서도 동일하게 수정되었으므로, 보안 정책이 훅에 의해 우회될 걱정이 없어요!
+
 > **핵심 요약**: 클로드 코드에는 16가지 훅 이벤트가 있으며, 핵심 6개(PreToolUse, PostToolUse, Stop, SessionStart, SessionEnd, UserPromptSubmit)를 주로 사용합니다. PreToolUse만 \`exit 2\`로 도구 실행을 차단할 수 있습니다.`
     },
     {
