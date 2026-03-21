@@ -97,6 +97,36 @@ exit 2  ->  "이건 안 돼!" (차단)
 | \`Elicitation\` | MCP 서버가 사용자 입력을 요청할 때 | 입력 요청을 가로채서 자동 응답 |
 | \`ElicitationResult\` | 사용자가 입력을 완료한 후 | 응답을 수정/검증하고 서버에 전달하기 전 처리 |
 | \`PostCompact\` | 컨텍스트 압축(compaction) 완료 후 | 압축 후 정리 작업, 로그 기록 |
+| \`StopFailure\` | API 에러(429, 인증 실패 등)로 턴 종료 시 | 에러 알림, 자동 재시도 로직 (v2.1.78) |
+
+#### \`StopFailure\` 훅 (v2.1.78)
+
+기존 \`Stop\` 훅은 **정상 종료** 시에만 발동했는데, \`StopFailure\`는 **API 에러로 중단**되었을 때 발동합니다:
+
+\`\`\`
+비유: 하교 벨 vs 비상 벨
+
+Stop        = 정상 하교 벨 → "오늘 수업 끝!"
+StopFailure = 비상 벨     → "정전으로 수업 중단!" (rate limit, 인증 만료 등)
+\`\`\`
+
+\`\`\`json
+{
+  "hooks": {
+    "StopFailure": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \\\\\"API 에러 발생!\\\\\" with title \\\\\"Claude Code\\\\\"'"
+          }
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
 
 ### v2.1.77 보안 수정
 

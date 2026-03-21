@@ -287,6 +287,32 @@ claude --plugin-dir path1 --plugin-dir path2
 | **\`claude plugin validate\` 강화** | skill, agent, command 프론트매터 + \`hooks/hooks.json\`까지 YAML 파싱 에러와 스키마 위반을 검증 |
 | **git-subdir 캐시 충돌 수정** | 같은 모노레포의 다른 하위 디렉토리에서 플러그인을 로드할 때 캐시가 충돌하던 버그 수정 |
 
+#### \`\${CLAUDE_PLUGIN_DATA}\` — 플러그인 영구 저장소 (v2.1.78)
+
+플러그인이 업데이트되어도 **사라지지 않는 데이터 저장 공간**이 생겼습니다:
+
+\`\`\`
+비유: 앱을 업데이트해도 게임 세이브 데이터는 유지!
+
+이전: 플러그인 업데이트 → 설정 파일 사라짐 😭
+이후: \${CLAUDE_PLUGIN_DATA} 폴더 → 업데이트해도 유지! 🎉
+      \`/plugin uninstall\` 시에만 삭제 확인 물어봄
+\`\`\`
+
+#### 인라인 플러그인 — \`source: 'settings'\` (v2.1.80)
+
+settings.json에서 직접 플러그인 항목을 선언할 수 있습니다. git 레포나 npm 없이도 플러그인을 간단히 추가!
+
+#### 에이전트 frontmatter 확장 (v2.1.78)
+
+플러그인에 포함된 에이전트에 3가지 새 frontmatter 필드가 추가되었습니다:
+
+| 필드 | 설명 |
+|------|------|
+| \`effort\` | 에이전트의 effort 레벨 (low/medium/high) |
+| \`maxTurns\` | 최대 턴 수 제한 |
+| \`disallowedTools\` | 사용 금지 도구 목록 |
+
 ##### \`claude plugin validate\` 강화 (v2.1.77)
 
 \`\`\`

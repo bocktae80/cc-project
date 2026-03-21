@@ -212,7 +212,39 @@ Bash(sudo *)    = 관리자 명령 허용 (매우 위험!)
 > \`Bash(npm install)\`부터 시작해서, 필요하면 \`Bash(npm *)\`로 넓히는 식으로.
 
 > **핵심 요약**: 와일드카드 \`*\`로 "npm 뒤에 뭐가 오든 OK" 같은 범위 지정이 가능합니다.
-> v2.1.72에서 lsof, pgrep 등 읽기 전용 명령이 자동 승인 추가되었고, v2.1.74에서 managed policy가 개인 설정보다 항상 우선하도록 수정되었습니다.`
+> v2.1.72에서 lsof, pgrep 등 읽기 전용 명령이 자동 승인 추가되었고, v2.1.74에서 managed policy가 개인 설정보다 항상 우선하도록 수정되었습니다.
+
+#### 샌드박스 \`allowRead\` 설정 (v2.1.77)
+
+\`denyRead\`로 차단한 영역 안에서 **일부 경로만 다시 읽기 허용**할 수 있습니다:
+
+\`\`\`
+비유: 도서관 전체를 출입 금지하되, 열람실만 허용
+
+denyRead: ["/sensitive/"]        ← sensitive 폴더 전체 읽기 차단
+allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
+\`\`\`
+
+\`\`\`json
+// .claude/settings.json
+{
+  "sandbox": {
+    "filesystem": {
+      "denyRead": ["/secrets/", "/private/"],
+      "allowRead": ["/secrets/public-keys/"]
+    }
+  }
+}
+\`\`\`
+
+#### 보안 수정 모음 (v2.1.77~2.1.78)
+
+| 버전 | 수정 | 설명 |
+|------|------|------|
+| 2.1.77 | PreToolUse allow 우회 | 훅의 allow가 deny 권한을 무시하던 버그 수정 |
+| 2.1.78 | sandbox 무음 비활성화 | 의존성 없을 때 샌드박스가 조용히 꺼짐 → 경고 표시 |
+| 2.1.78 | MCP deny 우회 | \`deny: ["mcp__servername"]\`이 도구 목록에서 미제거 수정 |
+| 2.1.78 | bypassPermissions 보호 | .git, .claude 등 보호 디렉토리 무제한 쓰기 수정 |`
     },
     {
       id: "evaluation-order",

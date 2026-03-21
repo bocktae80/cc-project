@@ -147,6 +147,36 @@ allowed-tools: Read, Grep, Glob
 | \`agent\` | 서브에이전트 타입 지정 | \`Explore\` |
 | \`argument-hint\` | 자동완성 시 힌트 | \`[파일경로]\` |
 | \`hooks\` | 스킬 라이프사이클 훅 | (아래 고급 참조) |
+| \`effort\` | 모델 effort 레벨 오버라이드 | \`high\` |
+
+#### \`effort\` 프론트매터 (v2.1.80)
+
+스킬이나 슬래시 커맨드가 실행될 때 **모델의 effort 레벨을 자동으로 변경**할 수 있습니다:
+
+\`\`\`markdown
+---
+name: deep-review
+description: 꼼꼼한 코드 리뷰
+effort: high
+---
+
+이 코드를 정밀 리뷰해주세요: $ARGUMENTS
+\`\`\`
+
+\`\`\`
+비유: 게임 난이도를 매크로에 고정하기
+
+/deep-review → 자동으로 high effort (꼼꼼 모드)
+/quick-check → 자동으로 low effort (빠른 모드)
+
+스킬이 끝나면 effort는 원래 설정으로 돌아갑니다!
+\`\`\`
+
+| effort 값 | 동작 | 용도 |
+|-----------|------|------|
+| \`low\` | 빠르고 간결 | 단순 변환, 포맷팅 |
+| \`medium\` | 기본 (생략 시) | 일반 작업 |
+| \`high\` | 깊이 생각 | 코드 리뷰, 아키텍처 분석 |
 
 #### 레거시 호환
 
