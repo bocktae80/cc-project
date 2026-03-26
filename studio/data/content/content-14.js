@@ -38,6 +38,45 @@ CCTV (기존 정적분석)               AI 경비원 (Claude 보안 스캔)
 | XSS | 웹 페이지에 악성 스크립트를 심는 공격 |
 | AI 보안 스캔 | AI가 맥락을 이해하며 취약점을 추론 |
 
+### v2.1.77~2.1.84 보안 개선
+
+| 개선 | 버전 | 설명 |
+|------|------|------|
+| 샌드박스 경고 | v2.1.78 | 샌드박스 미설치 시 조용히 비활성화되던 것 → **시작 시 경고 표시** |
+| Hook deny 우회 수정 | v2.1.77 | PreToolUse 훅이 "allow" 반환 시 deny 규칙을 우회하던 버그 수정 |
+| 보호 디렉토리 | v2.1.78 | .git, .claude 등 보호 디렉토리가 bypassPermissions에서도 쓰기 차단 |
+| \`sandbox.failIfUnavailable\` | v2.1.83 | 샌드박스를 시작할 수 없으면 **에러로 종료** (비활성화 상태로 실행 방지) |
+| \`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB\` | v2.1.83 | \`=1\`로 설정 시 Bash, 훅, MCP 서버에서 **API 키/클라우드 자격증명 자동 제거** |
+| Windows 드라이브 루트 보호 | v2.1.84 | \`C:\\\`, \`C:\\Windows\` 등 위험 삭제 감지 강화 |
+
+#### \`sandbox.failIfUnavailable\` (v2.1.83)
+
+\`\`\`
+비유: 안전모 없으면 공사장 출입 금지!
+
+이전: 안전모(샌드박스) 없으면 → 그냥 출입 허용 (위험!)
+이후: 안전모 없으면 → 출입 차단! (안전)
+\`\`\`
+
+\`\`\`json
+// .claude/settings.json
+{
+  "sandbox": {
+    "failIfUnavailable": true
+  }
+}
+\`\`\`
+
+#### 자격증명 스크럽 (v2.1.83)
+
+서브프로세스(Bash 도구, 훅, MCP 서버)에서 Anthropic/AWS/GCP 자격증명이 **자동 제거**됩니다:
+
+\`\`\`bash
+export CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1
+\`\`\`
+
+> MCP 서버나 훅 스크립트가 실수로 API 키에 접근하는 것을 방지해요!
+
 > **참고**: 보안 스캔은 Enterprise/Team 전용이지만, 개념 학습과 코드 예제는 누구나 따라할 수 있어요!`,
 
   concepts: [
@@ -204,7 +243,17 @@ Enterprise/Team 플랜에서는 자동 스캔이 가능하고,
 낮음 (LOW)      = 초인종 카메라 화질 낮음 → 시간 될 때
 \`\`\`
 
-> Enterprise/Team 전용이지만, 개인 플랜에서도 수동 요청으로 비슷한 분석이 가능합니다.`,
+> Enterprise/Team 전용이지만, 개인 플랜에서도 수동 요청으로 비슷한 분석이 가능합니다.
+
+#### 샌드박스 보안 (v2.1.78 개선)
+
+\`\`\`
+이전: sandbox.enabled: true인데 의존성 미설치 → 조용히 비활성화 😱
+현재: sandbox.enabled: true인데 의존성 미설치 → 시작 시 경고 표시 ⚠️
+\`\`\`
+
+> 보안 도구가 "있는 척"하면서 실제로는 꺼져있던 문제가 수정되었어요.
+> Claude Code가 시작할 때 샌드박스 상태를 명확히 알려줍니다.`,
       terminals: [
         {
           command: "# 보안 스캔 요청 (시뮬레이션)",

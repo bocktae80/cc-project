@@ -29,13 +29,18 @@ window.STUDIO_CONTENT["13-teleport"] = {
                                       → 어디서든 이어서 작업!
 \`\`\`
 
-### 핵심 기능 3가지
+### 핵심 기능 4가지
 
 | 기능 | 설명 | 비유 |
 |------|------|------|
 | \`&\` prefix | 작업을 클라우드에서 실행 | 포탈로 보내기 |
 | \`/teleport\` | 웹 세션을 터미널로 가져오기 | 포탈로 불러오기 |
-| \`/rc\` | 같은 세션에 원격으로 접속 | 원격 리모컨 |`,
+| \`/rc\` | 같은 세션에 원격으로 접속 | 원격 리모컨 |
+| \`/remote-control\` | VSCode에서 브라우저/폰으로 세션 브릿지 (v2.1.79+) | VSCode 리모컨 |
+
+> **참고**: \`/fork\`는 v2.1.77에서 \`/branch\`로 이름이 바뀌었어요. \`/fork\`는 별칭으로 여전히 사용 가능합니다.
+>
+> **v2.1.84**: 딥 링크(\`claude-cli://\`)가 이제 **선호 터미널**에서 열립니다. 이전에는 감지 목록 첫 번째 터미널에서 열렸어요.`,
 
   concepts: [
     {
@@ -403,12 +408,30 @@ Task sent! Session ID: ses_xyz789
    → 함께 Claude 지시 → 결과 함께 확인
 \`\`\`
 
-#### 텔레포트 vs /rc — 언제 뭘 쓸까?
+#### VSCode /remote-control (v2.1.79+)
+
+VSCode에서는 \`/remote-control\`로 세션을 **claude.ai 웹 또는 폰**으로 브릿지할 수 있어요!
+
+\`\`\`
+VSCode에서:
+> /remote-control
+
+Remote Control bridge active!
+Continue at: https://claude.ai/code/ses_xxx
+
+→ 브라우저나 폰에서 이어서 작업 가능
+→ 코드 편집은 VSCode에서, 대화는 웹에서
+\`\`\`
+
+> \`/rc\`는 터미널 CLI 전용, \`/remote-control\`은 VSCode 전용이에요.
+
+#### 텔레포트 vs /rc vs /remote-control — 언제 뭘 쓸까?
 
 | 상황 | 추천 |
 |------|------|
 | 웹에서 설계 → 터미널 코딩 | /teleport |
-| 다른 기기에서 확인 | /rc |
+| 다른 기기에서 터미널 세션 확인 | /rc |
+| VSCode 세션을 폰/웹에서 이어하기 | /remote-control |
 | 팀원에게 세션 보여주기 | /rc |
 | 클라우드 결과 가져오기 | /teleport |
 

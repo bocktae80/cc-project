@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-03-21",
-  "currentCLI": "2.1.81",
+  "lastChecked": "2026-03-26",
+  "currentCLI": "2.1.84",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -22,52 +22,52 @@
         "autoMemoryDirectory setting (custom path)",
         "1M context window strategy changes"
       ],
-      "notes": "v2.1.76 갱신: 1M 컨텍스트 시대의 메모리 전략 변화 (compaction 감소, 긴 세션)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Read",
         "Write",
         "Edit",
         "parallel operations"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "03-code-search": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Glob",
         "Grep",
         "pre-warming",
         "gitignore"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
         "domain filtering"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 갱신: WebFetch Claude-User User-Agent 식별 (v2.1.83)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.77",
-      "lastUpdated": "2026-03-17",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -77,15 +77,17 @@
         "background agents",
         "claude agents CLI",
         "Agent model parameter (per-invocation override)",
-        "Full model IDs in agent frontmatter/--agents JSON"
+        "Full model IDs in agent frontmatter/--agents JSON",
+        "initialPrompt agent frontmatter (v2.1.83)",
+        "Ctrl+X Ctrl+K kill agents keybinding (v2.1.83)"
       ],
-      "notes": "v2.1.74 갱신: 에이전트 model: 필드에 풀 모델 ID(claude-opus-4-6 등) 허용"
+      "notes": "v2.1.84 갱신: initialPrompt 에이전트 프론트매터, 에이전트 중단 키 변경"
     },
     "06-hooks": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
-        "16 hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
+        "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
         "InstructionsLoaded, ConfigChange events",
         "SubagentStart/Stop events",
@@ -96,26 +98,34 @@
         "SessionStart hook double-fire on --resume fix",
         "Elicitation hook (MCP input request interception)",
         "ElicitationResult hook (response modification)",
-        "PostCompact hook (after compaction)"
+        "PostCompact hook (after compaction)",
+        "CwdChanged hook (v2.1.83)",
+        "FileChanged hook (v2.1.83)",
+        "TaskCreated hook (v2.1.84)",
+        "WorktreeCreate type:http support (v2.1.84)"
       ],
-      "notes": "v2.1.76 갱신: Elicitation, ElicitationResult, PostCompact 3개 훅 이벤트 추가"
+      "notes": "v2.1.84 갱신: CwdChanged, FileChanged, TaskCreated 훅 이벤트 추가, WorktreeCreate HTTP 훅 지원"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
         "custom server",
         "claude.ai connectors",
         "OAuth",
-        "MCP Elicitation (structured input request mid-task)"
+        "MCP Elicitation (structured input request mid-task)",
+        "MCP tool description 2KB cap (v2.1.84)",
+        "local/connector deduplication (v2.1.84)",
+        "--mcp-config policy enforcement fix (v2.1.83)",
+        "connectors in --print mode (v2.1.83)"
       ],
-      "notes": "v2.1.76 갱신: MCP Elicitation 지원 (서버가 작업 중 사용자에게 폼/브라우저 입력 요청)"
+      "notes": "v2.1.84 갱신: 도구 설명 2KB 캡, 로컬/커넥터 중복 제거, --print 모드 커넥터 지원"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -126,26 +136,28 @@
         "bundled skills (/simplify, /batch, /debug, /claude-api)",
         "skill lifecycle (invocation control, retirement, persistent memory)",
         "plugin skills namespace",
-        "nested directory auto-discovery"
+        "nested directory auto-discovery",
+        "paths: YAML glob list frontmatter (v2.1.84)"
       ],
-      "notes": "v2.1.70 전면 재작성: commands/ 레거시화, SKILL.md 디렉토리 구조, 프론트매터 확장, 서브에이전트 실행, 동적 주입, Agent Skills 표준"
+      "notes": "v2.1.84 갱신: paths: 프론트매터 YAML 글로브 리스트 지원"
     },
     "09-worktree": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
         "shared project configs and auto-memory across worktrees",
         "ExitWorktree tool",
         "worktree.sparsePaths (sparse checkout for monorepos)",
-        "stale worktree auto-cleanup"
+        "stale worktree auto-cleanup",
+        "WorktreeCreate hook type:http (v2.1.84)"
       ],
-      "notes": "v2.1.76 갱신: sparsePaths 설정 (모노레포 부분 체크아웃), stale 워크트리 자동 정리"
+      "notes": "v2.1.84 갱신: WorktreeCreate 훅 HTTP 타입 지원"
     },
     "10-cli-master": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -166,25 +178,37 @@
         "/output-style deprecated → /config",
         "Full model IDs in agent frontmatter",
         "-n / --name session display name",
-        "1M context window (Opus 4.6)"
+        "1M context window (Opus 4.6)",
+        "transcript search (/ in Ctrl+O) (v2.1.83)",
+        "Ctrl+X Ctrl+E external editor alias (v2.1.83)",
+        "pasted image [Image #N] chips (v2.1.83)",
+        "token display ≥1M as '1.5m' (v2.1.84)",
+        "idle-return /clear nudge 75min (v2.1.84)",
+        "unavailable slash commands hidden (v2.1.84)",
+        "ANTHROPIC_DEFAULT_*_MODEL_SUPPORTS env vars (v2.1.84)"
       ],
-      "notes": "v2.1.76 갱신: -n/--name 세션 이름, /effort 슬래시 커맨드, 1M 컨텍스트"
+      "notes": "v2.1.84 갱신: 트랜스크립트 검색, 이미지 칩, 토큰 표시 개선, 75분 복귀 프롬프트"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
         "ToolSearch",
         "Slack/Notion/Gmail/Calendar/Figma/Linear/Vercel/AWS Marketplace",
-        "ToolSearch schema persistence after compaction"
+        "ToolSearch schema persistence after compaction",
+        "connectors in --print mode (v2.1.83)",
+        "tool description 2KB cap (v2.1.84)",
+        "local/connector deduplication (v2.1.84)",
+        "global system-prompt caching with ToolSearch (v2.1.84)",
+        "plugin MCP duplicate suppression (v2.1.83)"
       ],
-      "notes": "v2.1.76 갱신: ToolSearch 지연 도구 스키마가 compaction 후에도 유지"
+      "notes": "v2.1.84 갱신: --print 모드 커넥터, 2KB 캡, 중복 제거, 시스템 프롬프트 캐싱"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -192,54 +216,65 @@
         "Code Connect",
         "generate_diagram (FigJam)"
       ],
-      "notes": "v2.1.70 갱신: Code Connect 매핑, FigJam 다이어그램 생성 추가"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
-        "/rc"
+        "/rc",
+        "/remote-control (VSCode → browser/phone bridge, v2.1.79)",
+        "/fork renamed to /branch (/fork alias kept, v2.1.77)",
+        "deep links open preferred terminal (v2.1.84)"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 갱신: 딥 링크 선호 터미널 열기"
     },
     "14-code-security": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "security scan",
         "OWASP",
-        "vulnerability detection"
+        "vulnerability detection",
+        "sandbox silent disable → startup warning (v2.1.78)",
+        "PreToolUse hook deny bypass fix (v2.1.77)",
+        "protected directories (.git, .claude) write block in bypassPermissions (v2.1.78)",
+        "sandbox.failIfUnavailable setting (v2.1.83)",
+        "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB credential stripping (v2.1.83)",
+        "Windows drive root removal detection (v2.1.84)"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 갱신: sandbox.failIfUnavailable, 자격증명 스크럽, Windows 드라이브 보호"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
         "screenshot",
         "GIF recording"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.76",
-      "lastUpdated": "2026-03-14",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "run_in_background",
-        "TaskOutput",
+        "TaskOutput deprecated → Read (v2.1.83)",
         "TaskStop",
         "task_progress",
-        "partial results preserved on kill"
+        "partial results preserved on kill",
+        "background agent invisible after compaction fix (v2.1.83)",
+        "background bash stuck notification 45s (v2.1.84)"
       ],
-      "notes": "v2.1.76 갱신: 백그라운드 에이전트 kill 시 부분 결과 보존"
+      "notes": "v2.1.84 갱신: TaskOutput deprecated→Read, 백그라운드 에이전트 compaction 후 invisible 수정"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -251,17 +286,20 @@
         "plugin marketplaces",
         "--plugin-dir local override (v2.1.74)",
         "marketplace update git submodule sync (v2.1.74)",
-        "--plugin-dir single path per flag (v2.1.76)"
+        "--plugin-dir single path per flag (v2.1.76)",
+        "plugin MCP duplicate suppression (v2.1.83)",
+        "plugin startup disk cache (v2.1.83)",
+        "uninstalled plugin hooks cleanup (v2.1.83)"
       ],
-      "notes": "v2.1.76 갱신: --plugin-dir 단일 경로만 허용, 반복 사용으로 다중 지정"
+      "notes": "v2.1.84 갱신: 플러그인 MCP 중복 억제, 디스크 캐시 시작, 삭제된 플러그인 훅 정리"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.70",
+      "basedOn": "2.1.84",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-03-07",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -269,26 +307,31 @@
         "MCP annotations",
         "structured output",
         "session API",
-        "CLI bundling"
+        "CLI bundling",
+        "Agent tool resume removed → SendMessage({to: agentId}) (v2.1.77)",
+        "SendMessage auto-resumes stopped agents (v2.1.77)",
+        "plugin agent frontmatter: effort, maxTurns, disallowedTools (v2.1.78)"
       ],
-      "notes": "v2.1.70 버전 범프 (SDK 버전 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
         "deny/ask/allow",
         "settings.json",
         "expanded bash auto-approval (lsof, pgrep, tput, ss, fd, fdfind)",
-        "managed policy ask rules no longer bypassed by user allow/skill allowed-tools"
+        "managed policy ask rules no longer bypassed by user allow/skill allowed-tools",
+        "managed-settings.d/ drop-in directory (v2.1.83)",
+        "allowedChannelPlugins managed setting (v2.1.84)"
       ],
-      "notes": "v2.1.74 갱신: managed policy ask 규칙이 user allow/skill allowed-tools로 우회 불가 (보안 수정)"
+      "notes": "v2.1.84 갱신: managed-settings.d/ 드롭인 디렉토리, allowedChannelPlugins 관리 설정"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -297,35 +340,38 @@
         "plan review",
         "spark icon in activity bar",
         "markdown plan view with comments",
-        "native MCP management dialog"
+        "native MCP management dialog",
+        "VSCode 'Not responding' indicator 60s (v2.1.83)",
+        "VSCode rate limit warning banner (v2.1.84)",
+        "VSCode session history restore fix (v2.1.83)"
       ],
-      "notes": "v2.1.70 갱신: VS Code 스파크 아이콘, 마크다운 플랜 뷰, MCP 관리 다이얼로그"
+      "notes": "v2.1.84 갱신: VSCode Not responding 표시, 레이트 리밋 배너, 세션 히스토리 복원 수정"
     },
     "21-simplify": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "/simplify",
         "code quality",
         "5 principles",
         "PR routine"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.81",
-      "lastUpdated": "2026-03-21",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
         "pipe chaining",
         "CI/CD integration"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (--bare 플래그, --print 커넥터 지원 등)"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.70",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -333,11 +379,11 @@
         "progress.txt",
         "auto development"
       ],
-      "notes": "v2.1.70 버전 범프 (기능 변경 없음)"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.74",
-      "lastUpdated": "2026-03-13",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -350,21 +396,27 @@
         "CLAUDE_CODE_DISABLE_CRON mid-session stop",
         "/loop available on Bedrock/Vertex/Foundry (v2.1.73)"
       ],
-      "notes": "v2.1.74 갱신: /loop이 Bedrock/Vertex/Foundry에서도 사용 가능, 기본 Opus 모델 4.6 업데이트"
+      "notes": "v2.1.84 버전 범프 (직접 관련 변경 없음)"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.71",
-      "lastUpdated": "2026-03-07",
+      "basedOn": "2.1.84",
+      "lastUpdated": "2026-03-26",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
         "disable-model-invocation",
         "user-invocable",
+        "effort frontmatter for skills/commands (v2.1.80)",
+        "agent frontmatter: effort, maxTurns, disallowedTools (v2.1.78)",
+        "${CLAUDE_PLUGIN_DATA} persistent state (v2.1.78)",
+        "claude plugin validate schema checking (v2.1.77)",
         "Skill Creator plugin (Evals, A/B Testing, Description Optimization)",
         "Capability Uplift vs Workflow classification",
-        "team marketplace deployment (extraKnownMarketplaces, enabledPlugins)"
+        "team marketplace deployment (extraKnownMarketplaces, enabledPlugins)",
+        "initialPrompt agent frontmatter (v2.1.83)",
+        "paths: YAML glob list frontmatter (v2.1.84)"
       ],
-      "notes": "v2.1.71 신규: Skills 2.0 아키텍처 + Skill Creator 통합 튜토리얼"
+      "notes": "v2.1.84 갱신: initialPrompt 에이전트 프론트매터, paths: YAML 글로브 리스트"
     }
   }
 }

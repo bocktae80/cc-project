@@ -148,6 +148,22 @@ allowed-tools: Read, Grep, Glob
 | \`argument-hint\` | 자동완성 시 힌트 | \`[파일경로]\` |
 | \`hooks\` | 스킬 라이프사이클 훅 | (아래 고급 참조) |
 | \`effort\` | 모델 effort 레벨 오버라이드 | \`high\` |
+| \`paths\` | 활성화 대상 파일 글로브 (YAML 리스트, v2.1.84) | \`["src/**/*.tsx"]\` |
+
+#### \`paths:\` YAML 글로브 리스트 (v2.1.84)
+
+규칙이나 스킬의 \`paths:\` 프론트매터에 **YAML 리스트 형식의 글로브 패턴**을 지정할 수 있어요:
+
+\`\`\`yaml
+---
+name: react-helper
+paths:
+  - "src/components/**/*.tsx"
+  - "src/hooks/**/*.ts"
+---
+\`\`\`
+
+> 해당 파일 패턴에서 작업할 때만 스킬이 자동 활성화됩니다!
 
 #### \`effort\` 프론트매터 (v2.1.80)
 
