@@ -48,6 +48,9 @@ CCTV (기존 정적분석)               AI 경비원 (Claude 보안 스캔)
 | \`sandbox.failIfUnavailable\` | v2.1.83 | 샌드박스를 시작할 수 없으면 **에러로 종료** (비활성화 상태로 실행 방지) |
 | \`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB\` | v2.1.83 | \`=1\`로 설정 시 Bash, 훅, MCP 서버에서 **API 키/클라우드 자격증명 자동 제거** |
 | Windows 드라이브 루트 보호 | v2.1.84 | \`C:\\\`, \`C:\\Windows\` 등 위험 삭제 감지 강화 |
+| \`.husky\` 보호 디렉토리 | v2.1.90 | \`.husky\` 폴더가 acceptEdits 모드에서 보호 디렉토리에 추가 |
+| \`forceRemoteSettingsRefresh\` | v2.1.92 | 정책 설정 — CLI 시작 시 원격 설정을 반드시 새로 가져오고, 실패하면 종료 (fail-closed) |
+| Linux seccomp 복원 | v2.1.92 | npm/네이티브 빌드 모두에서 \`apply-seccomp\` 헬퍼 포함 — 샌드박스의 unix-socket 차단 복원 |
 
 #### \`sandbox.failIfUnavailable\` (v2.1.83)
 
