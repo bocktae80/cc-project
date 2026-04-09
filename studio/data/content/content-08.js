@@ -194,6 +194,39 @@ effort: high
 | \`medium\` | 기본 (생략 시) | 일반 작업 |
 | \`high\` | 깊이 생각 | 코드 리뷰, 아키텍처 분석 |
 
+#### v2.1.94 플러그인 스킬 이름 안정화
+
+플러그인이 \`"skills": ["./"]\`로 스킬을 선언할 때, 이제 invocation name이
+**디렉토리 basename** 대신 **스킬 프론트매터의 \`name\` 필드**를 사용합니다.
+
+\`\`\`
+이전: 플러그인 설치 방식에 따라 호출 이름이 달라짐
+  ├── 로컬 마켓플레이스: "my-plugin-dir"
+  └── git 설치: "repo-name"
+  → 같은 스킬이 환경마다 다른 이름으로 호출됨!
+
+이후: 프론트매터 name이 항상 우선
+  ├── SKILL.md: name: "code-review"
+  └── 어디서 설치하든 → /code-review 로 호출
+\`\`\`
+
+> 플러그인 스킬 작성자는 \`name:\` 필드를 **반드시 의도한 호출명과 일치**시키세요.
+
+#### v2.1.94 output style \`keep-coding-instructions\`
+
+플러그인 output style 프론트매터에 \`keep-coding-instructions\` 필드가 추가됐습니다.
+커스텀 스타일을 적용해도 클로드 코드의 기본 **코딩 규범(CLAUDE.md, 안전 규칙)을
+유지**하도록 강제할 수 있어요.
+
+\`\`\`yaml
+---
+name: formal-korean
+description: 존댓말 스타일
+keep-coding-instructions: true   # 코딩 규범은 그대로
+---
+항상 존댓말로 응답하세요.
+\`\`\`
+
 #### v2.1.91 스킬 보안 설정
 
 - **\`disableSkillShellExecution\`**: 스킬, 커스텀 슬래시 커맨드, 플러그인 커맨드의 **인라인 셸 실행을 비활성화**하는 설정이 추가되었습니다

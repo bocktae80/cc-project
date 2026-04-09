@@ -246,6 +246,18 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.94~2.1.97 플러그인 개선사항
+
+**스킬 invocation name 안정화 (v2.1.94)**: \`"skills": ["./"]\`로 선언한 플러그인 스킬은 이제 **디렉토리 basename 대신 SKILL.md 프론트매터의 \`name\`**을 호출명으로 사용합니다. 로컬/git/npm 설치 방식에 상관없이 **동일한 이름**으로 호출돼요.
+
+**\`bin/\` 실행파일 (v2.1.91 복습)**: 플러그인이 \`bin/\` 아래 실행 가능한 파일을 포함하면 Bash 도구에서 **bare command**로 호출할 수 있습니다.
+
+**output style \`keep-coding-instructions\` (v2.1.94)**: 플러그인 output style 프론트매터에 이 필드를 \`true\`로 설정하면, 스타일을 적용해도 클로드 코드의 기본 코딩 규범을 유지합니다.
+
+**plugin 훅 \`CLAUDE_PLUGIN_ROOT\` 수정 (v2.1.94)**: 환경변수가 설정되지 않아 플러그인 훅이 "No such file or directory"로 실패하던 문제 + 로컬 마켓플레이스 플러그인에서 \`\${CLAUDE_PLUGIN_ROOT}\`가 **마켓플레이스 소스 디렉토리 대신 설치 캐시**로 올바르게 해석되도록 수정.
+
+**\`claude plugin update\` 수정 (v2.1.97)**: git 기반 마켓플레이스 플러그인의 원격에 새 커밋이 있는데도 "already at the latest version"으로 잘못 보고되던 문제 해결.
+
 #### v2.1.74 플러그인 개선사항
 
 **\`--plugin-dir\` 로컬 우선 오버라이드**: 로컬에서 개발 중인 플러그인이 같은 이름의 마켓플레이스 버전보다 **항상 우선** 적용됩니다.

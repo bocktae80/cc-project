@@ -339,6 +339,23 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 > **핵심 요약**: 권한 평가는 deny(즉시 차단) -> allow(자동 허용) -> ask(사용자 확인) 순서로 진행됩니다.
 > deny가 항상 최우선이므로, deny와 allow에 같은 명령이 있으면 차단됩니다.
 
+### v2.1.94~2.1.97 권한 개선
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`--dangerously-skip-permissions\` 수정** | 보호 경로에 쓰기 승인 후 **조용히 accept-edits 모드로 다운그레이드**되던 중대한 버그 해결 — 이제 선언한 대로 유지 | v2.1.97 |
+| **Bash 권한 강화** | env-var 접두사와 네트워크 리디렉션 검사 강화, 흔한 명령의 false prompt 감소 | v2.1.97 |
+| **프로토타입 속성 이름 버그** | \`toString\`처럼 JavaScript 프로토타입 속성과 이름이 겹치는 권한 규칙 때문에 \`settings.json\`이 **조용히 무시**되던 문제 수정 | v2.1.97 |
+| **managed settings 잔존 수정** | 관리자가 allow 규칙을 제거해도 프로세스 재시작 전까지 **활성 상태로 남아있던** 버그 해결 | v2.1.97 |
+| **\`additionalDirectories\` 핫리로드** | \`settings.permissions.additionalDirectories\` 변경이 **세션 중간에도 즉시 반영** — 재시작 불필요 | v2.1.97 |
+| **\`--add-dir\` 권한 중첩 수정** | \`additionalDirectories\`에서 디렉토리 제거 시 \`--add-dir\`로 추가한 동일 디렉토리 접근까지 함께 취소되던 문제 해결 | v2.1.97 |
+| **Accept Edits 래퍼 자동 승인** | \`LANG=C rm foo\`, \`timeout 5 mkdir out\`처럼 안전한 env-var/프로세스 래퍼 접두사가 붙은 파일시스템 명령을 자동 승인 | v2.1.97 |
+| **샌드박스 네트워크 자동 승인** | auto 모드와 bypass-permissions 모드에서 **샌드박스 네트워크 접근 프롬프트 자동 승인** | v2.1.97 |
+
+> **주의**: v2.1.97의 \`--dangerously-skip-permissions\` 다운그레이드 수정은
+> 플래그 의미를 재확립하는 변경입니다. 이 플래그는 문자 그대로 **모든 권한을
+> 건너뜁니다** — 이전 버전의 "안전 낙하산"에 기대고 있었다면 동작이 달라질 수 있어요.
+
 ### v2.1.89~2.1.92 권한 개선
 
 | 개선 | 설명 | 버전 |

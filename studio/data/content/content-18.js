@@ -52,7 +52,11 @@ CLI (터미널에서 직접)                SDK (코드로 자동화)
 | MCP 어노테이션 | 도구에 readOnly/destructive 힌트 부여 |
 | 세션 관리 API | listSessions(), getSessionMessages()로 이력 탐색 |
 | 구조화 출력 | JSON 스키마 검증된 결과 반환 |
-| CLI 번들링 | SDK에 Claude Code CLI가 기본 포함 (별도 설치 불필요) |`,
+| CLI 번들링 | SDK에 Claude Code CLI가 기본 포함 (별도 설치 불필요) |
+| SendMessage 전환 | Agent tool의 resume 제거 → SendMessage({to: agentId})로 에이전트 재개 (v2.1.77) |
+| 에이전트 프론트매터 | effort, maxTurns, disallowedTools로 플러그인 에이전트 세밀 제어 (v2.1.78) |
+| Managed Agents API | \`/v1/agents\`, \`/v1/sessions\` 엔드포인트로 **Anthropic 서버에서 호스팅되는 에이전트** 생성·호출 — \`/claude-api\` 스킬 가이드 확장 (v2.1.97) |
+| 기본 effort 상향 | API Key/Bedrock/Vertex/Foundry/Team/Enterprise 사용자의 기본 effort가 **high**로 변경 (v2.1.94) |`,
 
   concepts: [
     {
@@ -646,6 +650,75 @@ const messages = await getSessionMessages("ses_abc", {
   limit: 50,
   offset: 0
 });
+\`\`\`
+
+#### 에이전트 통신 변경 (v2.1.77+)
+
+CLI 내부에서 서브에이전트를 재개하는 방식이 바뀌었어요!
+
+\`\`\`
+이전 (v2.1.76 이하):
+  Agent({ resume: agentId })     ← resume 파라미터 사용
+
+현재 (v2.1.77+):
+  SendMessage({ to: agentId })   ← SendMessage로 통일
+  → 중지된 에이전트도 자동으로 재개!
+  → Agent tool은 항상 새 에이전트를 생성
+\`\`\`
+
+> SDK 앱에서 직접 사용할 일은 적지만, 플러그인 에이전트를 개발하거나
+> CLI와 SDK를 조합할 때 알아두면 유용해요.
+
+#### Managed Agents API (v2.1.97+)
+
+Agent SDK의 **호스팅 버전**이에요! 내 서버에서 에이전트 루프를 돌리는 대신,
+**Anthropic 서버에서 에이전트를 만들고 실행**할 수 있어요.
+
+\`\`\`
+로컬 SDK                       Managed Agents
+--------                       --------------
+내 서버에서 루프 실행          Anthropic이 루프 실행
+세션 상태 직접 관리            /v1/sessions가 상태 관리
+인프라/확장 직접 책임          서버리스로 자동 확장
+\`\`\`
+
+\`\`\`bash
+# 에이전트 정의 생성
+POST /v1/agents
+{
+  "name": "code-reviewer",
+  "model": "claude-opus-4-6",
+  "system": "코드 리뷰 전문가",
+  "tools": [...]
+}
+
+# 세션 시작 (에이전트 호출)
+POST /v1/sessions
+{
+  "agent_id": "agent_xxx",
+  "messages": [...]
+}
+\`\`\`
+
+> \`/claude-api\` 스킬이 v2.1.97에서 Managed Agents 가이드를 포함하도록 확장됐습니다.
+> 도구 표면 설계, 컨텍스트 관리, 캐싱 전략 가이드를 함께 다룹니다.
+
+#### 플러그인 에이전트 프론트매터 (v2.1.78+)
+
+플러그인으로 배포하는 에이전트를 더 세밀하게 제어할 수 있어요!
+
+\`\`\`yaml
+# 에이전트의 AGENT.md frontmatter
+---
+name: code-reviewer
+description: "코드 리뷰 전문 에이전트"
+effort: high              # 사고 깊이 (low/medium/high)
+maxTurns: 10              # 최대 턴 수 제한
+disallowedTools:          # 사용 금지 도구
+  - Write
+  - Edit
+---
+→ 읽기만 가능하고 수정은 불가한 안전한 에이전트!
 \`\`\`
 
 #### 흐름도

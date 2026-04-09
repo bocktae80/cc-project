@@ -1,8 +1,8 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-05",
-  "currentCLI": "2.1.92",
+  "lastChecked": "2026-04-09",
+  "currentCLI": "2.1.97",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"

@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-04-05
+> 최종 갱신: 2026-04-09
 
 ## 완료된 마일스톤
 
@@ -65,5 +65,11 @@
 
 - [x] M7-01 — v2.1.88~2.1.92 changelog 분석 + 12개 콘텐츠 갱신 + 도구 파이프라인/실행 모드 보충
 - [x] M7-02 — version-track.json 전체 26개 basedOn 2.1.92 갱신 + 구문 검증
+
+### M8: 유지보수 — v2.1.97 갱신 (완료 3/3)
+
+- [x] M8-01 — v2.1.94~2.1.97 changelog 분석 + 8개 콘텐츠 갱신 (05/06/08/10/16/17/18/19): Managed Agents, Focus view, `refreshInterval`, `workspace.git_worktree`, `sessionTitle` 훅, 플러그인 스킬 name 안정화, `● N running` 인디케이터, `--dangerously-skip-permissions` 다운그레이드 수정
+- [x] M8-02 — `/ultraplan` (원격 Plan 모드, Claude Code on the Web) 섹션을 16-background-agents에 추가
+- [x] M8-03 — version-track.json 2.1.92 → 2.1.97 bump + 8개 파일 구문 검증 통과
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

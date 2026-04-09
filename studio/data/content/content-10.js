@@ -236,6 +236,20 @@ v2.1.74 /context:
 | **\`!\` bash 모드 안내** | 대화형 명령이 필요할 때 \`!\` 접두사로 직접 bash 실행하라고 안내 |
 | **\`ANTHROPIC_CUSTOM_MODEL_OPTION\`** | \`/model\` 피커에 커스텀 모델 항목 추가 (환경변수, v2.1.78) |
 
+#### v2.1.94~2.1.97에서 추가된 기능
+
+| 기능 | 설명 |
+|------|------|
+| **Focus view 토글** | \`NO_FLICKER\` 모드에서 \`Ctrl+O\`로 Focus 뷰 전환 — 프롬프트 + 한 줄 도구 요약(edit diffstat 포함) + 최종 응답만 집중해서 표시 (v2.1.97) |
+| **\`refreshInterval\` 상태줄** | status line 커맨드를 **N초마다 자동 재실행**하는 설정 추가 — 시계/배터리/남은 토큰처럼 살아있는 지표 표시 가능 (v2.1.97) |
+| **\`workspace.git_worktree\`** | 상태줄 JSON 입력에 현재 디렉토리가 링크된 git 워크트리 안에 있을 때 해당 필드가 주입됨 (v2.1.97) |
+| **Cedar 문법 하이라이트** | \`.cedar\`, \`.cedarpolicy\` 정책 파일 문법 강조 추가 (v2.1.97) |
+| **CJK 슬래시/@ 자동완성** | 일본어/중국어 문장 부호 뒤에 공백 없이 \`/\`, \`@\` 입력 시 자동완성이 동작 (v2.1.94) |
+| **이미지 토큰 정규화** | 붙여넣기/첨부 이미지도 Read 도구와 동일한 토큰 예산으로 자동 압축 (v2.1.97) |
+| **Accept Edits 환경변수 래퍼** | \`LANG=C rm foo\`, \`timeout 5 mkdir out\`처럼 안전한 env/프로세스 래퍼가 붙은 명령도 자동 승인 (v2.1.97) |
+| **effort 기본값 상향** | API Key/Bedrock/Vertex/Foundry/Team/Enterprise 사용자의 기본 effort가 medium → **high** — \`/effort\`로 조절 (v2.1.94) |
+| **Mantle Bedrock** | \`CLAUDE_CODE_USE_MANTLE=1\`로 Mantle 기반 Amazon Bedrock 사용 (v2.1.94) |
+
 #### v2.1.89~2.1.92에서 추가된 기능
 
 | 기능 | 설명 |
