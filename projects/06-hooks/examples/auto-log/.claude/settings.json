@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hook": "bash ./log-tool-use.sh"
+      }
+    ]
+  }
+}

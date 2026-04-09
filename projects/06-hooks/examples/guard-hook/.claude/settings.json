@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hook": "bash ./guard.sh"
+      }
+    ]
+  }
+}
