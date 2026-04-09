@@ -12,7 +12,7 @@
 
 `studio/index.html`을 브라우저에서 열면 **인터랙티브 학습 대시보드**를 사용할 수 있습니다.
 
-- 20개 프로젝트의 개요, 개념, 실습, 예제, 퀴즈를 브라우저에서 학습
+- 26개 프로젝트의 개요, 개념, 실습, 예제, 퀴즈를 브라우저에서 학습
 - 상태 기반 샌드박스 — 가상 파일시스템, 분기 시나리오, 의사결정 시뮬레이션
 - 3단계 학습자 레벨 (입문 / 탐구 / 실전)
 - 챌린지 기반 진행률 추적
@@ -21,7 +21,7 @@
 
 | 폴더 | 설명 |
 |------|------|
-| `projects/` | 기능별 예제 프로젝트 (20개) |
+| `projects/` | 기능별 예제 프로젝트 (26개: 01~25 + 03d) |
 | [`studio/`](studio/index.html) | 학습 대시보드 — 브라우저에서 열기 |
 | `assets/` | 스크린샷, 다이어그램 |
 | `workbook/` | 프로젝트 상태 관리 |
@@ -45,7 +45,8 @@
 | 03d | [디버그 기능](projects/03-debug-features/) | ⭐⭐ | --debug, /debug로 내부 들여다보기 |
 | 06 | [Hooks](projects/06-hooks/) | ⭐⭐ | 도구 실행에 자동 반응하는 훅 |
 | 07 | [MCP 서버](projects/07-mcp-server/) | ⭐⭐⭐ | 외부 도구 연결 (파일시스템, GitHub, 커스텀) |
-| 08 | [Skills & 커맨드](projects/08-skills-commands/) | ⭐⭐ | 나만의 명령어 만들기 |
+| 08 | [Skills & 커맨드](projects/08-skills-commands/) | ⭐⭐ | SKILL.md로 나만의 스킬 만들기 |
+| 21 | [/simplify 스킬](projects/21-simplify/) | ⭐⭐ | 코드 품질 자동 개선 |
 
 ### Phase 4: 최신 기능
 
@@ -55,6 +56,9 @@
 | 10 | [CLI 마스터](projects/10-cli-master/) | ⭐ | 터미널에서 클로드 관리하기 |
 | 11 | [MCP 커넥터](projects/11-mcp-connectors/) | ⭐⭐ | claude.ai 도구를 코드에서 쓰기 |
 | 12 | [Figma MCP](projects/12-figma-mcp/) | ⭐⭐⭐ | 디자인과 코드를 연결하기 |
+| 22 | [배치 모드](projects/22-batch-mode/) | ⭐⭐ | -p 파이프, CI/CD 자동화 |
+| 24 | [/loop & Cron](projects/24-loop-cron/) | ⭐⭐ | 반복 감시와 스케줄링 |
+| 25 | [Skills 2.0](projects/25-skills-2.0/) | ⭐⭐⭐ | Progressive Disclosure, Skill Creator |
 
 ### Phase 5: 확장 기능
 
@@ -73,6 +77,9 @@
 | 18 | [Agent SDK](projects/18-agent-sdk/) | ⭐⭐⭐ | 나만의 AI 에이전트 만들기 |
 | 19 | [권한 심화](projects/19-permissions-deep/) | ⭐⭐ | 보안 울타리 세밀하게 설정하기 |
 | 20 | [IDE 통합](projects/20-ide-integration/) | ⭐ | VS Code에서 클로드 쓰기 |
+| 23 | [Ralph Loop](projects/23-ralph-loop/) | ⭐⭐⭐ | PRD 기반 자율 개발 루프 |
+
+> 전체 26개 튜토리얼, Claude Code v2.1.72 기준 (2026-03-10 갱신)
 
 ## 시작하기
 
