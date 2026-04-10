@@ -51,6 +51,11 @@ CCTV (기존 정적분석)               AI 경비원 (Claude 보안 스캔)
 | \`.husky\` 보호 디렉토리 | v2.1.90 | \`.husky\` 폴더가 acceptEdits 모드에서 보호 디렉토리에 추가 |
 | \`forceRemoteSettingsRefresh\` | v2.1.92 | 정책 설정 — CLI 시작 시 원격 설정을 반드시 새로 가져오고, 실패하면 종료 (fail-closed) |
 | Linux seccomp 복원 | v2.1.92 | npm/네이티브 빌드 모두에서 \`apply-seccomp\` 헬퍼 포함 — 샌드박스의 unix-socket 차단 복원 |
+| Bash 임의코드 실행 수정 | v2.1.98 | 백슬래시 이스케이프 플래그가 읽기 전용으로 자동 허용되어 임의 코드 실행이 가능하던 취약점 수정 |
+| 복합 명령 강제 권한 | v2.1.98 | 복합 Bash 명령이 auto/bypass 모드에서 안전 검사를 우회하던 문제 수정 |
+| PID 네임스페이스 격리 | v2.1.98 | Linux에서 \`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB\` 설정 시 PID 네임스페이스 격리 추가 |
+| 세션별 스크립트 제한 | v2.1.98 | \`CLAUDE_CODE_SCRIPT_CAPS\` 환경변수로 세션당 스크립트 호출 횟수 제한 |
+| 네트워크 리다이렉트 차단 | v2.1.98 | \`/dev/tcp/...\`, \`/dev/udp/...\` 리다이렉트가 자동 허용되지 않고 프롬프트 표시 |
 
 #### \`sandbox.failIfUnavailable\` (v2.1.83)
 

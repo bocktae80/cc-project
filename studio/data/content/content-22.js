@@ -68,6 +68,7 @@ Claude: ...
 | 2.1.89 | **\`MCP_CONNECTION_NONBLOCKING=true\`** | \`-p\` 모드에서 MCP 연결 대기를 **완전 생략**, \`--mcp-config\` 서버 연결도 5초 타임아웃 |
 | 2.1.90 | **\`--resume\` 캐시 수정** | deferred tools/MCP/에이전트 설정 시 첫 요청 프롬프트 캐시 미스가 발생하던 문제 수정 (v2.1.69 이후 리그레션) |
 | 2.1.90 | **\`--resume\` 피커 필터** | \`claude -p\`나 SDK로 생성된 세션이 \`--resume\` 피커에서 숨겨짐 |
+| 2.1.98 | **\`--exclude-dynamic-system-prompt-sections\`** | print 모드에서 동적 시스템 프롬프트 섹션 제외 → **크로스유저 프롬프트 캐싱** 효율 향상 |
 
 \`\`\`
 비유: 자판기 최적화!

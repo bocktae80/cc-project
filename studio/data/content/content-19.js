@@ -244,7 +244,18 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 | 2.1.77 | PreToolUse allow 우회 | 훅의 allow가 deny 권한을 무시하던 버그 수정 |
 | 2.1.78 | sandbox 무음 비활성화 | 의존성 없을 때 샌드박스가 조용히 꺼짐 → 경고 표시 |
 | 2.1.78 | MCP deny 우회 | \`deny: ["mcp__servername"]\`이 도구 목록에서 미제거 수정 |
-| 2.1.78 | bypassPermissions 보호 | .git, .claude 등 보호 디렉토리 무제한 쓰기 수정 |`
+| 2.1.78 | bypassPermissions 보호 | .git, .claude 등 보호 디렉토리 무제한 쓰기 수정 |
+
+#### 보안 수정 모음 (v2.1.98)
+
+| 수정 | 설명 |
+|------|------|
+| 복합 명령 권한 우회 | 복합 Bash 명령이 auto/bypass 모드에서 강제 안전 검사를 우회하던 버그 수정 |
+| 환경변수 접두사 읽기전용 | env-var 접두사 명령이 안전 변수(\`LANG\`, \`TZ\`, \`NO_COLOR\` 등)만 허용 |
+| 와일드카드 공백/탭 | \`Bash(cmd:*)\`, \`Bash(git commit *)\` 규칙이 여분의 공백/탭이 있어도 매칭 |
+| deny 규칙 cd+파이프 | \`Bash(...)\` deny 규칙이 cd+파이프 혼합 시 프롬프트로 다운그레이드되던 문제 수정 |
+| /dev/tcp, /dev/udp | 네트워크 리다이렉트가 자동 허용 대신 프롬프트 표시 |
+| Accept Edits 안전 env | Accept Edits 모드에서 안전 환경변수나 프로세스 래퍼 접두사 명령 자동 승인 |`
     },
     {
       id: "evaluation-order",

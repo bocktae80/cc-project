@@ -307,6 +307,8 @@ claude --plugin-dir path1 --plugin-dir path2
 | **오프라인 마켓플레이스 캐시** | \`CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE\` 환경변수 — git pull 실패 시 기존 마켓플레이스 캐시 유지 (오프라인 환경용) | v2.1.90 |
 | **플러그인 MCP 연결 수정** | 인증 안 된 claude.ai 커넥터와 중복되는 플러그인 MCP 서버가 "connecting"으로 멈추던 문제 수정 | v2.1.92 |
 | **\`disableSkillShellExecution\`** | 스킬/커맨드의 인라인 셸 실행을 비활성화하는 설정 추가 | v2.1.91 |
+| **\`/reload-plugins\` 스킬 반영** | \`/reload-plugins\`가 재시작 없이 플러그인 제공 스킬도 반영 | v2.1.98 |
+| **YAML boolean 이름 수정** | 플러그인 프론트매터 \`name\`이 YAML boolean 키워드일 때 슬래시 커맨드 피커가 깨지던 문제 수정 | v2.1.98 |
 
 \`\`\`
 비유: 앱 기능 확장!

@@ -244,6 +244,8 @@ print(json.dumps({
 | **\`if\` 복합 명령 수정** | \`if\` 조건이 복합 명령(\`ls && git push\`)이나 환경변수 접두사(\`FOO=bar git push\`)도 올바르게 매칭 | v2.1.89 |
 | **Stop 훅 수정** | prompt 타입 Stop 훅에서 소형 모델이 \`ok:false\`를 반환할 때 잘못 실패하던 문제 수정, \`preventContinuation:true\` 동작 복원 | v2.1.92 |
 | **PreToolUse exit 2 수정** | JSON stdout을 출력하고 exit 2로 종료하는 PreToolUse 훅이 도구를 올바르게 차단 | v2.1.90 |
+| **훅 에러 stderr 표시** | 훅 에러 시 stderr 첫 줄을 트랜스크립트에 포함 — \`--debug\` 없이 자가 진단 가능 | v2.1.98 |
+| **Stop/SubagentStop 수정** | 긴 세션에서 prompt 타입 Stop/SubagentStop 훅이 실패하던 문제 수정, 훅 평가 API 에러가 실제 메시지로 표시 | v2.1.98 |
 
 \`\`\`
 비유: 교실 센서 업그레이드!
