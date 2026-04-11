@@ -255,7 +255,16 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 | 와일드카드 공백/탭 | \`Bash(cmd:*)\`, \`Bash(git commit *)\` 규칙이 여분의 공백/탭이 있어도 매칭 |
 | deny 규칙 cd+파이프 | \`Bash(...)\` deny 규칙이 cd+파이프 혼합 시 프롬프트로 다운그레이드되던 문제 수정 |
 | /dev/tcp, /dev/udp | 네트워크 리다이렉트가 자동 허용 대신 프롬프트 표시 |
-| Accept Edits 안전 env | Accept Edits 모드에서 안전 환경변수나 프로세스 래퍼 접두사 명령 자동 승인 |`
+| Accept Edits 안전 env | Accept Edits 모드에서 안전 환경변수나 프로세스 래퍼 접두사 명령 자동 승인 |
+
+#### 보안 수정 모음 (v2.1.101)
+
+| 수정 | 설명 |
+|------|------|
+| **deny→ask 다운그레이드 방지** | \`permissions.deny\` 규칙이 PreToolUse 훅의 \`permissionDecision: "ask"\`를 올바르게 오버라이드 — 훅이 deny를 프롬프트로 약화시키지 못함 |
+| **설정 소스 cleanup 수정** | \`--setting-sources\`에서 \`user\`를 제외할 때 백그라운드 정리가 \`cleanupPeriodDays\`를 무시하고 30일 넘은 대화 이력을 삭제하던 문제 수정 |
+| **인식 불가 훅 이벤트 복원력** | settings.json에 알 수 없는 훅 이벤트명이 있어도 전체 파일이 무시되지 않음 |
+| **managed 훅 실행** | \`allowManagedHooksOnly\` 설정 시 managed settings로 강제 활성화된 플러그인의 훅이 올바르게 실행 |`
     },
     {
       id: "evaluation-order",

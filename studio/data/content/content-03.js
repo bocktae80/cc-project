@@ -41,7 +41,8 @@ window.STUDIO_CONTENT["03-code-search"] = {
 ### v2.1.63 개선사항
 
 - **파일 제안 프리워밍**: 자주 쓰는 파일 패턴을 미리 캐싱해서 검색이 더 빨라졌습니다
-- **gitignore 존중**: \`.gitignore\`에 등록된 파일은 검색 결과에서 자동 제외됩니다`,
+- **gitignore 존중**: \`.gitignore\`에 등록된 파일은 검색 결과에서 자동 제외됩니다
+- **Grep ripgrep 자가 복구 (v2.1.101)**: 내장 ripgrep 경로가 스테일 상태(VSCode 자동 업데이트, macOS App Translocation 등)가 되면 시스템 \`rg\`로 **자동 폴백 + 세션 중 자가 복구**`,
 
   concepts: [
     {

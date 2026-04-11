@@ -44,7 +44,9 @@ window.STUDIO_CONTENT["13-teleport"] = {
 >
 > **v2.1.91**: 딥 링크에서 **멀티라인 프롬프트** 지원 — URL 인코딩된 줄바꿈(\`%0A\`)이 거부되지 않습니다.
 >
-> **v2.1.92**: Remote Control 세션 이름이 **호스트명을 기본 접두사**로 사용합니다 (예: \`myhost-graceful-unicorn\`). \`--remote-control-session-name-prefix\`로 오버라이드 가능.`,
+> **v2.1.92**: Remote Control 세션 이름이 **호스트명을 기본 접두사**로 사용합니다 (예: \`myhost-graceful-unicorn\`). \`--remote-control-session-name-prefix\`로 오버라이드 가능.
+>
+> **v2.1.101**: \`/ultraplan\` 및 원격 세션 기능이 **웹 설정 없이 기본 클라우드 환경을 자동 생성**합니다. 이전에는 웹에서 먼저 환경을 만들어야 했어요.`,
 
   concepts: [
     {

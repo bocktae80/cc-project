@@ -56,6 +56,9 @@ CCTV (기존 정적분석)               AI 경비원 (Claude 보안 스캔)
 | PID 네임스페이스 격리 | v2.1.98 | Linux에서 \`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB\` 설정 시 PID 네임스페이스 격리 추가 |
 | 세션별 스크립트 제한 | v2.1.98 | \`CLAUDE_CODE_SCRIPT_CAPS\` 환경변수로 세션당 스크립트 호출 횟수 제한 |
 | 네트워크 리다이렉트 차단 | v2.1.98 | \`/dev/tcp/...\`, \`/dev/udp/...\` 리다이렉트가 자동 허용되지 않고 프롬프트 표시 |
+| LSP 커맨드 인젝션 수정 | v2.1.101 | LSP 바이너리 탐지에 사용하는 POSIX \`which\` 폴백의 커맨드 인젝션 취약점 수정 |
+| OS CA 인증서 자동 신뢰 | v2.1.101 | 엔터프라이즈 TLS 프록시가 추가 설정 없이 동작하도록 OS CA 저장소를 기본 신뢰 (\`CLAUDE_CODE_CERT_STORE=bundled\`로 번들 CA만 사용 가능) |
+| 샌드박스 mktemp 수정 | v2.1.101 | 부팅 직후 샌드박스 Bash 명령이 \`mktemp: No such file or directory\`로 실패하던 문제 수정 |
 
 #### \`sandbox.failIfUnavailable\` (v2.1.83)
 

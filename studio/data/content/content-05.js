@@ -79,6 +79,7 @@ window.STUDIO_CONTENT["05-agent-teams"] = {
 | **서브에이전트 tmux 수정** | tmux 윈도우가 종료/번호 변경된 후 서브에이전트 스폰이 영구 실패하던 문제 수정 | v2.1.92 |
 | **\`/agents\` 탭 레이아웃** | Running 탭(실행 중 에이전트)과 Library 탭(에이전트 목록)으로 분리, "Run agent"와 "View running instance" 액션 추가 | v2.1.98 |
 | **에이전트 권한 상속** | 팀 멤버가 리더의 \`--dangerously-skip-permissions\` 권한 모드를 올바르게 상속 | v2.1.98 |
+| **서브에이전트 MCP 도구 상속** | 동적으로 주입된 MCP 서버의 도구를 서브에이전트가 올바르게 상속 | v2.1.101 |
 
 ### v2.1.83 변경사항
 

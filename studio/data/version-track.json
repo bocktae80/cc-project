@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-10",
-  "currentCLI": "2.1.100",
+  "lastChecked": "2026-04-11",
+  "currentCLI": "2.1.101",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -23,11 +23,11 @@
         "1M context window strategy changes",
         "memory filenames hover highlight + click open (v2.1.86)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Read",
         "Write",
@@ -39,42 +39,43 @@
         "Write diff 60% faster on files with tabs/&/$ (v2.1.92)",
         "CLAUDE_CODE_PERFORCE_MODE Edit/Write read-only file hint (v2.1.98)"
       ],
-      "notes": "v2.1.100 갱신: Perforce 모드 읽기전용 파일 힌트"
+      "notes": "v2.1.101 버전 범프"
     },
     "03-code-search": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Glob",
         "Grep",
         "pre-warming",
         "gitignore",
-        ".jj/.sl VCS directory exclusion (v2.1.86)"
+        ".jj/.sl VCS directory exclusion (v2.1.86)",
+        "Grep ripgrep ENOENT fallback to system rg + self-heal (v2.1.101)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 갱신: Grep ripgrep 자가 복구 폴백"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
         "domain filtering"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -91,13 +92,14 @@
         "Named subagents in @ mention typeahead (v2.1.89)",
         "Subagent spawning tmux window fix (v2.1.92)",
         "/agents tabbed layout Running/Library tabs (v2.1.98)",
-        "Agent team permission mode inheritance fix (v2.1.98)"
+        "Agent team permission mode inheritance fix (v2.1.98)",
+        "Subagents inherit MCP tools from dynamically-injected servers (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: /agents 탭 레이아웃, 에이전트 권한 상속 수정"
+      "notes": "v2.1.101 갱신: 서브에이전트 동적 MCP 도구 상속 수정"
     },
     "06-hooks": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -124,13 +126,15 @@
         "PreToolUse JSON stdout exit 2 blocking fix (v2.1.90)",
         "Stop hook ok:false fix + preventContinuation restored (v2.1.92)",
         "Hook errors show stderr first line in transcript (v2.1.98)",
-        "Stop/SubagentStop long session + evaluator API error fix (v2.1.98)"
+        "Stop/SubagentStop long session + evaluator API error fix (v2.1.98)",
+        "Unrecognized hook event name no longer ignores entire settings.json (v2.1.101)",
+        "Managed plugin hooks run under allowManagedHooksOnly (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: 훅 에러 stderr 표시, Stop/SubagentStop 긴 세션 수정"
+      "notes": "v2.1.101 갱신: 설정 복원력 개선, managed 훅 실행"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
@@ -148,13 +152,14 @@
         "MCP tool result persistence _meta[anthropic/maxResultSizeChars] up to 500K (v2.1.91)",
         "MCP_CONNECTION_NONBLOCKING=true for -p mode (v2.1.89)",
         "Plugin MCP stuck connecting fix (v2.1.92)",
-        "OAuth authServerMetadataUrl token refresh fix for ADFS (v2.1.98)"
+        "OAuth authServerMetadataUrl token refresh fix for ADFS (v2.1.98)",
+        "claude mcp serve outputSchema validation fix (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: OAuth ADFS 토큰 갱신 수정"
+      "notes": "v2.1.101 갱신: mcp serve outputSchema 수정"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -172,11 +177,11 @@
         "disableSkillShellExecution setting (v2.1.91)",
         "keep-coding-instructions frontmatter field (v2.1.94)"
       ],
-      "notes": "v2.1.100 갱신: keep-coding-instructions 프론트매터 필드"
+      "notes": "v2.1.101 버전 범프"
     },
     "09-worktree": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -187,13 +192,15 @@
         "WorktreeCreate hook type:http (v2.1.84)",
         "--worktree non-git repo error fix (v2.1.85)",
         "workspace.git_worktree status line JSON field (v2.1.98)",
-        "stale worktree cleanup respects untracked files (v2.1.98)"
+        "stale worktree cleanup respects untracked files (v2.1.98)",
+        "sub-agents in isolated worktrees Read/Edit access fix (v2.1.101)",
+        "claude -w stale directory cleanup fix (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: 상태 라인 git_worktree 필드, 워크트리 정리 시 untracked 파일 보호"
+      "notes": "v2.1.101 갱신: 격리 워크트리 파일 접근 수정, 스테일 워크트리 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -234,13 +241,17 @@
         "Vertex AI interactive setup wizard (v2.1.98)",
         "Vim j/k history navigation + footer pill select (v2.1.98)",
         "/resume project/worktree/branch filter labels (v2.1.98)",
-        "default effort changed medium→high for API-key/Bedrock/Vertex/Team/Enterprise (v2.1.94)"
+        "default effort changed medium→high for API-key/Bedrock/Vertex/Team/Enterprise (v2.1.94)",
+        "/team-onboarding teammate ramp-up guide command (v2.1.101)",
+        "/ultraplan auto-create default cloud environment (v2.1.101)",
+        "--resume <name> accepts session titles from /rename and --name (v2.1.101)",
+        "rate-limit retry messages show which limit + reset time (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: Vertex AI 위저드, Vim j/k, /resume 필터, 기본 effort high"
+      "notes": "v2.1.101 갱신: /team-onboarding, /ultraplan 자동 환경, --resume 타이틀, rate-limit 메시지"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
@@ -255,11 +266,11 @@
         "deniedMcpServers blocking claude.ai connectors fix (v2.1.85)",
         "MCP connector startup stall reduction (v2.1.86)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -267,11 +278,11 @@
         "Code Connect",
         "generate_diagram (FigJam)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
@@ -281,13 +292,14 @@
         "deep links open preferred terminal (v2.1.84)",
         "deep link queries support 5,000 chars (v2.1.85)",
         "multi-line deep link prompts via %0A (v2.1.91)",
-        "Remote Control hostname default prefix + --remote-control-session-name-prefix (v2.1.92)"
+        "Remote Control hostname default prefix + --remote-control-session-name-prefix (v2.1.92)",
+        "/ultraplan auto-create cloud environment without web setup (v2.1.101)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 갱신: /ultraplan 자동 클라우드 환경 생성"
     },
     "14-code-security": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "security scan",
         "OWASP",
@@ -305,24 +317,27 @@
         "compound Bash commands forced permission check fix (v2.1.98)",
         "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB PID namespace isolation Linux (v2.1.98)",
         "CLAUDE_CODE_SCRIPT_CAPS per-session script invocation limit (v2.1.98)",
-        "/dev/tcp /dev/udp redirect prompting (v2.1.98)"
+        "/dev/tcp /dev/udp redirect prompting (v2.1.98)",
+        "LSP which fallback command injection fix (v2.1.101)",
+        "OS CA certificate store trust by default, CLAUDE_CODE_CERT_STORE=bundled (v2.1.101)",
+        "sandboxed Bash mktemp fix after fresh boot (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: Bash 임의코드 수정, 복합 명령 권한, PID 격리, 스크립트 제한, 네트워크 리다이렉트"
+      "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
         "screenshot",
         "GIF recording"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "run_in_background",
         "TaskOutput deprecated → Read (v2.1.83)",
@@ -334,11 +349,11 @@
         "Monitor tool for streaming background script events (v2.1.98)",
         "failed background subagents report partial progress (v2.1.98)"
       ],
-      "notes": "v2.1.100 갱신: Monitor 도구(실시간 이벤트 스트리밍), 실패 서브에이전트 부분 진행 보고"
+      "notes": "v2.1.101 버전 범프"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -363,17 +378,21 @@
         "disableSkillShellExecution setting (v2.1.91)",
         "/reload-plugins picks up plugin skills without restart (v2.1.98)",
         "YAML boolean keyword frontmatter name slash command fix (v2.1.98)",
-        "plugin skills use frontmatter name for invocation (v2.1.94)"
+        "plugin skills use frontmatter name for invocation (v2.1.94)",
+        "duplicate name: frontmatter slash command routing fix (v2.1.101)",
+        "context: fork and agent frontmatter honoring fix (v2.1.101)",
+        "directory-source stale version cache fix (v2.1.101)",
+        "/plugin update ENAMETOOLONG fix (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: /reload-plugins 스킬 반영, YAML boolean 수정, 프론트매터 name 사용"
+      "notes": "v2.1.101 갱신: 중복 name 라우팅, context:fork/agent 미적용, 스테일 캐시, ENAMETOOLONG"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.100",
+      "basedOn": "2.1.101",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-04-11",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -388,11 +407,11 @@
         "Python SDK type:'sdk' MCP servers via --mcp-config fix (v2.1.85)",
         "/claude-api skill covers Managed Agents (v2.1.98)"
       ],
-      "notes": "v2.1.100 갱신: /claude-api 스킬 Managed Agents 커버"
+      "notes": "v2.1.101 버전 범프"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
@@ -412,13 +431,17 @@
         "Bash wildcard rules space/tab matching fix (v2.1.98)",
         "Bash deny rules cd+pipe downgrade fix (v2.1.98)",
         "Accept Edits auto-approve safe env var prefix commands (v2.1.98)",
-        "permissions.additionalDirectories mid-session changes (v2.1.98)"
+        "permissions.additionalDirectories mid-session changes (v2.1.98)",
+        "permissions.deny overrides PreToolUse hook ask downgrade fix (v2.1.101)",
+        "--setting-sources cleanup ignoring cleanupPeriodDays fix (v2.1.101)",
+        "unrecognized hook event name settings resilience (v2.1.101)",
+        "managed plugin hooks under allowManagedHooksOnly (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: Bash 복합 명령/와일드카드/deny 수정, 네트워크 리다이렉트, Accept Edits env 자동 승인"
+      "notes": "v2.1.101 갱신: deny→ask 다운그레이드 방지, 설정 소스 cleanup, 훅 이벤트 복원력, managed 훅"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -435,22 +458,22 @@
         "@-mention file autocomplete performance improvement (v2.1.85)",
         "VSCode settings.json parse failure warning banner (v2.1.94)"
       ],
-      "notes": "v2.1.100 갱신: VSCode settings.json 파싱 실패 경고 배너"
+      "notes": "v2.1.101 버전 범프"
     },
     "21-simplify": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "/simplify",
         "code quality",
         "5 principles",
         "PR routine"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
@@ -460,13 +483,14 @@
         "MCP_CONNECTION_NONBLOCKING=true for -p mode (v2.1.89)",
         "--resume prompt cache miss fix for deferred tools/MCP/agents (v2.1.90)",
         "--resume picker hides -p/SDK sessions (v2.1.90)",
-        "--exclude-dynamic-system-prompt-sections cross-user prompt caching (v2.1.98)"
+        "--exclude-dynamic-system-prompt-sections cross-user prompt caching (v2.1.98)",
+        "-p --resume <name> accepts session titles from /rename and --name (v2.1.101)"
       ],
-      "notes": "v2.1.100 갱신: --exclude-dynamic-system-prompt-sections 크로스유저 캐싱"
+      "notes": "v2.1.101 갱신: --resume <name> 세션 타이틀 수용"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -474,11 +498,11 @@
         "progress.txt",
         "auto development"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -492,11 +516,11 @@
         "/loop available on Bedrock/Vertex/Foundry (v2.1.73)",
         "timestamp markers in transcripts for /loop and CronCreate (v2.1.85)"
       ],
-      "notes": "v2.1.100 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.100",
-      "lastUpdated": "2026-04-11",
+      "basedOn": "2.1.101",
+      "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
@@ -518,7 +542,7 @@
         "keep-coding-instructions frontmatter field (v2.1.94)",
         "hookSpecificOutput.sessionTitle for UserPromptSubmit hooks (v2.1.94)"
       ],
-      "notes": "v2.1.100 갱신: keep-coding-instructions, hookSpecificOutput.sessionTitle"
+      "notes": "v2.1.101 버전 범프"
     }
   }
 }

@@ -309,6 +309,10 @@ claude --plugin-dir path1 --plugin-dir path2
 | **\`disableSkillShellExecution\`** | 스킬/커맨드의 인라인 셸 실행을 비활성화하는 설정 추가 | v2.1.91 |
 | **\`/reload-plugins\` 스킬 반영** | \`/reload-plugins\`가 재시작 없이 플러그인 제공 스킬도 반영 | v2.1.98 |
 | **YAML boolean 이름 수정** | 플러그인 프론트매터 \`name\`이 YAML boolean 키워드일 때 슬래시 커맨드 피커가 깨지던 문제 수정 | v2.1.98 |
+| **중복 name 슬래시 연결 수정** | 중복 \`name:\` 프론트매터 시 슬래시 커맨드가 잘못된 플러그인으로 연결되던 문제 수정 | v2.1.101 |
+| **\`context: fork\`/\`agent\` 미적용 수정** | 스킬이 \`context: fork\`와 \`agent\` 프론트매터를 무시하던 문제 수정 | v2.1.101 |
+| **디렉토리 소스 스테일 캐시** | directory-source 플러그인이 스테일 버전 캐시에서 로드되던 문제 수정 | v2.1.101 |
+| **\`/plugin update\` ENAMETOOLONG** | 플러그인 업데이트 시 \`ENAMETOOLONG\` 에러로 실패하던 문제 수정 | v2.1.101 |
 
 \`\`\`
 비유: 앱 기능 확장!
