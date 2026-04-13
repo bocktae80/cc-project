@@ -1,15 +1,15 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-11",
-  "currentCLI": "2.1.101",
+  "lastChecked": "2026-04-13",
+  "currentCLI": "2.1.104",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "CLAUDE.md",
@@ -26,7 +26,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Read",
@@ -42,7 +42,7 @@
       "notes": "v2.1.101 버전 범프"
     },
     "03-code-search": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Glob",
@@ -55,7 +55,7 @@
       "notes": "v2.1.101 갱신: Grep ripgrep 자가 복구 폴백"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "--debug flag",
@@ -64,7 +64,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "WebSearch",
@@ -74,7 +74,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "TeamCreate",
@@ -98,7 +98,7 @@
       "notes": "v2.1.101 갱신: 서브에이전트 동적 MCP 도구 상속 수정"
     },
     "06-hooks": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
@@ -133,7 +133,7 @@
       "notes": "v2.1.101 갱신: 설정 복원력 개선, managed 훅 실행"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "MCP protocol",
@@ -158,7 +158,7 @@
       "notes": "v2.1.101 갱신: mcp serve outputSchema 수정"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "SKILL.md directory structure",
@@ -180,7 +180,7 @@
       "notes": "v2.1.101 버전 범프"
     },
     "09-worktree": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "git worktree",
@@ -199,7 +199,7 @@
       "notes": "v2.1.101 갱신: 격리 워크트리 파일 접근 수정, 스테일 워크트리 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "claude auth",
@@ -250,7 +250,7 @@
       "notes": "v2.1.101 갱신: /team-onboarding, /ultraplan 자동 환경, --resume 타이틀, rate-limit 메시지"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "MCP connectors",
@@ -269,7 +269,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Figma MCP",
@@ -281,7 +281,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "& prefix",
@@ -298,7 +298,7 @@
       "notes": "v2.1.101 갱신: /ultraplan 자동 클라우드 환경 생성"
     },
     "14-code-security": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "security scan",
@@ -325,7 +325,7 @@
       "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Chrome extension",
@@ -336,7 +336,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "run_in_background",
@@ -352,7 +352,7 @@
       "notes": "v2.1.101 버전 범프"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
@@ -387,7 +387,7 @@
       "notes": "v2.1.101 갱신: 중복 name 라우팅, context:fork/agent 미적용, 스테일 캐시, ENAMETOOLONG"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
@@ -410,7 +410,7 @@
       "notes": "v2.1.101 버전 범프"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "permission modes",
@@ -440,7 +440,7 @@
       "notes": "v2.1.101 갱신: deny→ask 다운그레이드 방지, 설정 소스 cleanup, 훅 이벤트 복원력, managed 훅"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "VS Code extension",
@@ -461,7 +461,7 @@
       "notes": "v2.1.101 버전 범프"
     },
     "21-simplify": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "/simplify",
@@ -472,7 +472,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "-p pipe mode",
@@ -489,7 +489,7 @@
       "notes": "v2.1.101 갱신: --resume <name> 세션 타이틀 수용"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Ralph Loop",
@@ -501,7 +501,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "/loop command",
@@ -519,7 +519,7 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.101",
+      "basedOn": "2.1.104",
       "lastUpdated": "2026-04-12",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
@@ -542,7 +542,20 @@
         "keep-coding-instructions frontmatter field (v2.1.94)",
         "hookSpecificOutput.sessionTitle for UserPromptSubmit hooks (v2.1.94)"
       ],
-      "notes": "v2.1.101 버전 범프"
+      "notes": "v2.1.104 버전 범프"
+    },
+    "26-team-onboarding": {
+      "basedOn": "2.1.104",
+      "lastUpdated": "2026-04-14",
+      "trackedFeatures": [
+        "/team-onboarding command (v2.1.101)",
+        "30-day usage data analysis",
+        "ONBOARDING.md auto-generation",
+        "work type classification (7 categories)",
+        "setup checklist (repos, MCP, skills)",
+        "onboarding buddy mode (HTML comment instruction)"
+      ],
+      "notes": "v2.1.101에서 추가된 /team-onboarding 커맨드 전용 튜토리얼 신규 생성"
     }
   }
 }

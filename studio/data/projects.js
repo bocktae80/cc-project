@@ -569,6 +569,26 @@ window.STUDIO_DATA = {
         { title: "팀 마켓플레이스 배포 설정", difficulty: 3, status: "completed" }
       ],
       prerequisites: ["08-skills-commands", "17-plugin-system"]
+    },
+    {
+      id: "26-team-onboarding",
+      number: "26",
+      title: "팀 온보딩",
+      subtitle: "새 팀원을 위한 가이드 자동 생성",
+      phase: "phase-2",
+      difficulty: 2,
+      status: "completed",
+      description: "/team-onboarding 커맨드로 30일간 사용 데이터를 분석하여 새 팀원을 위한 맞춤 온보딩 가이드(ONBOARDING.md)를 자동 생성합니다.",
+      concepts: ["/team-onboarding", "ONBOARDING.md", "온보딩 버디", "셋업 체크리스트"],
+      path: "../projects/26-team-onboarding/",
+      estimatedMinutes: 15,
+      relatedProjects: ["01-memory-system", "08-skills-commands", "10-cli-master"],
+      subExamples: [
+        { title: "동작 원리 & 가이드 구조", difficulty: 1, status: "completed" },
+        { title: "가이드 생성 & 커스터마이즈", difficulty: 2, status: "completed" },
+        { title: "온보딩 버디 모드 & 팀 배포", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["01-memory-system"]
     }
   ]
 };
