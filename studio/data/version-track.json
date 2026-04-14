@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-13",
-  "currentCLI": "2.1.104",
+  "lastChecked": "2026-04-14",
+  "currentCLI": "2.1.108",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -26,8 +26,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Read",
         "Write",
@@ -42,8 +42,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "03-code-search": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Glob",
         "Grep",
@@ -55,8 +55,8 @@
       "notes": "v2.1.101 갱신: Grep ripgrep 자가 복구 폴백"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
@@ -64,8 +64,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
@@ -74,8 +74,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -98,8 +98,8 @@
       "notes": "v2.1.101 갱신: 서브에이전트 동적 MCP 도구 상속 수정"
     },
     "06-hooks": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -128,13 +128,15 @@
         "Hook errors show stderr first line in transcript (v2.1.98)",
         "Stop/SubagentStop long session + evaluator API error fix (v2.1.98)",
         "Unrecognized hook event name no longer ignores entire settings.json (v2.1.101)",
-        "Managed plugin hooks run under allowManagedHooksOnly (v2.1.101)"
+        "Managed plugin hooks run under allowManagedHooksOnly (v2.1.101)",
+        "PreCompact hook blocking support (exit 2 or decision:block) (v2.1.105)",
+        "Plugin monitors manifest key for background hooks (v2.1.105)"
       ],
-      "notes": "v2.1.101 갱신: 설정 복원력 개선, managed 훅 실행"
+      "notes": "v2.1.108 갱신: PreCompact 블로킹 지원 + 플러그인 monitors 백그라운드 훅"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
@@ -158,8 +160,8 @@
       "notes": "v2.1.101 갱신: mcp serve outputSchema 수정"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -175,13 +177,16 @@
         "skill descriptions capped at 250 chars in /skills listing (v2.1.86)",
         "/skills menu alphabetical sort (v2.1.86)",
         "disableSkillShellExecution setting (v2.1.91)",
-        "keep-coding-instructions frontmatter field (v2.1.94)"
+        "keep-coding-instructions frontmatter field (v2.1.94)",
+        "Model-invoked built-in slash commands via Skill tool (/init, /review, /security-review) (v2.1.108)",
+        "/recap command for session return context summary (v2.1.108)",
+        "/undo as alias for /rewind (v2.1.108)"
       ],
-      "notes": "v2.1.101 버전 범프"
+      "notes": "v2.1.108 갱신: Skill 도구로 내장 슬래시 커맨드 자동 호출 + /recap + /undo alias"
     },
     "09-worktree": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -199,8 +204,8 @@
       "notes": "v2.1.101 갱신: 격리 워크트리 파일 접근 수정, 스테일 워크트리 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -250,8 +255,8 @@
       "notes": "v2.1.101 갱신: /team-onboarding, /ultraplan 자동 환경, --resume 타이틀, rate-limit 메시지"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
@@ -269,8 +274,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -281,8 +286,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
@@ -298,8 +303,8 @@
       "notes": "v2.1.101 갱신: /ultraplan 자동 클라우드 환경 생성"
     },
     "14-code-security": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "security scan",
         "OWASP",
@@ -325,8 +330,8 @@
       "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
@@ -336,8 +341,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "run_in_background",
         "TaskOutput deprecated → Read (v2.1.83)",
@@ -352,8 +357,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -382,17 +387,21 @@
         "duplicate name: frontmatter slash command routing fix (v2.1.101)",
         "context: fork and agent frontmatter honoring fix (v2.1.101)",
         "directory-source stale version cache fix (v2.1.101)",
-        "/plugin update ENAMETOOLONG fix (v2.1.101)"
+        "/plugin update ENAMETOOLONG fix (v2.1.101)",
+        "monitors top-level manifest key for auto-armed background monitors (v2.1.105)",
+        "Stale worktree cleanup for squash-merged PRs (v2.1.105)",
+        "Marketplace package.json auto-install dependencies (v2.1.105)",
+        "Policy plugin auto-update fix across projects (v2.1.108)"
       ],
-      "notes": "v2.1.101 갱신: 중복 name 라우팅, context:fork/agent 미적용, 스테일 캐시, ENAMETOOLONG"
+      "notes": "v2.1.108 갱신: monitors 매니페스트 키 + 마켓플레이스 auto-install + squash-merge worktree 청소"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.104",
+      "basedOn": "2.1.108",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-04-12",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -410,8 +419,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
@@ -440,8 +449,8 @@
       "notes": "v2.1.101 갱신: deny→ask 다운그레이드 방지, 설정 소스 cleanup, 훅 이벤트 복원력, managed 훅"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -461,8 +470,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "21-simplify": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "/simplify",
         "code quality",
@@ -472,8 +481,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
@@ -489,8 +498,8 @@
       "notes": "v2.1.101 갱신: --resume <name> 세션 타이틀 수용"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -501,8 +510,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -519,8 +528,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-12",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
@@ -545,8 +554,8 @@
       "notes": "v2.1.104 버전 범프"
     },
     "26-team-onboarding": {
-      "basedOn": "2.1.104",
-      "lastUpdated": "2026-04-14",
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
       "trackedFeatures": [
         "/team-onboarding command (v2.1.101)",
         "30-day usage data analysis",

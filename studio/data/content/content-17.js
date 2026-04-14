@@ -246,6 +246,46 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.105~2.1.108 플러그인 개선사항
+
+**\`monitors\` 최상위 매니페스트 키 (v2.1.105)**: plugin.json에 \`monitors\` 키로 백그라운드 모니터 스크립트를 선언하면 **세션 시작 또는 스킬 호출 시 자동으로 arm**됩니다. 장시간 이벤트 감시·자동 반응 훅 패턴의 표준 진입점이 됐어요.
+
+\`\`\`json
+// plugin.json
+{
+  "name": "my-monitor-plugin",
+  "version": "0.1.0",
+  "monitors": [
+    {
+      "name": "file-watcher",
+      "command": "node ./monitors/watch.js",
+      "trigger": "session-start"
+    },
+    {
+      "name": "build-watcher",
+      "command": "./monitors/build-check.sh",
+      "trigger": "skill-invoke"
+    }
+  ]
+}
+\`\`\`
+
+\`\`\`
+비유: 앱의 백그라운드 알림 서비스
+
+기존: 훅은 이벤트가 터질 때만 실행되는 단발성 반응
+이후: monitors로 "세션 열릴 때 자동 시작" 장기 감시자를 앱이 내장
+     → 카톡 알림 서비스처럼 앱 켜자마자 백그라운드에서 감시
+\`\`\`
+
+**스테일 worktree 청소 개선 (v2.1.105)**: PR이 **squash-merge**된 에이전트 worktree도 정리 대상에 포함됩니다. 무한정 남아있던 worktree 찌꺼기가 자동 정리돼요.
+
+**정책 플러그인 자동 업데이트 수정 (v2.1.108)**: 정책 관리 플러그인이 **처음 설치된 프로젝트와 다른 프로젝트에서 실행**될 때 자동 업데이트가 안 되던 문제 해결.
+
+**마켓플레이스 \`package.json\` 자동 설치 (v2.1.105)**: \`package.json\`과 lockfile을 포함한 마켓플레이스 플러그인이 **설치/업데이트 후 의존성이 자동으로 설치**됩니다.
+
+**공식 마켓플레이스 자동 업데이트 내결함성 (v2.1.105)**: 플러그인 프로세스가 파일을 열고 있을 때 자동 업데이트가 공식 마켓플레이스를 깨뜨리던 문제 해결.
+
 #### v2.1.94~2.1.97 플러그인 개선사항
 
 **스킬 invocation name 안정화 (v2.1.94)**: \`"skills": ["./"]\`로 선언한 플러그인 스킬은 이제 **디렉토리 basename 대신 SKILL.md 프론트매터의 \`name\`**을 호출명으로 사용합니다. 로컬/git/npm 설치 방식에 상관없이 **동일한 이름**으로 호출돼요.
