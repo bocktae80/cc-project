@@ -1,0 +1,68 @@
+milestone: M0-maintenance
+description: "v2.1.81 튜토리얼 콘텐츠 갱신 (13개 → 0개 미갱신)"
+startedAt: "2026-03-25T00:00:00Z"
+updatedAt: "2026-03-25T00:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+
+fidelity:
+  pfs: 100
+  iteration: 1
+  status: pass
+  source: "/update-check 스킬 보고서 (changelog 분석 결과)"
+
+passloop:
+  g1: { score: 90, round: 1, status: pass }
+  g1FunctionMap: [] # 콘텐츠 프로젝트 — 함수 없음
+  g2: { score: 95, round: 1, status: pass }
+  g3: { score: 90, round: 1, status: pass }
+  g4: { score: 95, round: 1, status: pass }
+  mqs: 92.75
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "no_source_files"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 95
+  verdict: pass
+  runId: null
+  violations: { error: 0, warning: 0, info: 0 }
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes"
+  changedSkills: []
+  inspection: { issues: 0, details: [] }
+  improvement: { fixes: 0, details: [] }
+  eval_test: { round: 0, total_assertions: 0, passed_assertions: 0, pass_rate: null, evals: [] }
+  status: skipped
+
+redteam:
+  profile: docs
+  dts: 90.95
+  round: 1
+  dimensions:
+    accuracy: 92
+    completeness: 95
+    navigability: 90
+    clarity: 85
+    consistency: 90
+    maintainability: 92
+  evidence:
+    accuracy: { action: "changelog v2.1.77~81 원문 대조", result: "4개 주요 변경사항 정확 매칭", score: 92 }
+    completeness: { action: "업데이트 체크 보고서 vs 콘텐츠 반영 확인", result: "13개 항목 전부 갱신", score: 95 }
+    navigability: { action: "콘텐츠 구조 일관성 검증", result: "overview→concepts→tutorials 패턴 유지", score: 90 }
+    clarity: { action: "타겟 수준(중학생) 적합성 확인", result: "비유 패턴 유지, 일부 중급 내용 포함", score: 85 }
+    consistency: { action: "기존 콘텐츠 서식 대조", result: "테이블/코드블록/요약 패턴 일치", score: 90 }
+    maintainability: { action: "version-track notes/features 다음 갱신 참조성", result: "버전 태그 포함, 변경 요약 명확", score: 92 }
+  status: pass
+
+loopbacks:
+  count: 0
+  history: []
