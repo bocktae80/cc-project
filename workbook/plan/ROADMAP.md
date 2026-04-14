@@ -72,4 +72,10 @@
 - [x] M8-02 — `/ultraplan` (원격 Plan 모드, Claude Code on the Web) 섹션을 16-background-agents에 추가
 - [x] M8-03 — version-track.json 2.1.92 → 2.1.97 bump + 8개 파일 구문 검증 통과
 
+### M9: 유지보수 — v2.1.108 갱신 (완료 3/3)
+
+- [x] M9-01 — v2.1.104~2.1.108 changelog 분석 + 3개 ⭐⭐⭐ 콘텐츠 갱신 (06/08/17): PreCompact 블로킹, 플러그인 monitors 매니페스트, Skill 도구로 내장 /init·/review·/security-review 자동 호출, /recap, /undo alias
+- [x] M9-02 — 27 — 프롬프트 캐싱 TTL 제어 신규 튜토리얼 추가 → [`27-prompt-caching`](../../projects/27-prompt-caching/): ENABLE_PROMPT_CACHING_1H / FORCE_PROMPT_CACHING_5M 환경 변수, TTL 선택 가이드, 비용 절감 시나리오 3종
+- [x] M9-03 — version-track.json 2.1.104 → 2.1.108 bump + 27개 → 28개 추적 + 전체 콘텐츠 구문 검증 통과
+
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

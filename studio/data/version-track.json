@@ -565,6 +565,18 @@
         "onboarding buddy mode (HTML comment instruction)"
       ],
       "notes": "v2.1.101에서 추가된 /team-onboarding 커맨드 전용 튜토리얼 신규 생성"
+    },
+    "27-prompt-caching": {
+      "basedOn": "2.1.108",
+      "lastUpdated": "2026-04-15",
+      "trackedFeatures": [
+        "ENABLE_PROMPT_CACHING_1H env var for 1-hour TTL (API key, Bedrock, Vertex, Foundry) (v2.1.108)",
+        "FORCE_PROMPT_CACHING_5M env var for 5-minute forced TTL (v2.1.108)",
+        "ENABLE_PROMPT_CACHING_1H_BEDROCK deprecated (unified into ENABLE_PROMPT_CACHING_1H) (v2.1.108)",
+        "Startup warning when prompt caching is disabled via DISABLE_PROMPT_CACHING* (v2.1.108)",
+        "DISABLE_TELEMETRY no longer falls back to 5-minute TTL (v2.1.108 fix)"
+      ],
+      "notes": "M9 신규 튜토리얼 — v2.1.108 프롬프트 캐싱 TTL 제어"
     }
   }
 }

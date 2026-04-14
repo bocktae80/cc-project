@@ -589,6 +589,26 @@ window.STUDIO_DATA = {
         { title: "온보딩 버디 모드 & 팀 배포", difficulty: 2, status: "completed" }
       ],
       prerequisites: ["01-memory-system"]
+    },
+    {
+      id: "27-prompt-caching",
+      number: "27",
+      title: "프롬프트 캐싱 TTL",
+      subtitle: "1시간 캐시로 세션 비용 절감",
+      phase: "phase-6",
+      difficulty: 2,
+      status: "completed",
+      description: "v2.1.108의 ENABLE_PROMPT_CACHING_1H / FORCE_PROMPT_CACHING_5M 환경 변수로 캐시 TTL을 세션 패턴에 맞게 전환하는 법을 배운다. 장시간 작업에서 캐시 히트율을 극대화해 비용을 크게 줄일 수 있다.",
+      concepts: ["Prompt Caching", "TTL (Time-To-Live)", "ENABLE_PROMPT_CACHING_1H", "FORCE_PROMPT_CACHING_5M", "캐시 쓰기 할증"],
+      path: "../projects/27-prompt-caching/",
+      estimatedMinutes: 15,
+      relatedProjects: ["10-cli-master", "18-agent-sdk", "19-permissions-deep"],
+      subExamples: [
+        { title: "현재 캐시 설정 확인", difficulty: 1, status: "completed" },
+        { title: "1시간 TTL 활성화", difficulty: 2, status: "completed" },
+        { title: "5분 강제 / 되돌리기", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["10-cli-master"]
     }
   ]
 };
