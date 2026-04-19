@@ -609,6 +609,26 @@ window.STUDIO_DATA = {
         { title: "5분 강제 / 되돌리기", difficulty: 2, status: "completed" }
       ],
       prerequisites: ["10-cli-master"]
+    },
+    {
+      id: "28-ultrareview",
+      number: "28",
+      title: "/ultrareview",
+      subtitle: "클라우드 멀티 에이전트 병렬 코드 리뷰",
+      phase: "phase-6",
+      difficulty: 3,
+      status: "completed",
+      description: "v2.1.111에 추가된 /ultrareview로 클라우드에서 여러 에이전트가 병렬로 코드 리뷰를 수행한다. 대형 PR이나 보안 민감 변경에서 1인 리뷰어가 놓치는 이슈를 다각도로 탐지하고, /ultrareview <PR#>로 GitHub PR도 직접 리뷰할 수 있다.",
+      concepts: ["/ultrareview", "멀티 에이전트 병렬 리뷰", "크리틱 루프", "PR 번호 리뷰", "diffstat 런치 다이얼로그"],
+      path: "../projects/28-ultrareview/",
+      estimatedMinutes: 20,
+      relatedProjects: ["14-code-security", "21-simplify", "10-cli-master"],
+      subExamples: [
+        { title: "현재 브랜치 리뷰", difficulty: 2, status: "completed" },
+        { title: "/ultrareview <PR#> GitHub PR 모드", difficulty: 3, status: "completed" },
+        { title: "런치 다이얼로그 & 취소", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["14-code-security"]
     }
   ]
 };

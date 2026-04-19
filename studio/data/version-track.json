@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-14",
-  "currentCLI": "2.1.108",
+  "lastChecked": "2026-04-20",
+  "currentCLI": "2.1.114",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -26,8 +26,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Read",
         "Write",
@@ -42,8 +42,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "03-code-search": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Glob",
         "Grep",
@@ -55,8 +55,8 @@
       "notes": "v2.1.101 갱신: Grep ripgrep 자가 복구 폴백"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
@@ -64,8 +64,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
@@ -74,8 +74,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -98,8 +98,8 @@
       "notes": "v2.1.101 갱신: 서브에이전트 동적 MCP 도구 상속 수정"
     },
     "06-hooks": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -135,8 +135,8 @@
       "notes": "v2.1.108 갱신: PreCompact 블로킹 지원 + 플러그인 monitors 백그라운드 훅"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
@@ -160,8 +160,8 @@
       "notes": "v2.1.101 갱신: mcp serve outputSchema 수정"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -185,8 +185,8 @@
       "notes": "v2.1.108 갱신: Skill 도구로 내장 슬래시 커맨드 자동 호출 + /recap + /undo alias"
     },
     "09-worktree": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -204,8 +204,8 @@
       "notes": "v2.1.101 갱신: 격리 워크트리 파일 접근 수정, 스테일 워크트리 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -250,13 +250,33 @@
         "/team-onboarding teammate ramp-up guide command (v2.1.101)",
         "/ultraplan auto-create default cloud environment (v2.1.101)",
         "--resume <name> accepts session titles from /rename and --name (v2.1.101)",
-        "rate-limit retry messages show which limit + reset time (v2.1.101)"
+        "rate-limit retry messages show which limit + reset time (v2.1.101)",
+        "/tui fullscreen/normal command + tui setting (flicker-free) (v2.1.110)",
+        "/focus separated from Ctrl+O (Ctrl+O = verbose transcript only) (v2.1.110)",
+        "autoScrollEnabled config for fullscreen (v2.1.110)",
+        "Push notification tool (Remote Control + 'Push when Claude decides') (v2.1.110)",
+        "Ctrl+G external editor includes last response as commented context (v2.1.110)",
+        "xhigh effort level (Opus 4.7, between high and max) (v2.1.111)",
+        "/effort interactive slider when called without arguments (v2.1.111)",
+        "Auto mode no longer requires --enable-auto-mode (Max subscribers Opus 4.7) (v2.1.111)",
+        "'Auto (match terminal)' theme option (v2.1.111)",
+        "Plan files named after prompt (e.g. fix-auth-race-snug-otter.md) (v2.1.111)",
+        "/skills menu sort by estimated token count (press t) (v2.1.111)",
+        "Ctrl+U clears entire input buffer, Ctrl+Y restores (v2.1.111)",
+        "Ctrl+L force full screen redraw (v2.1.111)",
+        "typo suggestion for mistyped subcommand (claude udpate → update) (v2.1.111)",
+        "Native Claude Code binary via per-platform optional dependency (v2.1.113)",
+        "Ctrl+A/Ctrl+E move to start/end of logical line (readline) (v2.1.113)",
+        "Windows Ctrl+Backspace deletes previous word (v2.1.113)",
+        "Long URLs stay clickable when wrapping (OSC 8) (v2.1.113)",
+        "Shift+↑/↓ scrolls viewport when extending selection in fullscreen (v2.1.113)",
+        "/extra-usage available from Remote Control (v2.1.113)"
       ],
-      "notes": "v2.1.101 갱신: /team-onboarding, /ultraplan 자동 환경, --resume 타이틀, rate-limit 메시지"
+      "notes": "v2.1.114 갱신 (M10-02): /tui 풀스크린, /focus 분리, xhigh effort 슬라이더, Auto mode 기본화, 네이티브 바이너리, typo 제안, Ctrl+A/E readline"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
@@ -274,8 +294,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -286,8 +306,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
@@ -303,8 +323,8 @@
       "notes": "v2.1.101 갱신: /ultraplan 자동 클라우드 환경 생성"
     },
     "14-code-security": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "security scan",
         "OWASP",
@@ -330,8 +350,8 @@
       "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
@@ -341,8 +361,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "run_in_background",
         "TaskOutput deprecated → Read (v2.1.83)",
@@ -357,8 +377,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -396,12 +416,12 @@
       "notes": "v2.1.108 갱신: monitors 매니페스트 키 + 마켓플레이스 auto-install + squash-merge worktree 청소"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.108",
+      "basedOn": "2.1.114",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-04-15",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -419,8 +439,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
@@ -444,13 +464,24 @@
         "permissions.deny overrides PreToolUse hook ask downgrade fix (v2.1.101)",
         "--setting-sources cleanup ignoring cleanupPeriodDays fix (v2.1.101)",
         "unrecognized hook event name settings resilience (v2.1.101)",
-        "managed plugin hooks under allowManagedHooksOnly (v2.1.101)"
+        "managed plugin hooks under allowManagedHooksOnly (v2.1.101)",
+        "PermissionRequest hook updatedInput re-validated against deny rules (v2.1.110)",
+        "setMode:bypassPermissions respects disableBypassPermissionsMode (v2.1.110)",
+        "Read-only bash glob patterns (ls *.ts) auto-approved (v2.1.111)",
+        "cd <project-dir> && ... auto-approved (v2.1.111)",
+        "/less-permission-prompts skill (scan transcripts → allowlist proposal) (v2.1.111)",
+        "sandbox.network.deniedDomains setting (blocklist over allowedDomains wildcard) (v2.1.113)",
+        "macOS /private/{etc,var,tmp,home} dangerous removal targets under Bash(rm:*) allow (v2.1.113)",
+        "Bash deny rules match env/sudo/watch/ionice/setsid wrappers (v2.1.113)",
+        "Bash(find:*) allow no longer auto-approves find -exec/-delete (v2.1.113)",
+        "cd <current-directory> && git no-op no longer prompts (v2.1.113)",
+        "Bash dangerouslyDisableSandbox permission prompt fix (v2.1.113)"
       ],
-      "notes": "v2.1.101 갱신: deny→ask 다운그레이드 방지, 설정 소스 cleanup, 훅 이벤트 복원력, managed 훅"
+      "notes": "v2.1.114 갱신 (M10-01): sandbox.network.deniedDomains, 글롭 패턴 자동 승인, Bash 래퍼 deny 매칭, macOS /private/* 보호, /less-permission-prompts 스킬"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -470,8 +501,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "21-simplify": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "/simplify",
         "code quality",
@@ -481,8 +512,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
@@ -498,8 +529,8 @@
       "notes": "v2.1.101 갱신: --resume <name> 세션 타이틀 수용"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -510,8 +541,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -523,13 +554,19 @@
         "jitter",
         "CLAUDE_CODE_DISABLE_CRON mid-session stop",
         "/loop available on Bedrock/Vertex/Foundry (v2.1.73)",
-        "timestamp markers in transcripts for /loop and CronCreate (v2.1.85)"
+        "timestamp markers in transcripts for /loop and CronCreate (v2.1.85)",
+        "/proactive is alias for /loop (v2.1.105)",
+        "--resume/--continue resurrects unexpired scheduled tasks (v2.1.110)",
+        "/autocompact, /context, /exit, /reload-plugins from Remote Control (v2.1.110)",
+        "Esc cancels pending /loop wakeups (v2.1.113)",
+        "'Claude resuming /loop wakeup' display on resume (v2.1.113)",
+        "Exit confirmation no longer mislabels one-shot scheduled tasks as recurring (v2.1.113)"
       ],
-      "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
+      "notes": "v2.1.114 갱신 (M10-03): /proactive alias, --resume 스케줄 작업 복원, Esc wakeup 취소, Remote Control 슬래시 커맨드"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
@@ -554,8 +591,8 @@
       "notes": "v2.1.104 버전 범프"
     },
     "26-team-onboarding": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "/team-onboarding command (v2.1.101)",
         "30-day usage data analysis",
@@ -567,8 +604,8 @@
       "notes": "v2.1.101에서 추가된 /team-onboarding 커맨드 전용 튜토리얼 신규 생성"
     },
     "27-prompt-caching": {
-      "basedOn": "2.1.108",
-      "lastUpdated": "2026-04-15",
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
       "trackedFeatures": [
         "ENABLE_PROMPT_CACHING_1H env var for 1-hour TTL (API key, Bedrock, Vertex, Foundry) (v2.1.108)",
         "FORCE_PROMPT_CACHING_5M env var for 5-minute forced TTL (v2.1.108)",
@@ -576,7 +613,21 @@
         "Startup warning when prompt caching is disabled via DISABLE_PROMPT_CACHING* (v2.1.108)",
         "DISABLE_TELEMETRY no longer falls back to 5-minute TTL (v2.1.108 fix)"
       ],
-      "notes": "M9 신규 튜토리얼 — v2.1.108 프롬프트 캐싱 TTL 제어"
+      "notes": "M9 신규 튜토리얼 — v2.1.108 프롬프트 캐싱 TTL 제어 (v2.1.114 버전 범프)"
+    },
+    "28-ultrareview": {
+      "basedOn": "2.1.114",
+      "lastUpdated": "2026-04-20",
+      "trackedFeatures": [
+        "/ultrareview command — cloud-based multi-agent parallel code review with critique loop (v2.1.111)",
+        "/ultrareview <PR#> — fetch GitHub PR via gh CLI and review (v2.1.111)",
+        "/ultrareview <PR-URL> — review PRs from other repos (v2.1.111)",
+        "Parallelized agent launch for faster start (v2.1.113)",
+        "Launch dialog shows diffstat (files, +/- lines) for early detection of wrong branch/huge PR (v2.1.113)",
+        "Animated 'Launching...' state indicator (v2.1.113)",
+        "Esc cancels launch before credits consumed (v2.1.113)"
+      ],
+      "notes": "M10 신규 튜토리얼 — v2.1.111의 /ultrareview 클라우드 멀티 에이전트 병렬 리뷰 + v2.1.113 런치 개선"
     }
   }
 }

@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-04-09
+> 최종 갱신: 2026-04-20
 
 ## 완료된 마일스톤
 
@@ -77,5 +77,13 @@
 - [x] M9-01 — v2.1.104~2.1.108 changelog 분석 + 3개 ⭐⭐⭐ 콘텐츠 갱신 (06/08/17): PreCompact 블로킹, 플러그인 monitors 매니페스트, Skill 도구로 내장 /init·/review·/security-review 자동 호출, /recap, /undo alias
 - [x] M9-02 — 27 — 프롬프트 캐싱 TTL 제어 신규 튜토리얼 추가 → [`27-prompt-caching`](../../projects/27-prompt-caching/): ENABLE_PROMPT_CACHING_1H / FORCE_PROMPT_CACHING_5M 환경 변수, TTL 선택 가이드, 비용 절감 시나리오 3종
 - [x] M9-03 — version-track.json 2.1.104 → 2.1.108 bump + 27개 → 28개 추적 + 전체 콘텐츠 구문 검증 통과
+
+### M10: 유지보수 — v2.1.114 갱신 (완료 5/5)
+
+- [x] M10-01 — 19-permissions-deep ⭐⭐⭐ 갱신: `sandbox.network.deniedDomains`(v2.1.113), 글롭 패턴 자동 승인(v2.1.111), Bash 래퍼(env/sudo/watch/ionice/setsid) deny 매칭, macOS `/private/*` 위험 경로, `Bash(find:*)` 자동 승인 제한, `/less-permission-prompts` 스킬, PermissionRequest 훅 재검증
+- [x] M10-02 — 10-cli-master ⭐⭐⭐ 갱신: `/tui` 풀스크린(v2.1.110), `/focus` 분리, `autoScrollEnabled`, Push notification 도구, `xhigh` effort + 인터랙티브 슬라이더(v2.1.111), Auto mode 기본화, "Auto (match terminal)" 테마, typo 제안, Plan 파일명 의미화, 네이티브 바이너리(v2.1.113), `Ctrl+A/E` readline, `Shift+↑/↓` 스크롤
+- [x] M10-03 — 24-loop-cron ⭐⭐ 갱신: `/proactive` alias(v2.1.105), `--resume` 스케줄 작업 복원(v2.1.110), Remote Control에서 `/autocompact`/`/context`/`/exit`/`/reload-plugins`, Esc로 wakeup 취소(v2.1.113), "Claude resuming /loop wakeup" 표시, 1회성 작업 라벨 수정
+- [x] M10-04 — 28 — /ultrareview 신규 튜토리얼 추가 → [`28-ultrareview`](../../projects/28-ultrareview/): 클라우드 멀티 에이전트 병렬 리뷰(v2.1.111), `/ultrareview <PR#>` GitHub PR 모드, 병렬 런치 + diffstat 런치 다이얼로그(v2.1.113), 기능 PR + 보안 민감 PR 시나리오 2종
+- [x] M10-05 — version-track.json 2.1.108 → 2.1.114 bump + 28개 → 29개 추적 + 전체 콘텐츠 구문 검증 통과
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

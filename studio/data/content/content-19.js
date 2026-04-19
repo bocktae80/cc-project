@@ -264,7 +264,30 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 | **deny→ask 다운그레이드 방지** | \`permissions.deny\` 규칙이 PreToolUse 훅의 \`permissionDecision: "ask"\`를 올바르게 오버라이드 — 훅이 deny를 프롬프트로 약화시키지 못함 |
 | **설정 소스 cleanup 수정** | \`--setting-sources\`에서 \`user\`를 제외할 때 백그라운드 정리가 \`cleanupPeriodDays\`를 무시하고 30일 넘은 대화 이력을 삭제하던 문제 수정 |
 | **인식 불가 훅 이벤트 복원력** | settings.json에 알 수 없는 훅 이벤트명이 있어도 전체 파일이 무시되지 않음 |
-| **managed 훅 실행** | \`allowManagedHooksOnly\` 설정 시 managed settings로 강제 활성화된 플러그인의 훅이 올바르게 실행 |`
+| **managed 훅 실행** | \`allowManagedHooksOnly\` 설정 시 managed settings로 강제 활성화된 플러그인의 훅이 올바르게 실행 |
+
+#### 보안 수정 모음 (v2.1.110~2.1.113)
+
+| 수정 | 설명 | 버전 |
+|------|------|------|
+| **PermissionRequest 훅 재검증** | PermissionRequest 훅이 \`updatedInput\`을 반환하면 \`permissions.deny\` 규칙으로 **다시 검증** — 훅이 deny 우회 시도 차단 | v2.1.110 |
+| **\`disableBypassPermissionsMode\` 존중** | 훅의 \`setMode: 'bypassPermissions'\` 응답도 \`disableBypassPermissionsMode\` 정책을 따름 | v2.1.110 |
+| **\`dangerouslyDisableSandbox\` 수정** | Bash \`dangerouslyDisableSandbox\`가 **프롬프트 없이** 샌드박스 밖에서 실행되던 버그 수정 | v2.1.113 |
+| **macOS \`/private/*\` 위험 경로** | \`Bash(rm:*)\` allow 규칙에서도 \`/private/{etc,var,tmp,home}\` 경로는 **위험 제거 대상**으로 처리 | v2.1.113 |
+| **래퍼 명령 deny 매칭** | \`env\`, \`sudo\`, \`watch\`, \`ionice\`, \`setsid\` 같은 **exec 래퍼로 감싼 명령도** Bash deny 규칙에 매칭 | v2.1.113 |
+| **\`Bash(find:*)\` 안전화** | \`find -exec\`, \`find -delete\`는 **allow 규칙으로 자동 승인되지 않음** | v2.1.113 |
+
+\`\`\`
+비유: 입장 검사 강화!
+
+이전: "가방 안에 칼 있어요?" → "아니요" (그냥 통과)
+         └── sudo rm → rm 규칙 매칭 안 됨 (우회 성공)
+
+이후: 가방을 직접 열어봄 + 포장지도 확인
+         └── sudo rm → rm 규칙 매칭 (차단!)
+         └── env rm  → rm 규칙 매칭 (차단!)
+         └── watch rm → rm 규칙 매칭 (차단!)
+\`\`\``
     },
     {
       id: "evaluation-order",
@@ -410,7 +433,75 @@ auto 모드 거부 알림 = "입장 거부됐지만 안내데스크에서 재시
 기존: 규칙이 하나의 큰 게시판에 다 적혀있음 (managed-settings.json)
 신규: 반별로 추가 규칙판을 붙일 수 있음! (managed-settings.d/)
       1반 규칙 + 2반 규칙 + 공통 규칙 → 알파벳 순으로 합쳐짐
-\`\`\``
+\`\`\`
+
+### v2.1.110~2.1.113 권한 & 샌드박스 개선
+
+#### \`sandbox.network.deniedDomains\` — 블랙리스트로 도메인 차단 (v2.1.113)
+
+기존에는 \`allowedDomains\`에 와일드카드를 허용해도 **특정 도메인만 콕 집어 차단**하기 어려웠어요. 이제 가능해졌습니다!
+
+\`\`\`json
+{
+  "sandbox": {
+    "network": {
+      "allowedDomains": ["*.github.com", "*.npmjs.com"],
+      "deniedDomains": ["raw.githubusercontent.com/evil-org/*"]
+    }
+  }
+}
+\`\`\`
+
+\`\`\`
+비유: 놀이공원 자유이용권 + 블랙리스트
+
+allowedDomains: "*.github.com 전부 OK" (자유이용권)
+deniedDomains:  "단, evil-org 저장소는 절대 안 됨" (블랙리스트)
+              → 자유이용권보다 블랙리스트가 항상 우선!
+\`\`\`
+
+#### 글롭 패턴 & \`cd <project-dir>\` 자동 승인 (v2.1.111)
+
+읽기 전용 Bash 명령에 **글롭 패턴**이 있거나 \`cd <프로젝트 디렉토리> &&\`로 시작하면 자동 승인됩니다.
+
+\`\`\`bash
+# 이전: 매번 권한 프롬프트
+ls *.ts                    → "이거 실행해도 돼요?"
+cat src/*.md              → "이거 실행해도 돼요?"
+cd /path/to/proj && git status → "이거 실행해도 돼요?"
+
+# 이후 (v2.1.111+): 자동 승인
+ls *.ts                    → 즉시 실행
+cat src/*.md              → 즉시 실행
+cd /path/to/proj && git status → 즉시 실행
+\`\`\`
+
+#### \`cd <current-directory>\` no-op 승인 제거 (v2.1.113)
+
+\`\`\`bash
+# 현재 디렉토리로 cd하는 no-op는 프롬프트 발생시키지 않음
+cd /Users/me/proj && git status  # 이미 /Users/me/proj에 있으면 자동 승인
+\`\`\`
+
+#### \`/less-permission-prompts\` 스킬 (v2.1.111)
+
+반복되는 권한 프롬프트에 지쳤다면 이 스킬을 실행하세요.
+
+\`\`\`bash
+/less-permission-prompts
+\`\`\`
+
+\`\`\`
+동작:
+  1. 최근 트랜스크립트를 스캔
+  2. 자주 승인된 read-only Bash & MCP 호출 탐지
+  3. 우선순위 기반 allowlist를 .claude/settings.json에 제안
+  4. 사용자가 확인하고 적용
+
+비유: "자주 타는 놀이기구는 자유이용권에 자동 추가해드릴까요?"
+\`\`\`
+
+> **핵심**: v2.1.113은 **sandbox.network.deniedDomains**로 샌드박스 네트워크 통제를 **블랙리스트 방식**으로 강화하고, v2.1.111은 자주 쓰이는 패턴을 **자동 승인**해서 프롬프트 피로를 줄였습니다.`
     }
   ],
 
