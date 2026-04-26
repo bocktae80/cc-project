@@ -158,6 +158,34 @@ Elicitation: "몇 층이세요?" → "3층이요" → 직접 전달! (양방향)
 | 폼 필드 | 구조화된 입력 (텍스트, 선택 등) |
 | 브라우저 URL | OAuth 인증 등 웹 기반 상호작용 |
 
+### v2.1.116~2.1.119 MCP 개선사항
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **MCP 시작 병렬화** | 다수의 stdio MCP 서버 설정 시 **동시 연결**이 기본값. \`resources/templates/list\`도 첫 \`@\` 멘션 시점까지 지연 → 시작 속도 개선 | v2.1.116 |
+| **로컬/claude.ai 동시 시작 가속** | 로컬과 claude.ai 양쪽 MCP 서버를 모두 설정한 경우 **동시 connect**가 기본 | v2.1.117 |
+| **Subagent/SDK MCP 재구성 병렬화** | 서브에이전트와 SDK MCP 서버 재구성이 직렬 → **병렬 연결** | v2.1.119 |
+| **mcp_tool 훅 타입 (06-hooks 참고)** | 훅에서 \`type: "mcp_tool"\`로 MCP 서버 도구를 직접 호출 (Bash/curl 우회 없이 Slack/Notion 등 호출) | v2.1.118 |
+| **OAuth \`expires_in\` 누락 수정** | OAuth 응답이 \`expires_in\`을 생략한 경우 매시간 재인증을 요구하던 문제 수정 | v2.1.118 |
+| **OAuth step-up 재동의** | 서버의 \`insufficient_scope\` 403이 현재 토큰이 이미 가진 scope를 명시할 때 silently refresh가 아닌 **재동의 프롬프트** | v2.1.118 |
+| **OAuth refresh cross-process lock** | 다중 프로세스 동시 OAuth refresh의 잠금 누락으로 발생하던 race condition 수정 | v2.1.118 |
+| **macOS keychain race 수정** | 동시 MCP 토큰 refresh가 방금 갱신된 OAuth 토큰을 덮어써 \`/login\` 프롬프트가 뜨던 문제 수정 | v2.1.118 |
+| **\`Authenticate\`/\`Re-authenticate\` 메뉴 복원** | \`/mcp\` 메뉴가 \`headersHelper\`로 설정된 서버의 OAuth 액션을 숨기던 문제 수정 | v2.1.119 |
+| **\`Invalid OAuth error response\` 수정** | OAuth 디스커버리에서 서버가 비-JSON 응답을 반환할 때 발생하던 \`Invalid OAuth error response\` 에러 수정 | v2.1.119 |
+| **\`${ENV_VAR}\` 헤더 치환** | HTTP/SSE/WebSocket MCP 서버의 \`headers\`에 있는 \`${ENV_VAR}\` 자리표시자가 요청 전에 치환되지 않던 문제 수정 | v2.1.119 |
+| **\`--client-secret\` 토큰 교환** | \`client_secret_post\` 방식 서버용 \`--client-secret\` 클라이언트 시크릿이 토큰 교환 시 전송되지 않던 문제 수정 | v2.1.119 |
+
+#### MCP 재구성 병렬화 효과 (v2.1.119)
+
+\`\`\`
+비유: 식당이 4개 공급사와 동시 통화 시작 → 한 곳씩 차례로 통화하던 시절보다 4배 빠름
+
+기존: 서브에이전트 시작 → MCP 서버 #1 연결 대기 → #2 → #3 → #4 (직렬)
+이후: 서브에이전트 시작 → #1, #2, #3, #4 동시 연결 (병렬)
+\`\`\`
+
+> 다수의 MCP 서버를 사용하는 워크플로우(예: \`reload_plugins\`, 서브에이전트 시작)에서 첫 응답까지의 시간이 눈에 띄게 단축됩니다.
+
 ### v2.1.89~2.1.92 MCP 개선사항
 
 | 개선 | 설명 | 버전 |

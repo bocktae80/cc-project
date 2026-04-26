@@ -246,6 +246,49 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.116~2.1.119 플러그인 개선사항
+
+**\`claude plugin tag\` (v2.1.118)**: 플러그인의 **릴리스 git 태그**를 만드는 새 명령. 버전 검증을 거쳐 태그를 생성하므로, 태그가 \`plugin.json\`의 버전과 자동으로 일치합니다.
+
+\`\`\`bash
+# 새 릴리스 태그 생성 (예: v1.2.3)
+claude plugin tag
+
+# 버전 검증 → plugin.json의 version과 다르면 차단
+# plugin.json: { "version": "1.2.3" } → git tag "v1.2.3" 생성
+\`\`\`
+
+**플러그인 \`themes/\` 디렉터리 (v2.1.118)**: 플러그인이 \`themes/\` 디렉터리에 JSON 테마 파일을 포함하면 사용자의 \`/theme\` 메뉴에 자동 등록됩니다 (커스텀 테마 시스템 기반).
+
+\`\`\`
+my-theme-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+└── themes/
+    ├── ocean.json      → /theme 메뉴에 "ocean" 항목으로 표시
+    └── sunset.json
+\`\`\`
+
+**\`plugin install\` 누락 의존성 자동 설치 (v2.1.117)**: 이미 설치된 플러그인에 \`plugin install\`을 다시 실행하면 **누락된 의존성을 추가 설치**합니다("already installed"에서 멈추지 않음). \`claude plugin marketplace add\`도 설정된 마켓플레이스에서 누락 의존성을 자동 해결.
+
+**플러그인 의존성 에러 명확화 (v2.1.117)**: 의존성 에러 메시지가 "not installed"로 표시되며 설치 힌트 포함. **conflicting / invalid / overly complex** 버전 요구사항을 구분 표시.
+
+**다른 플러그인 버전 제약에 핀된 플러그인 자동 업데이트 (v2.1.119)**: 다른 플러그인의 버전 제약 때문에 핀된 플러그인이 **만족하는 가장 높은 git tag로 자동 업데이트**됩니다.
+
+**자동 업데이트 스킵 가시성 (v2.1.118)**: 플러그인 자동 업데이트가 다른 플러그인의 버전 제약 때문에 스킵될 때, **\`/doctor\` 와 \`/plugin\` Errors 탭에 표시**되어 사용자가 원인을 인지할 수 있음.
+
+**managed \`blockedMarketplaces\` 강제 (v2.1.117, 119)**: 관리 설정의 \`blockedMarketplaces\`와 \`strictKnownMarketplaces\`가 플러그인 install/update/refresh/autoupdate에서 **강제 적용**. \`hostPattern\`/\`pathPattern\` 엔트리도 정확히 강제(v2.1.119 수정).
+
+**\`/reload-plugins\` 의존성 자동 설치 (v2.1.116)**: \`/reload-plugins\`와 백그라운드 자동 업데이트가 **이미 추가한 마켓플레이스에서 누락 의존성을 자동 설치**.
+
+**Plugin install 인터럽트 복구 (v2.1.116)**: 이전에 중단된 \`plugin install\` 상태에서 다시 시도하면 **자동 복구**.
+
+**의존성 충돌 시 \`range-conflict\` 보고 (v2.1.117)**: 이미 설치된 플러그인과 버전이 충돌하는 의존성을 \`plugin install\`이 더 이상 성공으로 처리하지 않고 \`range-conflict\`로 보고.
+
+**Windows 캐시 미완료 시 MCP 스폰 수정 (v2.1.119)**: 플러그인 캐시가 불완전한 상태일 때 Windows에서 플러그인 MCP 서버가 스폰 안 되던 문제 수정.
+
+**\`/reload-plugins\`/\`/doctor\` 비활성 플러그인 에러 수정 (v2.1.119)**: 비활성화된 플러그인의 로드 에러를 \`/reload-plugins\`/\`/doctor\`가 잘못 보고하던 문제 수정.
+
 #### v2.1.105~2.1.108 플러그인 개선사항
 
 **\`monitors\` 최상위 매니페스트 키 (v2.1.105)**: plugin.json에 \`monitors\` 키로 백그라운드 모니터 스크립트를 선언하면 **세션 시작 또는 스킬 호출 시 자동으로 arm**됩니다. 장시간 이벤트 감시·자동 반응 훅 패턴의 표준 진입점이 됐어요.

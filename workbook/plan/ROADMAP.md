@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-04-20
+> 최종 갱신: 2026-04-26
 
 ## 완료된 마일스톤
 
@@ -85,5 +85,12 @@
 - [x] M10-03 — 24-loop-cron ⭐⭐ 갱신: `/proactive` alias(v2.1.105), `--resume` 스케줄 작업 복원(v2.1.110), Remote Control에서 `/autocompact`/`/context`/`/exit`/`/reload-plugins`, Esc로 wakeup 취소(v2.1.113), "Claude resuming /loop wakeup" 표시, 1회성 작업 라벨 수정
 - [x] M10-04 — 28 — /ultrareview 신규 튜토리얼 추가 → [`28-ultrareview`](../../projects/28-ultrareview/): 클라우드 멀티 에이전트 병렬 리뷰(v2.1.111), `/ultrareview <PR#>` GitHub PR 모드, 병렬 런치 + diffstat 런치 다이얼로그(v2.1.113), 기능 PR + 보안 민감 PR 시나리오 2종
 - [x] M10-05 — version-track.json 2.1.108 → 2.1.114 bump + 28개 → 29개 추적 + 전체 콘텐츠 구문 검증 통과
+
+### M11: 유지보수 — v2.1.119 갱신 (완료 4/4)
+
+- [x] M11-01 — ⭐⭐⭐ 콘텐츠 갱신 (06/10/03): Hooks `mcp_tool` 새 type(v2.1.118), `/cost`+`/stats` → `/usage` 통합(v2.1.118), Vim visual mode `v`/`V`(v2.1.118), 커스텀 테마 시스템(v2.1.118), Native macOS/Linux 빌드 Glob/Grep → bfs/ugrep via Bash(v2.1.117)
+- [x] M11-02 — ⭐⭐ 콘텐츠 갱신 (05/07/17/19/22/28): Agent frontmatter `hooks:`/`mcpServers:` `--agent` 메인 스레드 동작, `--agent` `permissionMode` 존중, Forked subagents 외부 빌드, `claude plugin tag`, `plugin install` 의존성 자동, 플러그인 `themes/`, Auto mode `"$defaults"`, `--print` 모드 agent tools 존중, `--from-pr` GitLab/Bitbucket/GHE, MCP 재구성 병렬화
+- [x] M11-03 — ⭐ 콘텐츠 갱신 (10/13/17/19): `PostToolUse` `duration_ms`, `/config` persist + 검색 값 매칭, `/resume` 67% 빠름 + 큰 세션 요약, `--continue`/`--resume` `/add-dir` 세션, `DISABLE_UPDATES`, `prUrlTemplate`, `CLAUDE_CODE_HIDE_CWD`, Pro/Max Opus 4.6/4.7 기본 effort high, `/color` Remote Control 동기화, `blockedMarketplaces` `hostPattern`/`pathPattern`, WSL Windows settings 상속, PowerShell auto-approve, slash command UI 개선
+- [x] M11-04 — version-track.json 2.1.114 → 2.1.119 bump + 전체 29개 튜토리얼 basedOn 갱신 + 10개 콘텐츠 구문 검증 통과
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

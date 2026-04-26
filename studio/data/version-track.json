@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-04-20",
-  "currentCLI": "2.1.114",
+  "lastChecked": "2026-04-26",
+  "currentCLI": "2.1.119",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -26,8 +26,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Read",
         "Write",
@@ -42,21 +42,23 @@
       "notes": "v2.1.101 버전 범프"
     },
     "03-code-search": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Glob",
         "Grep",
         "pre-warming",
         "gitignore",
         ".jj/.sl VCS directory exclusion (v2.1.86)",
-        "Grep ripgrep ENOENT fallback to system rg + self-heal (v2.1.101)"
+        "Grep ripgrep ENOENT fallback to system rg + self-heal (v2.1.101)",
+        "Native macOS/Linux builds: Glob/Grep replaced by embedded bfs/ugrep via Bash (v2.1.117)",
+        "Glob/Grep visibility fix when Bash denied via permissions (v2.1.119)"
       ],
-      "notes": "v2.1.101 갱신: Grep ripgrep 자가 복구 폴백"
+      "notes": "v2.1.119 갱신 (M11-01): 네이티브 빌드에서 Glob/Grep을 Bash 임베드 bfs/ugrep으로 대체"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
@@ -64,8 +66,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
@@ -74,8 +76,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -93,13 +95,21 @@
         "Subagent spawning tmux window fix (v2.1.92)",
         "/agents tabbed layout Running/Library tabs (v2.1.98)",
         "Agent team permission mode inheritance fix (v2.1.98)",
-        "Subagents inherit MCP tools from dynamically-injected servers (v2.1.101)"
+        "Subagents inherit MCP tools from dynamically-injected servers (v2.1.101)",
+        "Agent frontmatter hooks: fire on main-thread agent via --agent (v2.1.116)",
+        "Agent frontmatter mcpServers: loaded for main-thread --agent sessions (v2.1.117)",
+        "--agent honors built-in agent permissionMode (v2.1.119)",
+        "Forked subagents external builds via CLAUDE_CODE_FORK_SUBAGENT=1 (v2.1.117)",
+        "Subagent and SDK MCP server reconfiguration parallelized (v2.1.119)",
+        "Agent type hooks for events other than Stop/SubagentStop fixed (v2.1.118)",
+        "SendMessage restores explicit cwd of resumed subagents (v2.1.118)",
+        "Subagent file-read malware false-positive fix (v2.1.117)"
       ],
-      "notes": "v2.1.101 갱신: 서브에이전트 동적 MCP 도구 상속 수정"
+      "notes": "v2.1.119 갱신 (M11-02): Agent frontmatter hooks/mcpServers/permissionMode 메인 스레드 동작, Forked subagents 외부 빌드, MCP 재구성 병렬화"
     },
     "06-hooks": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -130,13 +140,19 @@
         "Unrecognized hook event name no longer ignores entire settings.json (v2.1.101)",
         "Managed plugin hooks run under allowManagedHooksOnly (v2.1.101)",
         "PreCompact hook blocking support (exit 2 or decision:block) (v2.1.105)",
-        "Plugin monitors manifest key for background hooks (v2.1.105)"
+        "Plugin monitors manifest key for background hooks (v2.1.105)",
+        "mcp_tool hook type — direct MCP tool invocation (v2.1.118)",
+        "PostToolUse/PostToolUseFailure duration_ms input (v2.1.119)",
+        "Agent type hooks fire for main-thread --agent (v2.1.116)",
+        "Agent hooks for events beyond Stop/SubagentStop (v2.1.118)",
+        "prompt hooks no longer re-fire on agent verifier subagent calls (v2.1.118)",
+        "Empty async PostToolUse hook responses no longer write empty entries (v2.1.119)"
       ],
-      "notes": "v2.1.108 갱신: PreCompact 블로킹 지원 + 플러그인 monitors 백그라운드 훅"
+      "notes": "v2.1.119 갱신 (M11-01): mcp_tool 새 hook type, PostToolUse duration_ms, agent 훅 이벤트 확장"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
@@ -155,13 +171,24 @@
         "MCP_CONNECTION_NONBLOCKING=true for -p mode (v2.1.89)",
         "Plugin MCP stuck connecting fix (v2.1.92)",
         "OAuth authServerMetadataUrl token refresh fix for ADFS (v2.1.98)",
-        "claude mcp serve outputSchema validation fix (v2.1.101)"
+        "claude mcp serve outputSchema validation fix (v2.1.101)",
+        "MCP startup parallelization for multiple stdio servers + lazy resources/templates/list (v2.1.116)",
+        "Concurrent local + claude.ai MCP connection startup (v2.1.117)",
+        "Subagent and SDK MCP server reconfiguration parallel (v2.1.119)",
+        "OAuth missing expires_in re-auth-every-hour fix (v2.1.118)",
+        "OAuth step-up insufficient_scope re-consent prompt (v2.1.118)",
+        "OAuth refresh cross-process lock under contention fix (v2.1.118)",
+        "macOS keychain race fix for concurrent OAuth refresh (v2.1.118)",
+        "/mcp menu OAuth Authenticate/Re-authenticate hidden for headersHelper fix (v2.1.119)",
+        "MCP HTTP OAuth discovery non-JSON body Invalid OAuth error fix (v2.1.119)",
+        "${ENV_VAR} placeholder substitution in MCP HTTP/SSE/WebSocket headers (v2.1.119)",
+        "MCP OAuth --client-secret token exchange for client_secret_post servers (v2.1.119)"
       ],
-      "notes": "v2.1.101 갱신: mcp serve outputSchema 수정"
+      "notes": "v2.1.119 갱신 (M11-02): MCP 시작 병렬화, OAuth 안정성 수정, ENV_VAR 헤더 치환"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -185,8 +212,8 @@
       "notes": "v2.1.108 갱신: Skill 도구로 내장 슬래시 커맨드 자동 호출 + /recap + /undo alias"
     },
     "09-worktree": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -204,8 +231,8 @@
       "notes": "v2.1.101 갱신: 격리 워크트리 파일 접근 수정, 스테일 워크트리 정리"
     },
     "10-cli-master": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -270,13 +297,35 @@
         "Windows Ctrl+Backspace deletes previous word (v2.1.113)",
         "Long URLs stay clickable when wrapping (OSC 8) (v2.1.113)",
         "Shift+↑/↓ scrolls viewport when extending selection in fullscreen (v2.1.113)",
-        "/extra-usage available from Remote Control (v2.1.113)"
+        "/extra-usage available from Remote Control (v2.1.113)",
+        "/cost + /stats merged into /usage (shortcuts kept) (v2.1.116, 118)",
+        "Vim visual mode v / V with selection, operators, visual feedback (v2.1.118)",
+        "Custom themes via /theme + ~/.claude/themes/ + plugin themes/ directory (v2.1.118)",
+        "/config settings persist to ~/.claude/settings.json with override precedence (v2.1.119)",
+        "/config search matches option values (v2.1.116)",
+        "/resume up to 67% faster on 40MB+ sessions, dead-fork efficiency (v2.1.116)",
+        "/resume offers summarization for stale large sessions (v2.1.117)",
+        "--continue/--resume find sessions added current dir via /add-dir (v2.1.118)",
+        "DISABLE_UPDATES env var blocks all update paths including manual claude update (v2.1.118)",
+        "prUrlTemplate setting for footer PR badge custom URL (v2.1.119)",
+        "CLAUDE_CODE_HIDE_CWD env var hides cwd in startup logo (v2.1.119)",
+        "owner/repo#N shorthand uses git remote host instead of github.com (v2.1.119)",
+        "/color syncs accent to claude.ai/code on Remote Control (v2.1.118)",
+        "/model selections persist across restarts even when project pins model (v2.1.117)",
+        "/model picker honors ANTHROPIC_DEFAULT_*_MODEL_NAME/_DESCRIPTION via custom base URL (v2.1.118)",
+        "Pro/Max default effort high on Opus 4.6/4.7 (v2.1.117)",
+        "Thinking spinner inline progress (still thinking, thinking more, almost done) (v2.1.116)",
+        "/doctor accessible while Claude is responding (v2.1.116)",
+        "Slash command suggestions highlight matched characters (v2.1.119)",
+        "Slash command picker wraps long descriptions onto second line (v2.1.119)",
+        "Status line stdin JSON includes effort.level and thinking.enabled (v2.1.119)",
+        "cleanupPeriodDays sweep extended to ~/.claude/tasks, shell-snapshots, backups (v2.1.117)"
       ],
-      "notes": "v2.1.114 갱신 (M10-02): /tui 풀스크린, /focus 분리, xhigh effort 슬라이더, Auto mode 기본화, 네이티브 바이너리, typo 제안, Ctrl+A/E readline"
+      "notes": "v2.1.119 갱신 (M11-01/03): /usage 통합, Vim visual mode, 커스텀 테마, /config 영속화, /resume 67% 가속, --continue --add-dir 세션, DISABLE_UPDATES, prUrlTemplate, CLAUDE_CODE_HIDE_CWD"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
@@ -294,8 +343,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -306,8 +355,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
@@ -318,13 +367,15 @@
         "deep link queries support 5,000 chars (v2.1.85)",
         "multi-line deep link prompts via %0A (v2.1.91)",
         "Remote Control hostname default prefix + --remote-control-session-name-prefix (v2.1.92)",
-        "/ultraplan auto-create cloud environment without web setup (v2.1.101)"
+        "/ultraplan auto-create cloud environment without web setup (v2.1.101)",
+        "/color syncs session accent to claude.ai/code via Remote Control (v2.1.118)",
+        "--continue/--resume finds sessions added current dir via /add-dir (v2.1.118)"
       ],
-      "notes": "v2.1.101 갱신: /ultraplan 자동 클라우드 환경 생성"
+      "notes": "v2.1.119 갱신 (M11-03): /color Remote Control 동기화, --continue/--resume /add-dir 세션 발견"
     },
     "14-code-security": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "security scan",
         "OWASP",
@@ -350,8 +401,8 @@
       "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
@@ -361,8 +412,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "run_in_background",
         "TaskOutput deprecated → Read (v2.1.83)",
@@ -377,8 +428,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -411,17 +462,30 @@
         "monitors top-level manifest key for auto-armed background monitors (v2.1.105)",
         "Stale worktree cleanup for squash-merged PRs (v2.1.105)",
         "Marketplace package.json auto-install dependencies (v2.1.105)",
-        "Policy plugin auto-update fix across projects (v2.1.108)"
+        "Policy plugin auto-update fix across projects (v2.1.108)",
+        "claude plugin tag — release git tag generation with version validation (v2.1.118)",
+        "Plugin themes/ directory ships custom themes (v2.1.118)",
+        "plugin install auto-installs missing dependencies (v2.1.117)",
+        "claude plugin marketplace add auto-resolves missing dependencies (v2.1.117)",
+        "Plugin dependency errors clarified (not installed / install hint / range-conflict) (v2.1.117)",
+        "Plugins pinned by another plugin's version constraint auto-update to highest satisfying tag (v2.1.119)",
+        "Auto-update skip visible in /doctor and /plugin Errors tab (v2.1.118)",
+        "Managed blockedMarketplaces hostPattern/pathPattern enforced (v2.1.119)",
+        "managed blockedMarketplaces and strictKnownMarketplaces enforced on install/update/refresh/autoupdate (v2.1.117)",
+        "/reload-plugins auto-installs missing dependencies (v2.1.116)",
+        "plugin install recovers from interrupted prior installs (v2.1.116)",
+        "Windows plugin MCP servers spawn with incomplete cache fix (v2.1.119)",
+        "/reload-plugins and /doctor stop reporting load errors for disabled plugins (v2.1.119)"
       ],
-      "notes": "v2.1.108 갱신: monitors 매니페스트 키 + 마켓플레이스 auto-install + squash-merge worktree 청소"
+      "notes": "v2.1.119 갱신 (M11-02): claude plugin tag, plugin install 의존성 자동, themes/ 디렉터리, 핀 자동 업데이트, blockedMarketplaces 정확화"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.114",
+      "basedOn": "2.1.119",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-04-20",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -439,8 +503,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
@@ -475,13 +539,20 @@
         "Bash deny rules match env/sudo/watch/ionice/setsid wrappers (v2.1.113)",
         "Bash(find:*) allow no longer auto-approves find -exec/-delete (v2.1.113)",
         "cd <current-directory> && git no-op no longer prompts (v2.1.113)",
-        "Bash dangerouslyDisableSandbox permission prompt fix (v2.1.113)"
+        "Bash dangerouslyDisableSandbox permission prompt fix (v2.1.113)",
+        "Auto mode \"$defaults\" includes built-in rules alongside custom (v2.1.118)",
+        "Auto mode \"Don't ask again\" opt-in option (v2.1.118)",
+        "blockedMarketplaces hostPattern/pathPattern enforcement fix (v2.1.119)",
+        "WSL inherits Windows managed settings via wslInheritsWindowsSettings policy (v2.1.118)",
+        "PowerShell tool commands auto-approved in permission mode (v2.1.119)",
+        "Sandbox auto-allow no longer bypasses dangerous-path safety check for rm/rmdir on /, $HOME (v2.1.116)",
+        "cleanupPeriodDays sweep extended to ~/.claude/tasks, shell-snapshots, backups (v2.1.117)"
       ],
-      "notes": "v2.1.114 갱신 (M10-01): sandbox.network.deniedDomains, 글롭 패턴 자동 승인, Bash 래퍼 deny 매칭, macOS /private/* 보호, /less-permission-prompts 스킬"
+      "notes": "v2.1.119 갱신 (M11-02/03): Auto mode $defaults, blockedMarketplaces 정확화, WSL Windows settings 상속, PowerShell auto-approve"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -501,8 +572,8 @@
       "notes": "v2.1.101 버전 범프"
     },
     "21-simplify": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "/simplify",
         "code quality",
@@ -512,8 +583,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
@@ -524,13 +595,14 @@
         "--resume prompt cache miss fix for deferred tools/MCP/agents (v2.1.90)",
         "--resume picker hides -p/SDK sessions (v2.1.90)",
         "--exclude-dynamic-system-prompt-sections cross-user prompt caching (v2.1.98)",
-        "-p --resume <name> accepts session titles from /rename and --name (v2.1.101)"
+        "-p --resume <name> accepts session titles from /rename and --name (v2.1.101)",
+        "--print mode honors agent's tools: and disallowedTools: frontmatter (v2.1.119)"
       ],
-      "notes": "v2.1.101 갱신: --resume <name> 세션 타이틀 수용"
+      "notes": "v2.1.119 갱신 (M11-02): --print 모드가 agent frontmatter tools/disallowedTools 존중"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -541,8 +613,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -565,8 +637,8 @@
       "notes": "v2.1.114 갱신 (M10-03): /proactive alias, --resume 스케줄 작업 복원, Esc wakeup 취소, Remote Control 슬래시 커맨드"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
@@ -591,8 +663,8 @@
       "notes": "v2.1.104 버전 범프"
     },
     "26-team-onboarding": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "/team-onboarding command (v2.1.101)",
         "30-day usage data analysis",
@@ -604,8 +676,8 @@
       "notes": "v2.1.101에서 추가된 /team-onboarding 커맨드 전용 튜토리얼 신규 생성"
     },
     "27-prompt-caching": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "ENABLE_PROMPT_CACHING_1H env var for 1-hour TTL (API key, Bedrock, Vertex, Foundry) (v2.1.108)",
         "FORCE_PROMPT_CACHING_5M env var for 5-minute forced TTL (v2.1.108)",
@@ -616,8 +688,8 @@
       "notes": "M9 신규 튜토리얼 — v2.1.108 프롬프트 캐싱 TTL 제어 (v2.1.114 버전 범프)"
     },
     "28-ultrareview": {
-      "basedOn": "2.1.114",
-      "lastUpdated": "2026-04-20",
+      "basedOn": "2.1.119",
+      "lastUpdated": "2026-04-26",
       "trackedFeatures": [
         "/ultrareview command — cloud-based multi-agent parallel code review with critique loop (v2.1.111)",
         "/ultrareview <PR#> — fetch GitHub PR via gh CLI and review (v2.1.111)",
@@ -625,9 +697,10 @@
         "Parallelized agent launch for faster start (v2.1.113)",
         "Launch dialog shows diffstat (files, +/- lines) for early detection of wrong branch/huge PR (v2.1.113)",
         "Animated 'Launching...' state indicator (v2.1.113)",
-        "Esc cancels launch before credits consumed (v2.1.113)"
+        "Esc cancels launch before credits consumed (v2.1.113)",
+        "--from-pr accepts GitLab MR, Bitbucket PR, GitHub Enterprise PR URLs (v2.1.119)"
       ],
-      "notes": "M10 신규 튜토리얼 — v2.1.111의 /ultrareview 클라우드 멀티 에이전트 병렬 리뷰 + v2.1.113 런치 개선"
+      "notes": "v2.1.119 갱신 (M11-02): --from-pr GitLab/Bitbucket/GHE PR URL 지원"
     }
   }
 }

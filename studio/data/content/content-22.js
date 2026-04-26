@@ -61,6 +61,40 @@ Claude: ...
 | \`--max-turns\` | 최대 턴 수 제한 | \`--max-turns 1\` |
 | \`--resume\` | 이전 세션 이어서 실행 | \`claude -p --resume <id>\` |
 
+### v2.1.119 개선사항
+
+| 버전 | 개선 | 설명 |
+|------|------|------|
+| 2.1.119 | **\`--print\` agent frontmatter 존중** | \`--print\` 모드가 에이전트의 \`tools:\`/\`disallowedTools:\` frontmatter를 존중 — 인터랙티브 모드와 동일하게 동작 |
+
+\`\`\`bash
+# 에이전트 frontmatter
+---
+name: read-only-summarizer
+tools:
+  - Read
+  - Grep
+disallowedTools:
+  - Bash
+  - Write
+---
+
+# 인터랙티브: 위 제한 적용 (이전부터 동작)
+claude --agent read-only-summarizer
+
+# print 모드: v2.1.118까지는 무시되어 전체 도구 사용 → v2.1.119부터 동일 제한 적용
+claude --print --agent read-only-summarizer "이 디렉토리를 요약해줘"
+\`\`\`
+
+\`\`\`
+비유: 비대면 면접관도 이력서의 자격 조건 본다
+
+기존: 인터뷰(인터랙티브)에선 자격 조건을 보지만, 서면 평가(print)에선 무시
+이후: 비대면이든 대면이든 똑같이 자격 조건 적용 → CI/배치에서도 도구 제한 보장
+\`\`\`
+
+> 배치 파이프라인에서 **읽기 전용 에이전트**를 안전하게 사용하려고 할 때 매우 유용합니다. 이전엔 \`--print\`로 호출하면 \`disallowedTools\`가 무시되어 의도하지 않은 도구가 활성화될 위험이 있었어요.
+
 ### v2.1.89~2.1.92 개선사항
 
 | 버전 | 개선 | 설명 |

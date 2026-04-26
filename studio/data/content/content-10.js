@@ -261,6 +261,83 @@ v2.1.74 /context:
 | **Shift+↑/↓ 스크롤** | 풀스크린 모드에서 선택을 뷰포트 밖으로 확장 시 뷰포트도 함께 스크롤 (v2.1.113) |
 | **\`/extra-usage\`** | Remote Control(모바일/웹) 클라이언트에서도 \`/extra-usage\` 실행 가능 (v2.1.113) |
 
+#### v2.1.116~2.1.119에서 추가된 기능
+
+| 기능 | 설명 |
+|------|------|
+| **\`/cost\`+\`/stats\` → \`/usage\`** | 두 커맨드를 \`/usage\`로 **통합** (각각 해당 탭을 여는 단축어로 유지). 5시간/주간 사용량 즉시 표시, rate-limit 시에도 동작 (v2.1.116, 118) |
+| **Vim visual mode** | \`v\`(visual) / \`V\`(visual-line) 모드 추가 — 선택, operator, 시각 피드백 지원 (v2.1.118) |
+| **커스텀 테마 시스템** | \`/theme\`에서 명명 테마 생성/전환 또는 \`~/.claude/themes/\` JSON 직접 편집. 플러그인이 \`themes/\` 디렉터리로 테마 배포 가능 (v2.1.118) |
+| **\`/config\` 영속화** | \`/config\` 설정(테마, 에디터 모드, verbose 등)이 \`~/.claude/settings.json\`에 **영속**되며 project/local/policy 우선순위 체계 참여 (v2.1.119) |
+| **\`/config\` 값 검색** | \`/config\` 검색이 옵션 **값까지 매칭** — "vim" 검색이 Editor mode 항목을 찾아냄 (v2.1.116) |
+| **\`/resume\` 67% 빠름** | 40MB 이상 큰 세션에서 최대 67% 빠르게 재개. dead-fork 엔트리 많은 세션도 효율적 처리 (v2.1.116) |
+| **\`/resume\` 큰 세션 요약** | 오래되고 큰 세션을 다시 읽기 전 **요약** 옵션 제공 (\`--resume\` 동작과 통일) (v2.1.117) |
+| **\`/add-dir\` 세션 복원** | \`--continue\`/\`--resume\`이 \`/add-dir\`로 현재 디렉터리를 추가했던 세션도 찾아냄 (v2.1.118) |
+| **\`DISABLE_UPDATES\` 환경변수** | \`claude update\` 수동 실행까지 포함해 **모든 업데이트 경로 차단** — \`DISABLE_AUTOUPDATER\`보다 강함 (v2.1.118) |
+| **\`prUrlTemplate\`** | 풋터 PR 배지가 github.com 대신 **커스텀 코드 리뷰 URL**을 가리키도록 설정 가능 (v2.1.119) |
+| **\`CLAUDE_CODE_HIDE_CWD\`** | 시작 로고에서 작업 디렉터리를 **숨기는** 환경변수 — 시연/스크린샷에 유용 (v2.1.119) |
+| **\`owner/repo#N\` git remote** | 출력의 \`owner/repo#N\` 단축링크가 항상 github.com이 아닌 **현재 git remote의 호스트**를 사용 (GHE/GitLab 등) (v2.1.119) |
+| **\`/color\` Remote Control 동기화** | \`/color\`가 Remote Control 연결 시 claude.ai/code의 액센트 색상에 자동 동기화 (v2.1.118) |
+| **\`/model\` 영속화** | 프로젝트가 다른 모델로 핀되어 있어도 \`/model\` 선택이 재시작 후 유지. 시작 헤더가 모델 출처(프로젝트 핀/managed) 표시 (v2.1.117) |
+| **\`/model\` 게이트웨이 오버라이드** | 커스텀 \`ANTHROPIC_BASE_URL\` 게이트웨이 사용 시 \`/model\` 피커가 \`ANTHROPIC_DEFAULT_*_MODEL_NAME\`/\`_DESCRIPTION\` 오버라이드 존중 (v2.1.118) |
+| **Pro/Max 기본 effort \`high\`** | Pro/Max 구독자의 Opus 4.6/4.7 기본 effort가 medium → \`high\` (v2.1.117) |
+| **Thinking spinner inline** | "still thinking", "thinking more", "almost done thinking"처럼 **인라인 진행 표시**로 별도 힌트 줄 대체 (v2.1.116) |
+| **\`/doctor\` 응답 중 호출** | Claude가 응답 중이어도 \`/doctor\`를 즉시 열 수 있음 — 현재 턴 종료 대기 불필요 (v2.1.116) |
+| **slash command 하이라이트** | 슬래시 커맨드 추천이 검색어와 **매칭된 문자**를 강조 표시 (v2.1.119) |
+| **slash command 줄바꿈** | 슬래시 커맨드 피커가 긴 설명을 자르지 않고 **두 번째 줄**로 감싸서 표시 (v2.1.119) |
+| **status line 효과 정보** | status line stdin JSON에 \`effort.level\`과 \`thinking.enabled\` 포함 — 살아있는 상태 표시 가능 (v2.1.119) |
+| **\`cleanupPeriodDays\` 확대** | 보존 정리 스윕이 \`~/.claude/tasks/\`, \`shell-snapshots/\`, \`backups/\`까지 커버 (v2.1.117) |
+
+##### \`/usage\` — 비용 + 통계 한 화면에서 (v2.1.118)
+
+\`\`\`
+비유: 가계부 + 활동 기록을 합친 대시보드
+
+기존: /cost (모델별 비용) + /stats (메시지 횟수/시간) → 두 커맨드를 따로 호출
+이후: /usage 한 곳에서 비용 + 통계 + 5시간/주간 사용량 모두 확인
+     /cost·/stats는 단축어로 살아있어 → 평소 습관대로 입력하면 자동으로 해당 탭으로
+\`\`\`
+
+##### Vim visual mode (v2.1.118)
+
+\`\`\`
+NORMAL 모드에서:
+  v   →  visual 모드 진입 (글자 단위 선택)
+  V   →  visual-line 모드 진입 (줄 단위 선택)
+  d   →  선택 영역 삭제
+  y   →  선택 영역 복사
+  Esc →  NORMAL로 복귀
+\`\`\`
+
+> 그동안 vim 사용자에게 부족했던 마지막 핵심 모드가 채워졌습니다. 멀티라인 프롬프트 편집이 vim 사용자의 손에 익은 방식 그대로 동작합니다.
+
+##### 커스텀 테마 (v2.1.118)
+
+\`\`\`bash
+# 1. 명명 테마 생성/편집/전환
+claude → /theme → "Create new theme..."
+
+# 2. 직접 JSON 편집
+ls ~/.claude/themes/
+# my-dark.json   pastel.json   ...
+
+# 3. 플러그인이 themes/ 디렉터리로 배포 가능
+my-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+└── themes/
+    ├── ocean.json
+    └── sunset.json
+\`\`\`
+
+\`\`\`
+비유: 학생이 직접 디자인한 교실 색깔표
+
+기존: 빌트인 라이트/다크 + Auto (match terminal) 만 선택 가능
+이후: 색상 토큰을 JSON으로 자유롭게 정의 → 팀 브랜드 컬러나 개인 취향에 맞춤
+     플러그인 설치만으로 새 테마가 /theme 메뉴에 자동 등록!
+\`\`\`
+
 #### v2.1.94~2.1.97에서 추가된 기능
 
 | 기능 | 설명 |

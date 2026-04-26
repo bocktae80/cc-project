@@ -42,7 +42,27 @@ window.STUDIO_CONTENT["03-code-search"] = {
 
 - **파일 제안 프리워밍**: 자주 쓰는 파일 패턴을 미리 캐싱해서 검색이 더 빨라졌습니다
 - **gitignore 존중**: \`.gitignore\`에 등록된 파일은 검색 결과에서 자동 제외됩니다
-- **Grep ripgrep 자가 복구 (v2.1.101)**: 내장 ripgrep 경로가 스테일 상태(VSCode 자동 업데이트, macOS App Translocation 등)가 되면 시스템 \`rg\`로 **자동 폴백 + 세션 중 자가 복구**`,
+- **Grep ripgrep 자가 복구 (v2.1.101)**: 내장 ripgrep 경로가 스테일 상태(VSCode 자동 업데이트, macOS App Translocation 등)가 되면 시스템 \`rg\`로 **자동 폴백 + 세션 중 자가 복구**
+
+### v2.1.117 — Native macOS/Linux 빌드: Glob/Grep → bfs/ugrep via Bash
+
+\`\`\`
+비유: 사서가 도구를 직접 들고 다니지 않고, 옆 비서를 부르던 시대 → 사서가 직접 들고 다니는 시대
+
+기존: Claude → "Glob/Grep 도구 호출" → 별도 round-trip → 결과 반환
+이후: Claude → Bash 도구가 직접 임베드된 bfs/ugrep 호출 → 즉시 결과 반환
+\`\`\`
+
+| 항목 | 변경 전 | 변경 후 (v2.1.117 native 빌드) |
+|------|---------|--------------------------|
+| Glob 도구 | 별도 도구 호출 (round-trip) | Bash 도구로 임베드된 \`bfs\` 직접 호출 |
+| Grep 도구 | 별도 도구 호출 (round-trip) | Bash 도구로 임베드된 \`ugrep\` 직접 호출 |
+| 속도 | 도구 round-trip 오버헤드 | round-trip 제거 → 더 빠름 |
+| 적용 플랫폼 | — | macOS/Linux **native 빌드만** (Windows/npm 빌드는 동작 변경 없음) |
+
+> macOS/Linux native 빌드를 사용하면, Glob/Grep이라는 별도 도구가 보이지 않고 **Bash 도구 안에서 \`bfs\`/\`ugrep\` 명령**이 직접 실행됩니다. 결과는 동일하지만 도구 호출 오버헤드가 사라져 큰 코드베이스 검색이 체감상 더 빠릅니다.
+
+> Bash 도구가 권한으로 거부되어 있으면 Glob/Grep도 같이 사라지던 v2.1.117 초기 회귀가 v2.1.119에서 수정되었으므로 안심하고 사용할 수 있어요.`,
 
   concepts: [
     {

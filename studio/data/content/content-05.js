@@ -52,6 +52,64 @@ window.STUDIO_CONTENT["05-agent-teams"] = {
 | **SendMessage 자동 재개** | 중지된 에이전트에 SendMessage를 보내면 **자동으로 백그라운드에서 재개** (에러 대신) |
 | **배경 에이전트 킬 시 결과 보존** | 배경 에이전트를 킬해도 **부분 결과가 대화 컨텍스트에 보존** |
 
+### v2.1.116~2.1.119 변경사항
+
+| 변경 | 설명 | 버전 |
+|------|------|------|
+| **Agent frontmatter \`hooks:\` \`--agent\` 동작** | 에이전트 프론트매터의 \`hooks:\`가 \`--agent\`로 메인 스레드 에이전트 실행 시에도 발동 (이전엔 서브에이전트에서만) | v2.1.116 |
+| **Agent frontmatter \`mcpServers:\` \`--agent\` 동작** | 에이전트 프론트매터의 \`mcpServers:\`가 \`--agent\`로 시작되는 메인 스레드 세션에도 로드됨 | v2.1.117 |
+| **\`--agent\` \`permissionMode\` 존중** | \`--agent <name>\`이 빌트인 에이전트의 \`permissionMode\`를 존중 (이전엔 무시되어 부모 모드 그대로 사용) | v2.1.119 |
+| **Forked subagents 외부 빌드 지원** | \`CLAUDE_CODE_FORK_SUBAGENT=1\`로 외부 빌드(Bedrock/Vertex/Foundry)에서도 fork된 서브에이전트 활성화 | v2.1.117 |
+| **Subagent MCP 서버 재구성 병렬화** | 서브에이전트와 SDK MCP 서버 재구성이 직렬 → **병렬 연결** — 다수 MCP 서버 사용 시 시작이 빨라짐 | v2.1.119 |
+| **Agent 훅 이벤트 확장** | 에이전트 타입 훅이 \`Stop\`/\`SubagentStop\` 외 다른 이벤트에도 설정 가능 ("Messages are required for agent hooks" 에러 해결) | v2.1.118 |
+| **\`SendMessage\` cwd 복원** | \`SendMessage\`로 재개되는 서브에이전트가 처음 스폰 시 명시한 \`cwd\`를 그대로 복원 | v2.1.118 |
+| **모델 다른 서브에이전트 malware 경고 수정** | 메인 에이전트와 다른 모델로 동작하는 서브에이전트의 파일 읽기에 잘못된 malware 경고가 뜨던 문제 수정 | v2.1.117 |
+
+#### \`--agent\` 메인 스레드에서 \`hooks:\`/\`mcpServers:\` 사용 (v2.1.116, 117)
+
+\`\`\`yaml
+---
+name: pr-reviewer
+description: PR을 자동 리뷰하는 에이전트
+hooks:
+  PostToolUse:
+    - matcher: "Edit"
+      hooks:
+        - type: command
+          command: "echo '편집 완료' >> /tmp/agent.log"
+mcpServers:
+  github:
+    command: "npx"
+    args: ["@modelcontextprotocol/server-github"]
+---
+
+PR을 받으면 변경 라인을 한 줄씩 리뷰하고 코멘트를 남겨라.
+\`\`\`
+
+\`\`\`bash
+claude --agent pr-reviewer
+# v2.1.115까지: 메인 스레드 → frontmatter의 hooks/mcpServers 무시 (서브에이전트로만 동작)
+# v2.1.116~ : hooks가 메인 스레드에서도 발동
+# v2.1.117~ : mcpServers도 함께 로드 → GitHub 도구 사용 가능
+\`\`\`
+
+\`\`\`
+비유: 학급반장이 부반장에게만 적용하던 행동 강령을 본인에게도 적용하기 시작
+
+기존: --agent로 메인이 되면 → 자기 frontmatter 규칙은 못 봄 (서브에이전트일 때만 적용)
+이후: --agent로 메인이 되어도 → 자기 frontmatter의 hooks/mcpServers/permissionMode 모두 적용
+\`\`\`
+
+#### Forked subagents 외부 빌드 (v2.1.117)
+
+\`\`\`bash
+# Bedrock/Vertex/Foundry 외부 빌드에서도 fork된 서브에이전트 활성화
+export CLAUDE_CODE_FORK_SUBAGENT=1
+claude --provider bedrock
+\`\`\`
+
+> Fork된 서브에이전트는 부모 세션의 컨텍스트를 복제해서 시작하므로, 동일한 작업을 여러 갈래로 빠르게 분기시킬 때 유용합니다.
+
 ### v2.1.94~2.1.97 변경사항
 
 | 변경 | 설명 | 버전 |

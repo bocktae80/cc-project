@@ -287,7 +287,61 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
          └── sudo rm → rm 규칙 매칭 (차단!)
          └── env rm  → rm 규칙 매칭 (차단!)
          └── watch rm → rm 규칙 매칭 (차단!)
-\`\`\``
+\`\`\`
+
+#### 보안 / 권한 수정 모음 (v2.1.116~2.1.119)
+
+| 수정 | 설명 | 버전 |
+|------|------|------|
+| **Auto mode \`"$defaults"\`** | \`autoMode.allow\`, \`autoMode.soft_deny\`, \`autoMode.environment\`에 \`"$defaults"\`를 포함하면 빌트인 룰을 **대체하지 않고 추가** — 커스텀 규칙을 빌트인과 함께 사용 가능 | v2.1.118 |
+| **Auto mode "Don't ask again"** | auto mode 옵트인 프롬프트에 **"Don't ask again"** 옵션 추가 — 한 번 결정하면 다시 묻지 않음 | v2.1.118 |
+| **\`blockedMarketplaces\` 정확화** | \`blockedMarketplaces\`의 \`hostPattern\`/\`pathPattern\` 엔트리를 정확히 강제 (이전엔 일부가 우회 가능) | v2.1.119 |
+| **WSL Windows 설정 상속** | WSL on Windows에서 \`wslInheritsWindowsSettings\` 정책 키로 Windows 측 managed settings를 상속 가능 | v2.1.118 |
+| **PowerShell 도구 자동 승인** | PowerShell 도구 명령어를 permission mode에서 자동 승인 가능 (Bash와 동일하게 동작) | v2.1.119 |
+| **샌드박스 \`rm\`/\`rmdir\` 보호 강화** | 샌드박스 auto-allow가 \`/\`, \`$HOME\` 등 핵심 시스템 디렉터리에 대한 \`rm\`/\`rmdir\`의 위험 경로 안전 검사를 더 이상 우회하지 못함 | v2.1.116 |
+| **\`cleanupPeriodDays\` 확장** | 보존 정리 스윕이 \`~/.claude/tasks/\`, \`~/.claude/shell-snapshots/\`, \`~/.claude/backups/\`까지 커버 | v2.1.117 |
+
+##### Auto mode \`"$defaults"\` 패턴 (v2.1.118)
+
+\`\`\`json
+{
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Bash(my-internal-tool:*)",
+      "Read(./private-data/**)"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(rm:./important/**)"
+    ]
+  }
+}
+\`\`\`
+
+\`\`\`
+비유: 학교 생활 규칙
+
+기존: 학급 자체 규칙을 만들면 → 교칙(빌트인)이 사라짐 (전부 다시 써야 함!)
+이후: "$defaults"를 포함 → 교칙 + 학급 규칙 함께 적용 (보강만 추가하면 됨)
+\`\`\`
+
+> 이전에는 \`autoMode.allow\`에 커스텀 규칙을 넣으면 **빌트인 안전 규칙이 사라져서** 매번 모든 규칙을 다시 작성해야 했어요.
+> 이제 \`"$defaults"\`로 빌트인을 유지하면서 필요한 규칙만 추가할 수 있습니다.
+
+##### \`wslInheritsWindowsSettings\` (v2.1.118)
+
+\`\`\`json
+// Windows 측 managed-settings.json (관리자)
+{
+  "wslInheritsWindowsSettings": true,
+  "permissions": {
+    "deny": ["Write(C:/Windows/**)"]
+  }
+}
+\`\`\`
+
+> WSL 안에서 \`claude\`를 실행해도 Windows 측 관리 정책(deny 규칙 등)이 그대로 적용됩니다. 엔터프라이즈 환경에서 WSL/Windows를 동시에 쓰는 사용자에게 정책 일관성을 보장해 줘요.`
     },
     {
       id: "evaluation-order",
