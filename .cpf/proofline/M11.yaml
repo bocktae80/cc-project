@@ -1,0 +1,160 @@
+milestone: M11
+startedAt: "2026-04-26T00:00:00Z"
+updatedAt: "2026-04-26T00:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{03,05,06,07,10,13,17,19,22,28}.js (정적 콘텐츠 객체 10개),
+  version-track.json (currentCLI 2.1.114→2.1.119, 29개 엔트리 basedOn 일괄 갱신),
+  ROADMAP.md (M11 섹션 추가/완료 마킹).
+  실질적으로 교육 콘텐츠/메타데이터이므로 Red Team은 DTS 프로필을 주력,
+  RTS(code)는 보조로 적용. 스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  신규 튜토리얼 없이 v2.1.116~2.1.119 changelog의 30+ 기능을 기존 10개 튜토리얼에 분배 반영.
+
+fidelity:
+  pfs: 95
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M11 섹션)"
+  evidence:
+    - plan: "M11-01 ⭐⭐⭐ 콘텐츠 갱신 (06/10/03)"
+      actual: "content-06.js +86줄(mcp_tool 5번째 hook type, duration_ms), content-10.js +77줄(/usage 통합, Vim visual, 커스텀 테마, /config persist 등 22행), content-03.js +22줄(Native bfs/ugrep 섹션)"
+      match: true
+    - plan: "M11-02 ⭐⭐ 콘텐츠 갱신 (05/07/17/19/22/28)"
+      actual: "content-05.js +58줄(Agent frontmatter --agent 동작 7행 + Forked subagents 예시), content-07.js +28줄(MCP 시작 병렬화 + OAuth 안정성 12행), content-17.js +43줄(claude plugin tag, themes/, 의존성 자동 13행), content-19.js +56줄(Auto mode $defaults, blockedMarketplaces, WSL 7행), content-22.js +34줄(--print agent frontmatter 존중 1행 + 예시), content-28.js +25줄(--from-pr GitLab/Bitbucket/GHE 1행 + 예시)"
+      match: true
+    - plan: "M11-03 ⭐ 콘텐츠 갱신 (10/13/17/19)"
+      actual: "10/13/17/19 콘텐츠 갱신에 ⭐ 항목들 통합 (PostToolUse duration_ms는 06으로 분류). content-13.js +6줄(/color sync, --add-dir 세션). content-{17,19}는 M11-02 라인에 함께 포함."
+      match: true
+    - plan: "M11-04 version-track.json 2.1.114 → 2.1.119 bump + 전체 29개 basedOn 갱신"
+      actual: "version-track.json currentCLI 2.1.114→2.1.119, lastChecked 2026-04-26, 29개 엔트리 basedOn 일괄 2.1.119, 영향받은 10개에 trackedFeatures+notes 보강. check-updates.js 29/29 최신."
+      match: true
+
+passloop:
+  g1:
+    score: 82
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 갱신 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JSON/JS 파싱 기반 구문 검증 매니페스트 + M11 기준 매핑표.
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 객체 보강만)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node -e JSON.parse(version-track.json)"
+        result: "valid: true"
+      - action: "node --check content-{03,05,06,07,10,13,17,19,22,28}.js"
+        result: "10/10 OK"
+      - action: "node studio/data/check-updates.js"
+        result: "기록=설치=2.1.119, 모든 튜토리얼이 최신 버전 범위 내 (29개)"
+  g3:
+    score: 88
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming convention 확인"
+        result: "v2.1.116~2.1.119 섹션 헤더 / 표 컬럼 / 비유 블록 — 기존 26개 파일 동일 패턴"
+      - action: "structure consistency 확인"
+        result: "overview/concepts/tutorials/examples/quiz 5-block 변동 없음, 각 v-범위 섹션은 기존 자리(상단)에 삽입"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-19:1171, content-17:1005, content-06:963, content-22:708, content-05:714, content-10:693, content-28:642, content-07:579, content-03:524, content-13:510 — 정적 교육 콘텐츠 JS 프로젝트 예외 유지(M7~M10과 동일 분류). warning."
+  g4:
+    score: 94
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "29/29 최신 범위 내, 회귀 없음"
+      - action: "version-track.json 29개 엔트리 유효성"
+        result: "모두 basedOn 2.1.119, lastUpdated 2026-04-26 일괄 적용 — 누락 0"
+      - action: "10개 콘텐츠 파일 v2.1.116~2.1.119 섹션 위치 확인"
+        result: "기존 v2.1.110~2.1.113 또는 v2.1.105~2.1.108 섹션의 직전/직후 일관 배치"
+  mqs: 90.9   # 82*0.15 + 96*0.35 + 88*0.30 + 94*0.20 = 12.3 + 33.6 + 26.4 + 18.8
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 — simplify 대상 아님)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 88
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "10개 콘텐츠 파일 모두 600줄 초과(510~1171). 단, 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M10 선례) 유지."
+    - rule: commit-convention-001
+      severity: info
+      detail: "아직 커밋 전. 커밋 메시지는 feat(studio) 스코프 + 한글 본문 예정 (M7~M10 패턴)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 예정, 요청 범위 준수, 리팩토링/추가 기능 없음 — 통과."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M11 섹션 추가, 4/4 완료 체크 — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "신규 튜토리얼 없음 → projects.js/index.html 변경 불필요. 기존 10개 콘텐츠 갱신은 version-track.json trackedFeatures와 notes에 매핑 — 3-Layer 완결."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M11 4/4 완료, '나중에' 항목 없음 — 통과."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (workbook-pkg/skills/**/*.md 변경 없음, .claude/skills/update-check 미수정)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS + 보조 RTS
+  rts: 94
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심)
+    accuracy: 96
+    completeness: 95
+    navigability: 90
+    clarity: 92
+    consistency: 95
+    maintainability: 93
+  evidence:
+    accuracy:
+      action: "trackedFeatures 항목 8개 샘플 → GitHub Releases v2.1.116~2.1.119 body 직접 매칭"
+      result: "mcp_tool hook(v2.1.118), /usage 통합(v2.1.118 body 'Merged /cost and /stats into /usage'), Vim visual mode(v2.1.118 body 'visual mode v and visual-line mode V'), 커스텀 테마(v2.1.118 body 'Create and switch between named custom themes from /theme'), claude plugin tag(v2.1.118 body 'create release git tags'), --from-pr 다중 호스트(v2.1.119 body 'GitLab merge-request, Bitbucket pull-request, GitHub Enterprise PR URLs'), Native bfs/ugrep(v2.1.117 body 'Glob and Grep tools are replaced by embedded bfs and ugrep'), PostToolUse duration_ms(v2.1.119 body 'PostToolUse and PostToolUseFailure hook inputs now include duration_ms') — 8/8 원문 일치"
+      score: 96
+    completeness:
+      action: "M11 계획 4개 워크아이템 vs 실제 구현"
+      result: "4/4 완료, ⭐⭐⭐ 5건 + ⭐⭐ 13건 + ⭐ 13건 모두 trackedFeatures에 등록 + 콘텐츠 본문 반영"
+      score: 95
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 검증"
+      result: "각 콘텐츠의 'v2.1.116~2.1.119' 섹션이 기존 v-범위 섹션과 동일 위계, 표 형식 일치. ROADMAP M11 섹션 4/4."
+      score: 90
+    clarity:
+      action: "비유 일관성 + 한국어 가독성 확인"
+      result: "06번: 교실 시계로 활동 시간 측정, 10번: 가계부+활동기록 대시보드, 03번: 사서가 도구 직접 들고 다니기, 05번: 학급반장↔부반장 행동강령, 19번: 학교 생활 규칙 — 교육 타겟에 맞춤"
+      score: 92
+    consistency:
+      action: "기존 26개 파일 섹션 헤더 패턴 vs 신규 섹션 패턴"
+      result: "'#### v2.1.116~2.1.119에서 추가된 기능' 동일 형식, '##### 부제목 (v2.1.xxx)' 하위 섹션 패턴 동일"
+      score: 95
+    maintainability:
+      action: "version-track.json 갱신 확인"
+      result: "29개 엔트리 basedOn 2.1.119 일괄, 영향받은 10개(03/05/06/07/10/13/17/19/22/28)는 trackedFeatures + notes 명시적 보강"
+      score: 93
+
+loopbacks:
+  count: 0
+  history: []
