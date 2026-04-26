@@ -1,10 +1,10 @@
 # CC Project 상태
 
 ## 현재 단계
-- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7/M8 유지보수)
-- **진행률:** 26/26 튜토리얼 완료
-- **CLI 기준 버전:** v2.1.97 (26개 전부 최신, 갱신 필요 0개)
-- **최근 작업:** v2.1.97 튜토리얼 갱신 — 8개 콘텐츠 업데이트 (Managed Agents, Focus view, sessionTitle 훅, 플러그인 스킬 name, `● N running`, dangerously-skip-permissions 수정, `/ultraplan` 원격 Plan 모드) + 버전 범프 (2026-04-09)
+- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M11 유지보수)
+- **진행률:** 29/29 튜토리얼 완료
+- **CLI 기준 버전:** v2.1.119 (29개 전부 최신, 갱신 필요 0개)
+- **최근 작업:** M11 완료 — v2.1.119 갱신. 10개 콘텐츠 갱신(03/05/06/07/10/13/17/19/22/28)에 mcp_tool 5번째 hook type·`/usage` 통합·Vim visual mode·커스텀 테마·Native bfs/ugrep·`claude plugin tag`·`--from-pr` 다중 호스트 등 30+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 90.9 / Review 88 / RTS 94, 전 단계 PASS (2026-04-26)
 
 ## 튜토리얼 현황
 
