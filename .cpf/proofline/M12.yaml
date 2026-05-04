@@ -1,0 +1,173 @@
+milestone: M12
+startedAt: "2026-05-04T00:00:00Z"
+updatedAt: "2026-05-04T00:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{06,07,08,10,11,16,17,18,19,25}.js (정적 콘텐츠 객체 10개),
+  version-track.json (currentCLI 2.1.119→2.1.126, 29개 엔트리 basedOn 일괄 갱신
+  + 영향 받은 10개 trackedFeatures/notes 보강), ROADMAP.md (M12 섹션 추가/완료
+  마킹), STATUS.md (Phase/CLI 버전/최근 작업 갱신).
+  실질적으로 교육 콘텐츠/메타데이터이므로 Red Team은 DTS 프로필을 주력,
+  RTS(code)는 보조로 적용. 스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  신규 튜토리얼 없이 v2.1.121~2.1.126 changelog의 25+ 기능을 기존 10개 튜토리얼에 분배 반영.
+  v2.1.120/124/125는 미공개, v2.1.123은 단일 OAuth 401 retry loop 수정만 포함되어 별도 분배 없음.
+
+fidelity:
+  pfs: 95
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M12 섹션)"
+  evidence:
+    - plan: "M12-01 ⭐⭐⭐ 콘텐츠 갱신 (06/07/10/17)"
+      actual: "content-06.js +78줄(PostToolUse updatedToolOutput 일반화 + skill_activated invocation_trigger 2섹션), content-07.js +56줄(alwaysLoad + 시작 실패 자동 재시도 섹션), content-10.js +85줄(claude project purge + auth login OAuth code paste + /resume PR URL + /model gateway + Auto mode 스피너 색상 등 11행 + 사용 예시 3블록), content-17.js +49줄(claude plugin prune + uninstall --prune cascade 섹션)"
+      match: true
+    - plan: "M12-02 ⭐⭐ 콘텐츠 갱신 (08/11/16/18/19/25)"
+      actual: "content-08.js +24줄(/skills type-to-filter 검색 박스 섹션), content-11.js +35줄(alwaysLoad + mcp_authenticate redirectUri + 중복 dedup 5행 + 비교표), content-16.js +30줄(CLAUDE_CODE_FORK_SUBAGENT=1 비대화형 + 시나리오 표), content-18.js +37줄(SDK 5행 + ANTHROPIC_BEDROCK_SERVICE_TIER 사용 예시 + tier 비교표), content-19.js +50줄(--dangerously-skip-permissions 1차/2차 확장 + 비교 + 시나리오), content-25.js +30줄(/skills 검색 박스 + skill_activated invocation_trigger + OTEL 분석 액션 표)"
+      match: true
+    - plan: "M12-03 ⭐ 콘텐츠 보강 (10/22)"
+      actual: "10번 콘텐츠에 /model gateway 모델 리스트, Auto mode 스피너 색상, /mcp 중복 hint, 이미지 다운스케일, Ctrl+L 동작 정정 등 ⭐ 항목 통합. 22번은 CLAUDE_CODE_FORK_SUBAGENT=1을 16/18에 함께 분류(중복 방지)하여 별도 추가 없음."
+      match: true
+    - plan: "M12-04 version-track.json 2.1.119 → 2.1.126 bump + 영향 10개 trackedFeatures 보강 + 전체 29개 구문 검증"
+      actual: "version-track.json currentCLI 2.1.119→2.1.126, lastChecked 2026-05-04, 29개 엔트리 basedOn 일괄 2.1.126, 영향받은 10개에 trackedFeatures+notes 보강. JSON 유효성 검증 통과, check-updates.js: 29/29 최신, content-*.js 29개 모두 node --check OK."
+      match: true
+
+passloop:
+  g1:
+    score: 84
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 갱신 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JSON/JS 파싱 기반 구문 검증 매니페스트 + M12 기준 매핑표.
+      v2.1.121/126 changelog 항목 → 영향 튜토리얼 매핑을 사전 작성(기존 M11 패턴 답습).
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 객체 보강만)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node -e JSON.parse(version-track.json)"
+        result: "valid: true"
+      - action: "node --check content-{06,07,08,10,11,16,17,18,19,25}.js"
+        result: "10/10 OK"
+      - action: "node studio/data/check-updates.js"
+        result: "기록=설치=2.1.126, 모든 튜토리얼이 최신 버전 범위 내 (29개)"
+      - action: "node --check 전체 content-*.js"
+        result: "29/29 OK"
+  g3:
+    score: 88
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming convention 확인"
+        result: "v2.1.121~2.1.126 섹션 헤더 / 표 컬럼 / 비유 블록 — 기존 M7~M11 패턴 동일"
+      - action: "structure consistency 확인"
+        result: "overview/concepts/tutorials/examples/quiz 5-block 변동 없음, 각 v-범위 섹션은 기존 자리(상단 또는 v-범위 섹션 다음)에 삽입"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-19:1213, content-18:1067, content-17:1054, content-06:1041, content-25:906, content-16:797, content-08:787, content-10:778, content-07:635, content-11:489 — content-11만 600줄 미만, 나머지는 정적 교육 콘텐츠 JS 프로젝트 예외 유지(M7~M11과 동일 분류). warning."
+  g4:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "29/29 최신 범위 내, 회귀 없음"
+      - action: "version-track.json 29개 엔트리 유효성"
+        result: "모두 basedOn 2.1.126, lastUpdated 2026-05-04 일괄 적용 — 누락 0"
+      - action: "10개 콘텐츠 파일 v2.1.121~2.1.126 섹션 위치 확인"
+        result: "기존 v2.1.116~2.1.119 또는 v2.1.110~2.1.113 섹션의 직전/직후 일관 배치(기존 M10/M11 패턴 답습). 8개는 신규 섹션 추가, 2개(11/16)는 마지막 v-범위 다음에 추가"
+  mqs: 91.5   # 84*0.15 + 96*0.35 + 88*0.30 + 96*0.20 = 12.6 + 33.6 + 26.4 + 19.2
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 — simplify 대상 아님)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 88
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "10개 콘텐츠 파일 중 9개가 600줄 초과(635~1213). 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M11 선례) 유지."
+    - rule: commit-convention-001
+      severity: info
+      detail: "아직 커밋 전. 커밋 메시지는 feat(studio) 스코프 + 한글 본문 예정 (M7~M11 패턴 동일)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 예정, 요청 범위 준수, 리팩토링/추가 기능 없음 — 통과."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M12 섹션 추가, 4/4 완료 체크 — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "신규 튜토리얼 없음 → projects.js/index.html 변경 불필요. 기존 10개 콘텐츠 갱신은 version-track.json trackedFeatures와 notes에 매핑 — 3-Layer 완결."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M12 4/4 완료, '나중에' 항목 없음 — 통과."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (workbook-pkg/skills/**/*.md 변경 없음, .claude/skills/update-check 미수정)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS + 보조 RTS
+  rts: 94
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심)
+    accuracy: 96
+    completeness: 95
+    navigability: 90
+    clarity: 92
+    consistency: 95
+    maintainability: 93
+  evidence:
+    accuracy:
+      action: "trackedFeatures 항목 8개 샘플 → GitHub Releases v2.1.121~2.1.126 body 직접 매칭"
+      result: >
+        PostToolUse updatedToolOutput 일반화(v2.1.121 body 'PostToolUse hooks can now replace tool output for all tools via hookSpecificOutput.updatedToolOutput (previously MCP-only)'),
+        alwaysLoad 옵션(v2.1.121 body 'Added alwaysLoad option to MCP server config — when true, all tools from that server skip tool-search deferral'),
+        claude project purge(v2.1.126 body 'Added claude project purge [path] to delete all Claude Code state for a project'),
+        claude auth login OAuth code paste(v2.1.126 body 'claude auth login now accepts the OAuth code pasted into the terminal when the browser callback can't reach localhost'),
+        /resume PR URL(v2.1.122 body 'Pasting a PR URL into the /resume search box now finds the session that created that PR'),
+        claude plugin prune(v2.1.121 body 'Added claude plugin prune to remove orphaned auto-installed plugin dependencies'),
+        ANTHROPIC_BEDROCK_SERVICE_TIER(v2.1.122 body 'Added ANTHROPIC_BEDROCK_SERVICE_TIER environment variable to select a Bedrock service tier'),
+        --dangerously-skip-permissions 확장(v2.1.126 body '--dangerously-skip-permissions now bypasses prompts for writes to .claude/, .git/, .vscode/, shell config files') — 8/8 원문 일치
+      score: 96
+    completeness:
+      action: "M12 계획 4개 워크아이템 vs 실제 구현"
+      result: "4/4 완료, ⭐⭐⭐ 4건(updatedToolOutput/alwaysLoad/project purge/plugin prune) + ⭐⭐ 6건(/skills 검색/mcp_authenticate/fork 비대화형/Bedrock tier/--dangerously 확장/invocation_trigger) + ⭐ 4건(/model gateway, /mcp 중복 hint, Auto mode 스피너, 이미지 다운스케일) 모두 trackedFeatures 등록 + 콘텐츠 본문 반영"
+      score: 95
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 검증"
+      result: "각 콘텐츠의 'v2.1.121~2.1.126' 또는 ' v2.1.121 ' 섹션이 기존 v-범위 섹션과 동일 위계, 표 형식 일치. ROADMAP M12 섹션 4/4. STATUS.md Phase/CLI 버전/최근 작업 동기화."
+      score: 90
+    clarity:
+      action: "비유 일관성 + 한국어 가독성 확인"
+      result: "06번: 학급 게시판 검열관(updatedToolOutput) + 도구 대여 카운터 로그(invocation_trigger), 07번: 학교 양호실 vs 행정실(alwaysLoad), 10번: 학기 말 사물함 비우기(project purge), 17번: 메인+보조 사물함(plugin prune --prune), 16번: 회의 분신 vs 메일 답장 분신(fork 비대화형), 18번: 택배 발송 옵션(Bedrock tier), 19번: 야간 무인 주방 출입증(--dangerously 확장) — 교육 타겟에 맞춤"
+      score: 92
+    consistency:
+      action: "기존 26개 파일 섹션 헤더 패턴 vs 신규 섹션 패턴"
+      result: "'#### v2.1.121~2.1.126에서 추가된 기능' / '### v2.1.121~2.1.126 X 개선사항' 동일 형식, '##### 부제목 (v2.1.xxx)' 하위 섹션 패턴 동일. 표 컬럼 '개선 / 설명 / 버전' 또는 '기능 / 설명 / 버전' 일관"
+      score: 95
+    maintainability:
+      action: "version-track.json 갱신 확인"
+      result: "29개 엔트리 basedOn 2.1.126 일괄, 영향받은 10개(06/07/08/10/11/16/17/18/19/25)는 trackedFeatures + notes 명시적 보강. 각 항목의 출처 버전 (v2.1.121/122/126 등) 인라인 표기로 추적성↑"
+      score: 93
+
+loopbacks:
+  count: 0
+  history: []
