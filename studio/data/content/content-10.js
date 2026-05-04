@@ -261,6 +261,91 @@ v2.1.74 /context:
 | **Shift+↑/↓ 스크롤** | 풀스크린 모드에서 선택을 뷰포트 밖으로 확장 시 뷰포트도 함께 스크롤 (v2.1.113) |
 | **\`/extra-usage\`** | Remote Control(모바일/웹) 클라이언트에서도 \`/extra-usage\` 실행 가능 (v2.1.113) |
 
+#### v2.1.121~2.1.126에서 추가된 기능
+
+| 기능 | 설명 |
+|------|------|
+| **\`claude project purge [path]\`** | 프로젝트의 **모든 Claude Code 상태**(트랜스크립트, 태스크, 파일 히스토리, config 엔트리)를 **일괄 삭제**하는 새 명령. \`--dry-run\` / \`-y/--yes\` / \`-i/--interactive\` / \`--all\` 지원 (v2.1.126) |
+| **\`claude auth login\` OAuth 코드 paste** | 브라우저 콜백이 localhost에 닿지 못하는 환경(WSL2, SSH, container)에서 **터미널에 OAuth 코드를 직접 paste**해서 로그인 가능 (v2.1.126) |
+| **\`/resume\` PR URL 검색** | \`/resume\` 검색 박스에 PR URL을 붙여 넣으면 **그 PR을 만든 세션을 찾음** (GitHub, GHE, GitLab, Bitbucket) (v2.1.122) |
+| **\`/model\` gateway 모델 리스트** | \`ANTHROPIC_BASE_URL\`이 Anthropic-compatible gateway를 가리킬 때, \`/model\` 피커가 gateway의 **\`/v1/models\` 엔드포인트 모델 리스트를 표시** (v2.1.126) |
+| **\`/usage\` 메모리 누수 수정** | 큰 트랜스크립트 히스토리에서 \`/usage\`가 약 2GB 메모리 누수를 일으키던 문제 수정 (v2.1.121) |
+| **이미지 다운스케일** | 2000px 이상 이미지를 paste하면 세션이 끊기던 문제 — 이제 **자동 다운스케일** (v2.1.126) |
+| **\`/branch\` rewound timeline 수정** | 되감기된 타임라인 엔트리가 포함된 세션에서 \`/branch\` 포크가 \`tool_use ids ... without tool_result\` 에러로 실패하던 문제 수정 (v2.1.122) |
+| **\`Ctrl+L\` 동작 정정** | \`Ctrl+L\`이 프롬프트 입력을 비우던 동작을 제거 — **화면 강제 재렌더만 수행**(readline 동작 일치) (v2.1.126) |
+| **\`/usage\` rate-limit 회복** | stale OAuth 토큰으로 \`/usage\`가 "rate limited"를 반환하던 문제 — **자동 토큰 refresh** (v2.1.121) |
+| **Auto mode 스피너 색상** | 권한 체크가 정체될 때 스피너가 **빨간색**으로 변경 — 도구 실행 중처럼 보이지 않도록 시각 구분 (v2.1.126) |
+
+#### \`claude project purge\` 사용 예시
+
+\`\`\`bash
+# 1) 무엇이 지워질지 미리 확인
+claude project purge ~/work/old-project --dry-run
+
+# 출력:
+# Will delete:
+#   - 124 transcripts (12 MB)
+#   - 18 tasks
+#   - 8.4 MB file history
+#   - 1 config entry in ~/.claude/projects/...
+
+# 2) 인터랙티브 확인
+claude project purge ~/work/old-project -i
+
+# 3) 확인 없이 즉시 삭제
+claude project purge ~/work/old-project -y
+
+# 4) 모든 프로젝트 상태 정리 (디스크 용량 회수)
+claude project purge --all --dry-run
+claude project purge --all -y
+\`\`\`
+
+\`\`\`
+비유: 학기 말 사물함 비우기
+
+기존: 트랜스크립트만 따로, 태스크 따로, file history 따로 — 4곳을 일일이
+이후: \`claude project purge\` 한 번으로 그 프로젝트의 흔적을 한꺼번에 정리
+\`\`\`
+
+> **주의**: \`--all\`은 **모든** 프로젝트의 상태를 지웁니다. 처음에는 항상 \`--dry-run\`으로 무엇이 지워질지 확인하고 \`-i\`로 인터랙티브 진행을 권장합니다. 한번 지운 트랜스크립트는 복구되지 않습니다.
+
+#### \`claude auth login\` OAuth 코드 paste (WSL2/SSH/container)
+
+\`\`\`
+이전 (브라우저 콜백 경로):
+1) claude auth login → 브라우저가 자동으로 열림
+2) Anthropic 로그인 → 브라우저가 localhost:xxxxx로 콜백
+3) WSL2/SSH/container에서는 localhost가 호스트와 격리 → 무한 대기 → 타임아웃
+
+이후 (수동 코드 paste):
+1) claude auth login → 콜백 실패 감지
+2) "콜백이 닿지 않습니다. 브라우저에 표시된 코드를 붙여 넣으세요:" 프롬프트
+3) Anthropic 페이지에 표시된 OAuth 코드를 터미널에 paste → 로그인 완료
+\`\`\`
+
+> 이전에는 WSL2/원격 SSH 사용자가 \`CLAUDE_CODE_OAUTH_TOKEN\` 환경 변수로 우회해야 했지만, 이제 **공식 인터랙티브 흐름**으로 처리됩니다.
+
+#### \`/resume\` PR URL 검색
+
+\`\`\`
+/resume
+
+? Search sessions: https://github.com/myorg/myrepo/pull/4521
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+> Found 1 session that created this PR:
+  ↳ "Fix auth race in M12 — 2026-04-30 14:22"
+\`\`\`
+
+| 지원 | 호스트 | 예시 |
+|---|---|---|
+| GitHub | github.com | \`/pull/N\` |
+| GHE | github.\<corp\>.com | \`/pull/N\` |
+| GitLab | gitlab.com / self-hosted | \`/-/merge_requests/N\` |
+| Bitbucket | bitbucket.org | \`/pull-requests/N\` |
+
+> "그 PR 만들 때 Claude랑 어떻게 진행했더라?"가 떠오를 때 PR 링크 한 줄로 그 세션을 정확히 찾을 수 있습니다.
+
 #### v2.1.116~2.1.119에서 추가된 기능
 
 | 기능 | 설명 |

@@ -1,10 +1,10 @@
 # CC Project 상태
 
 ## 현재 단계
-- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M11 유지보수)
+- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M12 유지보수)
 - **진행률:** 29/29 튜토리얼 완료
-- **CLI 기준 버전:** v2.1.119 (29개 전부 최신, 갱신 필요 0개)
-- **최근 작업:** M11 완료 — v2.1.119 갱신. 10개 콘텐츠 갱신(03/05/06/07/10/13/17/19/22/28)에 mcp_tool 5번째 hook type·`/usage` 통합·Vim visual mode·커스텀 테마·Native bfs/ugrep·`claude plugin tag`·`--from-pr` 다중 호스트 등 30+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 90.9 / Review 88 / RTS 94, 전 단계 PASS (2026-04-26)
+- **CLI 기준 버전:** v2.1.126 (29개 전부 최신, 갱신 필요 0개)
+- **최근 작업:** M12 완료 — v2.1.126 갱신. 10개 콘텐츠 갱신(06/07/08/10/11/16/17/18/19/25)에 PostToolUse `updatedToolOutput` 일반화·MCP `alwaysLoad` + 자동 재시도·`claude project purge`·`claude plugin prune`·`/skills` 검색 박스·`CLAUDE_CODE_FORK_SUBAGENT=1` 비대화형·`--dangerously-skip-permissions` 확장·`skill_activated` `invocation_trigger` 등 v2.1.121~126 25+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 91.5 / Review 88 / RTS 94, 전 단계 PASS (2026-05-04)
 
 ## 튜토리얼 현황
 

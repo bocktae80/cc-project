@@ -301,6 +301,48 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 | **샌드박스 \`rm\`/\`rmdir\` 보호 강화** | 샌드박스 auto-allow가 \`/\`, \`$HOME\` 등 핵심 시스템 디렉터리에 대한 \`rm\`/\`rmdir\`의 위험 경로 안전 검사를 더 이상 우회하지 못함 | v2.1.116 |
 | **\`cleanupPeriodDays\` 확장** | 보존 정리 스윕이 \`~/.claude/tasks/\`, \`~/.claude/shell-snapshots/\`, \`~/.claude/backups/\`까지 커버 | v2.1.117 |
 
+#### 보안 / 권한 수정 모음 (v2.1.121~2.1.126)
+
+| 수정 | 설명 | 버전 |
+|------|------|------|
+| **\`--dangerously-skip-permissions\` 우회 경로 확장 (1차)** | \`.claude/skills/\`, \`.claude/agents/\`, \`.claude/commands/\` 쓰기에 더 이상 프롬프트하지 않음 — 자동화/CI에서 스킬·에이전트·커맨드 동시 배포 가능 | v2.1.121 |
+| **\`--dangerously-skip-permissions\` 우회 경로 확장 (2차)** | \`.claude/\`, \`.git/\`, \`.vscode/\`, shell config 파일(\`~/.bashrc\`, \`~/.zshrc\` 등), 기타 이전 보호 경로까지 우회 — 단, **catastrophic 제거 명령은 여전히 안전망 프롬프트** | v2.1.126 |
+| **\`allowManagedDomainsOnly\` / \`allowManagedReadPathsOnly\`** | 우선순위가 더 높은 managed-settings에 \`sandbox\` 블록이 없을 때 두 옵션이 무시되던 보안 버그 수정 | v2.1.126 |
+| **Read 도구 malware-assessment 제거** | per-file malware-assessment reminder가 legacy 모델에서 spurious 거부와 "이건 멀웨어 아닙니다" 코멘트를 만들던 문제 — reminder 자체 제거 | v2.1.126 |
+| **PowerShell 도구 보안** | bare \`--\` (\`git diff -- file\`)가 PowerShell의 \`--%\` stop-parsing 토큰으로 오인되던 문제 수정 | v2.1.126 |
+
+##### \`--dangerously-skip-permissions\` 새 우회 범위 (v2.1.121, v2.1.126)
+
+\`\`\`
+v2.1.120 이전: --dangerously-skip-permissions 가 우회하는 경로 = (Bash, Read, Write, Edit 일반)
+              .claude/skills/ 작성   → 여전히 프롬프트
+              .git/hooks/ 수정       → 여전히 프롬프트
+              ~/.zshrc 수정          → 여전히 프롬프트
+              rm -rf /               → 프롬프트 (안전망)
+
+v2.1.121 추가: .claude/skills/, .claude/agents/, .claude/commands/ 우회
+
+v2.1.126 추가: .claude/ 전반, .git/, .vscode/, shell config 우회
+              rm -rf / 등 catastrophic 명령은 여전히 프롬프트 (안전망 유지)
+\`\`\`
+
+\`\`\`
+비유: 야간 무인 주방 출입증
+
+기존: 메인 주방만 출입증으로 진입 (저장실, 사무실은 매번 키 빌려야 함)
+v2.1.121: 메인 + 레시피 보관실(.claude/skills/) 출입 가능
+v2.1.126: 메인 + 사무실(.claude/) + 식재료 창고(.git/, .vscode/) + 가스밸브 점검 노트(shell config)
+          단, "주방 통째로 폭파"(rm -rf /)는 여전히 야간 점장 호출 필수
+\`\`\`
+
+| 활용 시나리오 | 효과 |
+|---|---|
+| CI에서 스킬·에이전트·커맨드를 한번에 배포 | 프롬프트 0건, 자동화 완성도↑ |
+| Devcontainer 첫 부팅에서 \`.zshrc\` / \`.bashrc\` 자동 세팅 | 컨테이너 빌드 단계에서 정착 |
+| Codespace에서 \`.vscode/settings.json\` 자동 적용 | 팀 표준 설정을 무인 적용 |
+
+> 매우 강력한 우회 옵션이므로 **사용자가 명시적으로 \`--dangerously-skip-permissions\`를 켠 세션**에서만 적용됩니다. 일반 세션의 권한 정책에는 영향 없습니다. \`rm -rf /\` 같은 catastrophic 명령은 안전망이 그대로 작동합니다.
+
 ##### Auto mode \`"$defaults"\` 패턴 (v2.1.118)
 
 \`\`\`json

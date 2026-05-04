@@ -165,7 +165,50 @@ MCP 커넥터는 **OAuth**를 사용합니다. 한 번 "허용" 버튼을 클릭
 | **시스템 프롬프트 캐싱** | ToolSearch 사용 시 글로벌 시스템 프롬프트 캐싱이 정상 동작 (v2.1.84) |
 | **플러그인 중복 억제** | 플러그인 MCP 서버가 조직 커넥터와 중복되면 자동 억제 (v2.1.83) |
 
-> **핵심 요약**: 커넥터 도구는 성능을 위해 지연 로딩(Deferred Tools)됩니다. ToolSearch로 키워드 검색 또는 직접 선택하면 찾기와 활성화가 동시에 이루어져 바로 사용 가능합니다.`
+### v2.1.121~2.1.126 커넥터 개선사항
+
+| 개선 | 설명 |
+|------|------|
+| **\`alwaysLoad: true\`** | MCP server config에 \`alwaysLoad\`를 \`true\`로 두면 그 서버의 모든 도구가 ToolSearch deferral을 우회하고 항상 로드됨 — 자주 쓰는 사내 통합용 (v2.1.121) |
+| **SDK \`mcp_authenticate(redirectUri)\`** | SDK의 \`mcp_authenticate\`가 **커스텀 스킴 콜백**과 **claude.ai 커넥터 redirect URI**를 명시적으로 받음 — 모바일 앱/내부 도구에서 OAuth 흐름 완성 가능 (v2.1.121) |
+| **claude.ai 커넥터 중복 제거** | 동일 upstream URL을 가진 claude.ai 커넥터가 \`/mcp\` 메뉴에 중복 표시되던 문제 수정 — 자동 dedup (v2.1.121) |
+| **\`/mcp\` 중복 가림 hint** | 수동 추가한 서버가 같은 URL의 claude.ai 커넥터를 가릴 때, \`/mcp\` 메뉴에 **중복 제거 힌트** 표시 (v2.1.122) |
+| **\`/mcp\` 인증 메시지 개선** | 브라우저 sign-in 후에도 unauthorized 상태일 때 표시되는 메시지가 **명확히 정정** (v2.1.122) |
+
+#### \`alwaysLoad\` vs 기본 동작 (커넥터 관점)
+
+\`\`\`
+기본 (deferred): 첫 응답 시 ToolSearch에 도구 이름 검색 → 매칭 → 로드 → 호출
+                 (tool 결과까지 +1 round trip)
+
+alwaysLoad: true: 세션 시작부터 모든 도구가 즉시 호출 가능
+                  (round trip 절약, 단 도구 100개+ 서버는 컨텍스트 부담)
+\`\`\`
+
+| 추천 | 비추천 |
+|---|---|
+| 사내 검색·DB·이슈트래커 등 매번 쓰는 1~2개 서버 | 도구가 많은 거대 마켓플레이스 커넥터 |
+| 인터랙티브 워크플로우 응답 지연 최소화 | 가끔 쓰는 알림용 통합 |
+
+#### SDK \`mcp_authenticate(redirectUri)\` (v2.1.121)
+
+\`\`\`typescript
+// 커스텀 스킴으로 OAuth 콜백 받기 (네이티브 앱)
+await sdk.mcp_authenticate({
+  serverName: 'company-db',
+  redirectUri: 'myapp://oauth-callback'   // ← v2.1.121부터 지원
+});
+
+// claude.ai 커넥터의 redirect URI 명시
+await sdk.mcp_authenticate({
+  serverName: 'org-slack',
+  redirectUri: 'https://claude.ai/api/connectors/callback'
+});
+\`\`\`
+
+> 이전에는 SDK가 \`localhost:randomport\`로만 콜백을 받아서, 네이티브 앱(iOS/Android, Electron) 통합 시 추가 프록시가 필요했습니다. v2.1.121부터는 OS 표준 \`mailto:\` / \`myapp://\` 스킴 그대로 사용 가능합니다.
+
+> **핵심 요약**: 커넥터 도구는 성능을 위해 지연 로딩(Deferred Tools)됩니다. ToolSearch로 키워드 검색 또는 직접 선택하면 찾기와 활성화가 동시에 이루어져 바로 사용 가능합니다. v2.1.121부터는 \`alwaysLoad: true\`로 자주 쓰는 서버를 즉시 호출 대상으로 지정할 수 있습니다.`
     }
   ],
 

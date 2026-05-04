@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-04-26
+> 최종 갱신: 2026-05-04
 
 ## 완료된 마일스톤
 
@@ -92,5 +92,12 @@
 - [x] M11-02 — ⭐⭐ 콘텐츠 갱신 (05/07/17/19/22/28): Agent frontmatter `hooks:`/`mcpServers:` `--agent` 메인 스레드 동작, `--agent` `permissionMode` 존중, Forked subagents 외부 빌드, `claude plugin tag`, `plugin install` 의존성 자동, 플러그인 `themes/`, Auto mode `"$defaults"`, `--print` 모드 agent tools 존중, `--from-pr` GitLab/Bitbucket/GHE, MCP 재구성 병렬화
 - [x] M11-03 — ⭐ 콘텐츠 갱신 (10/13/17/19): `PostToolUse` `duration_ms`, `/config` persist + 검색 값 매칭, `/resume` 67% 빠름 + 큰 세션 요약, `--continue`/`--resume` `/add-dir` 세션, `DISABLE_UPDATES`, `prUrlTemplate`, `CLAUDE_CODE_HIDE_CWD`, Pro/Max Opus 4.6/4.7 기본 effort high, `/color` Remote Control 동기화, `blockedMarketplaces` `hostPattern`/`pathPattern`, WSL Windows settings 상속, PowerShell auto-approve, slash command UI 개선
 - [x] M11-04 — version-track.json 2.1.114 → 2.1.119 bump + 전체 29개 튜토리얼 basedOn 갱신 + 10개 콘텐츠 구문 검증 통과
+
+### M12: 유지보수 — v2.1.126 갱신 (완료 4/4)
+
+- [x] M12-01 — ⭐⭐⭐ 콘텐츠 갱신 (06/07/10/17): Hooks `PostToolUse` `hookSpecificOutput.updatedToolOutput` 일반화(v2.1.121, 이전엔 MCP-only), MCP `alwaysLoad` 옵션 + 시작 실패 3회 자동 재시도(v2.1.121), `claude project purge [path]` 신규(v2.1.126), `claude auth login` OAuth 코드 paste(v2.1.126, WSL2/SSH/container), `/resume` PR URL 검색(v2.1.122, GitHub/GitLab/Bitbucket), `claude plugin prune` + `plugin uninstall --prune` 캐스케이드(v2.1.121)
+- [x] M12-02 — ⭐⭐ 콘텐츠 갱신 (08/11/16/18/19/25): `/skills` type-to-filter 검색 박스(v2.1.121), MCP `alwaysLoad` 커넥터 적용 + SDK `mcp_authenticate` `redirectUri` 지원(v2.1.121), `CLAUDE_CODE_FORK_SUBAGENT=1` SDK/`claude -p` 비대화형(v2.1.121), `ANTHROPIC_BEDROCK_SERVICE_TIER` 환경 변수(v2.1.122, default/flex/priority), `--dangerously-skip-permissions` 우회 경로 확장(v2.1.121/126: `.claude/skills/`, `.claude/agents/`, `.claude/commands/`, `.git/`, `.vscode/`, shell config), `claude_code.skill_activated` `invocation_trigger`(v2.1.126: user-slash/claude-proactive/nested-skill)
+- [x] M12-03 — ⭐ 콘텐츠 보강 (10/22): `/model` picker가 gateway `/v1/models` 엔드포인트 모델 리스트(v2.1.126, `ANTHROPIC_BASE_URL` 사용 시), Auto mode 권한 체크 정체 시 스피너 빨간색(v2.1.126), `/mcp` 중복 커넥터 hint(v2.1.122), `claude_code.at_mention` OTEL 이벤트(v2.1.122)
+- [x] M12-04 — version-track.json 2.1.119 → 2.1.126 bump + 영향 받은 10개 trackedFeatures/notes 보강 + 전체 29개 콘텐츠 구문 검증 통과
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

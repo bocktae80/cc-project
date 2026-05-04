@@ -246,6 +246,55 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.121~2.1.126 플러그인 개선사항
+
+**\`claude plugin prune\` (v2.1.121)**: 다른 플러그인의 의존성으로 자동 설치됐다가 **부모 플러그인이 제거된 뒤 남은 고아 플러그인**을 일괄 제거하는 새 명령. 디스크 용량 회수 + \`/plugin\` 메뉴 정돈에 유용.
+
+\`\`\`bash
+# 무엇이 prune될지 미리 확인
+claude plugin prune --dry-run
+
+# 출력:
+# Orphaned auto-installed plugins:
+#   - @marketplace/old-helper (depended by @marketplace/main, removed)
+#   - @marketplace/legacy-formatter (depended by @marketplace/seo-bundle, removed)
+#
+# Run without --dry-run to remove these.
+
+# 실제 제거
+claude plugin prune
+\`\`\`
+
+**\`plugin uninstall --prune\` 캐스케이드 (v2.1.121)**: \`plugin uninstall\`에 \`--prune\`을 붙이면 그 플러그인을 제거하면서 **자동 설치된 의존성도 함께 제거**합니다. 별도로 \`plugin prune\`을 또 실행할 필요 없음.
+
+\`\`\`bash
+# 메인 플러그인 + 고아가 될 의존성까지 한번에
+claude plugin uninstall @marketplace/main --prune
+
+# 출력:
+# Uninstalling @marketplace/main
+# Pruning orphaned dependencies:
+#   - @marketplace/old-helper
+#   - @marketplace/legacy-formatter
+# Done. 3 plugins removed.
+\`\`\`
+
+\`\`\`
+비유: 사물함 + 함께 쓰던 보조 사물함
+
+기존(prune 없음): 메인 플러그인만 uninstall → 보조 사물함은 그대로 → 누가 썼는지 모를 채 남음
+이후(--prune):     메인 + 보조 사물함을 한꺼번에 비움 → 메인 의존성으로 들어왔던 것만 정확히 제거
+\`\`\`
+
+| 시나리오 | 권장 명령 |
+|---|---|
+| 메인 플러그인 제거 + 사용자가 직접 설치한 의존성은 보존 | \`plugin uninstall <main>\` (--prune 없이) |
+| 메인 플러그인 + 자동 설치 의존성까지 즉시 정리 | \`plugin uninstall <main> --prune\` |
+| 이전에 정리 안 된 고아 의존성 일괄 정리 | \`plugin prune\` |
+| 무엇이 지워질지만 확인 | \`plugin prune --dry-run\` |
+
+> 사용자가 직접 \`plugin install\`한 플러그인은 prune 대상이 아닙니다. **다른 플러그인에 의해 자동 설치되었던 흔적**만 제거됩니다.
+
 #### v2.1.116~2.1.119 플러그인 개선사항
 
 **\`claude plugin tag\` (v2.1.118)**: 플러그인의 **릴리스 git 태그**를 만드는 새 명령. 버전 검증을 거쳐 태그를 생성하므로, 태그가 \`plugin.json\`의 버전과 자동으로 일치합니다.

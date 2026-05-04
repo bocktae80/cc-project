@@ -91,7 +91,40 @@ paths:
 ---
 \`\`\`
 
-> **비유**: 도서관 자동 분류기가 "과학 코너에 있는 책"만 반응하는 것처럼, 특정 파일 패턴에서만 스킬이 활성화됩니다!`,
+> **비유**: 도서관 자동 분류기가 "과학 코너에 있는 책"만 반응하는 것처럼, 특정 파일 패턴에서만 스킬이 활성화됩니다!
+
+### v2.1.121~2.1.126 스킬 시스템 개선
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`/skills\` type-to-filter 검색 박스** | 긴 스킬 목록에서 키워드만 입력해 즉시 필터 — 100개+ 스킬 환경에서 체감 큼 | v2.1.121 |
+| **\`/skills\` Enter 키 동작 정정** | \`/skills\`에서 Enter가 다이얼로그를 닫던 문제를 수정 — 이제 \`/<skill-name>\`을 프롬프트에 **pre-fill**해 사용자가 인자 추가 후 실행 가능 | v2.1.119 |
+| **\`claude_code.skill_activated\` \`invocation_trigger\`** | OTEL 이벤트가 사용자 입력 슬래시 명령에서도 발동하며, \`invocation_trigger\` 속성으로 호출 경로 구분 | v2.1.126 |
+| **\`disable-model-invocation\`/\`user-invocable\` 변경 없음** | 호출 제어 프론트매터 자체는 동일 — \`user-invocable: false\`를 \`/skills\` 검색 박스에서도 그대로 존중 | — |
+
+#### \`invocation_trigger\` 분석으로 description 품질 개선
+
+\`\`\`
+사용자가 직접 호출       (user-slash)        → 사용자가 description을 무시하고 이름으로만 부름
+Claude가 자율 호출       (claude-proactive)  → description이 매칭되어 자율 발동 — 이게 많을수록 좋은 description
+다른 스킬이 중첩 호출    (nested-skill)      → 스킬 간 의존/연계 — 너무 많으면 단일 스킬로 통합 검토
+\`\`\`
+
+\`\`\`
+비유: 학교 도구 대여 카운터 로그
+
+user-slash       : "1번 자, 가져와" (이름 지정)
+claude-proactive : "그림 그릴 거니까 자가 필요하겠다" → AI가 알아서 자 가져옴 (좋은 description)
+nested-skill     : "그림 스킬"이 자동으로 "자 스킬"을 부름
+\`\`\`
+
+| OTEL 분석 활용 | 액션 |
+|---|---|
+| \`claude-proactive\` 비율이 낮은 스킬 | description을 더 구체적으로 (트리거 키워드 보강) |
+| \`nested-skill\`이 다른 스킬보다 압도적으로 많음 | 두 스킬을 하나로 통합 검토 |
+| \`user-slash\` 일변도 | description이 사실상 무시되고 있음 — 더 명확한 트리거 추가 |
+
+> 사내 OTEL 백엔드(Datadog/Honeycomb 등)에서 \`invocation_trigger\` 속성으로 그루핑하면, 어떤 스킬이 실제로 "Claude가 골라 쓰는" 스킬인지 데이터로 알 수 있습니다. 신규 스킬 출시 후 한 주 정도 지표를 본 뒤 description을 다듬는 사이클을 권장합니다.`,
 
   concepts: [
     {

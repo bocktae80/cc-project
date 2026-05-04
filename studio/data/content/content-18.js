@@ -703,6 +703,45 @@ POST /v1/sessions
 > \`/claude-api\` 스킬이 v2.1.97에서 Managed Agents 가이드를 포함하도록 확장됐습니다.
 > 도구 표면 설계, 컨텍스트 관리, 캐싱 전략 가이드를 함께 다룹니다.
 
+#### v2.1.121~2.1.126 SDK 개선사항
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`CLAUDE_CODE_FORK_SUBAGENT=1\` 비대화형** | SDK 호출과 \`claude -p\`에서도 fork 서브에이전트 동작 — CI/배치 스크립트 적용 가능 | v2.1.121 |
+| **\`mcp_authenticate\` \`redirectUri\` 지원** | SDK가 커스텀 스킴 콜백(\`myapp://\`)과 claude.ai 커넥터 redirect URI를 명시적으로 받음 | v2.1.121 |
+| **\`ANTHROPIC_BEDROCK_SERVICE_TIER\`** | Bedrock 호출 시 service tier(\`default\`/\`flex\`/\`priority\`)를 환경 변수로 선택 — \`X-Amzn-Bedrock-Service-Tier\` 헤더로 전송 | v2.1.122 |
+| **Vertex AI mTLS ADC** | Vertex AI에서 X.509 certificate 기반 Workload Identity Federation 지원 | v2.1.121 |
+| **잘못된 도구 이름 hang 수정** | 모델이 병렬 도구 호출에서 malformed tool name을 emit할 때 SDK가 hang하던 문제 수정 | v2.1.126 |
+
+##### \`ANTHROPIC_BEDROCK_SERVICE_TIER\` 사용 예시
+
+\`\`\`bash
+# default: 일반 처리 (기본값)
+ANTHROPIC_BEDROCK_SERVICE_TIER=default node sdk.js
+
+# flex: 비용 절감 (느릴 수 있음, 배치 작업용)
+ANTHROPIC_BEDROCK_SERVICE_TIER=flex node nightly-batch.js
+
+# priority: 우선순위 처리 (대화형, 더 비싸지만 빠름)
+ANTHROPIC_BEDROCK_SERVICE_TIER=priority node interactive-bot.js
+\`\`\`
+
+\`\`\`
+비유: 택배 발송 옵션
+
+default  : 일반 택배 (표준)
+flex     : 알뜰 택배 (느려도 싸게)
+priority : 당일 특급 (빠르고 비싸게)
+\`\`\`
+
+| Tier | 용도 | 비용/속도 트레이드오프 |
+|---|---|---|
+| \`default\` | 평소 워크플로우 | 표준 |
+| \`flex\` | 야간 배치, 대량 분석 | 더 저렴 / 더 느릴 수 있음 |
+| \`priority\` | 인터랙티브 / 고객 대면 | 더 비싸 / 더 빠름·안정 |
+
+> \`flex\`/\`priority\`는 Bedrock 계정 설정에서 활성화되어 있어야 합니다. AWS Bedrock 콘솔의 Service Tier 설정을 먼저 확인하세요.
+
 #### 플러그인 에이전트 프론트매터 (v2.1.78+)
 
 플러그인으로 배포하는 에이전트를 더 세밀하게 제어할 수 있어요!

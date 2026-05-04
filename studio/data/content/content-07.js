@@ -158,6 +158,62 @@ Elicitation: "몇 층이세요?" → "3층이요" → 직접 전달! (양방향)
 | 폼 필드 | 구조화된 입력 (텍스트, 선택 등) |
 | 브라우저 URL | OAuth 인증 등 웹 기반 상호작용 |
 
+### v2.1.121~2.1.126 MCP 개선사항
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`alwaysLoad\` 옵션** | MCP server config에 \`"alwaysLoad": true\`를 지정하면 그 서버의 **모든 도구가 ToolSearch deferral을 우회**하고 항상 로드된 상태로 호출 가능 | v2.1.121 |
+| **시작 실패 자동 재시도** | MCP 서버 시작 중 일시적 에러를 만나면 **최대 3회 자동 재시도**(이전엔 1회 실패 후 disconnected 유지) | v2.1.121 |
+| **\`/mcp\` 중복 커넥터 hint** | 동일 URL을 가진 claude.ai 커넥터가 수동 추가된 서버에 가려질 때, \`/mcp\` 메뉴에 **중복 제거 힌트**가 표시 | v2.1.122 |
+
+#### \`alwaysLoad\`로 자주 쓰는 서버 즉시 호출
+
+\`\`\`json
+// .mcp.json — MCP 서버 설정
+{
+  "mcpServers": {
+    "team-db": {
+      "command": "npx",
+      "args": ["-y", "@team/db-mcp"],
+      "alwaysLoad": true   // ← 추가: ToolSearch deferral 우회
+    },
+    "rare-tool": {
+      "command": "npx",
+      "args": ["-y", "@team/rare-tool-mcp"]
+      // alwaysLoad 미설정 → 기본 동작 (필요 시점에 ToolSearch로 로드)
+    }
+  }
+}
+\`\`\`
+
+\`\`\`
+비유: 학교 양호실 vs 행정실 도구
+
+기존(전부 deferred): 도구가 필요할 때 ToolSearch → 검색 → 매칭 → 로드 (지연)
+이후(alwaysLoad: 양호실): 자주 쓰는 응급 도구는 양호실에 상비
+                          드물게 쓰는 도구만 행정실에서 호출
+\`\`\`
+
+| 언제 \`alwaysLoad\`를 켜야 하나? | 언제 끄는 게 좋나? |
+|---|---|
+| 매 세션 첫 명령부터 자주 쓰는 도구 (예: 사내 DB, 사내 검색) | 도구가 100개+ 인 거대 서버 |
+| 응답 지연이 거슬리는 인터랙티브 워크플로우 | 가끔만 쓰는 통합(Sentry, Datadog 등) |
+| 외부 빌드/CI에서 매번 동일한 도구를 호출 | ToolSearch 검색 정확도가 충분한 경우 |
+
+> 너무 많은 서버에 \`alwaysLoad: true\`를 켜면 첫 응답이 오히려 느려집니다. **5개 이내**의 핵심 통합에만 적용하는 것이 권장됩니다.
+
+#### 시작 실패 자동 재시도 (v2.1.121)
+
+\`\`\`
+이전: stdio MCP 서버가 startup race로 0.5초 만에 실패 → "disconnected" 표시
+      → 사용자가 /reload-plugins 또는 /mcp에서 수동 재연결 필요
+
+이후: 같은 startup race → 1초 후 자동 재시도 → 2초 후 재시도 → 4초 후 재시도
+      → 3번 안에 성공하면 사용자가 인지하지 못함
+\`\`\`
+
+> 컨테이너 환경에서 의존 서비스(DB, Redis)가 늦게 시작될 때 이 자동 재시도로 \`/mcp\` 메뉴에서 "needs restart" 상태를 보지 않게 됩니다.
+
 ### v2.1.116~2.1.119 MCP 개선사항
 
 | 개선 | 설명 | 버전 |
