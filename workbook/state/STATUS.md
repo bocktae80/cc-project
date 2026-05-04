@@ -4,7 +4,8 @@
 - **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M12 유지보수)
 - **진행률:** 29/29 튜토리얼 완료
 - **CLI 기준 버전:** v2.1.126 (29개 전부 최신, 갱신 필요 0개)
-- **최근 작업:** M12 완료 — v2.1.126 갱신. 10개 콘텐츠 갱신(06/07/08/10/11/16/17/18/19/25)에 PostToolUse `updatedToolOutput` 일반화·MCP `alwaysLoad` + 자동 재시도·`claude project purge`·`claude plugin prune`·`/skills` 검색 박스·`CLAUDE_CODE_FORK_SUBAGENT=1` 비대화형·`--dangerously-skip-permissions` 확장·`skill_activated` `invocation_trigger` 등 v2.1.121~126 25+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 91.5 / Review 88 / RTS 94, 전 단계 PASS (2026-05-04)
+- **최근 작업:** M12 완료 — v2.1.126 갱신. 10개 콘텐츠 갱신(06/07/08/10/11/16/17/18/19/25)에 PostToolUse `updatedToolOutput` 일반화·MCP `alwaysLoad` + 자동 재시도·`claude project purge`·`claude plugin prune`·`/skills` 검색 박스·`CLAUDE_CODE_FORK_SUBAGENT=1` 비대화형·`--dangerously-skip-permissions` 확장·`skill_activated` `invocation_trigger` 등 v2.1.121~126 25+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 91.5 / Review 88 / RTS 94, 전 단계 PASS. 커밋 2건(7a2d906/87099ce) origin 푸시 완료 (2026-05-04)
+- **다음 사이클:** v2.1.131+ 출시 후 또는 신규 ⭐⭐⭐ 기능 출현 시 /update-check 재실행
 
 ## 튜토리얼 현황
 
