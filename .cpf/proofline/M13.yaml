@@ -1,0 +1,211 @@
+milestone: M13
+startedAt: "2026-05-13T00:00:00Z"
+updatedAt: "2026-05-19T00:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{05,06,07,09,10,11,16,17,19,24,25,29}.js (정적 콘텐츠 객체 12개,
+  29는 신규), projects/29-goal-command/README.md(신규), studio/data/projects.js (29 엔트리 추가),
+  studio/index.html (content-29.js script 1행 추가), version-track.json (currentCLI
+  2.1.126→2.1.139, 29→30개 엔트리, 11개 영향 트랙드피처/notes 보강), ROADMAP.md (M13 섹션 추가/완료
+  마킹), MEMORY.md (M13/v2.1.139/30 튜토리얼 갱신).
+  실질적으로 교육 콘텐츠/메타데이터이므로 Red Team은 DTS 프로필을 주력, RTS(code)는 보조로
+  적용. 스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  v2.1.127~2.1.139 changelog의 16개 changelog 항목(/goal/agent view/--plugin-url 등)을
+  11개 기존 튜토리얼에 분배 + /goal은 신규 튜토리얼(29) 분리. 미공개/단일패치 버전
+  (v2.1.127/130/134/135/138)은 별도 매칭 없음.
+
+fidelity:
+  pfs: 96
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M13 섹션)"
+  evidence:
+    - plan: "M13-01 ⭐⭐⭐ 콘텐츠 갱신 (06/09/17)"
+      actual: "content-06.js +118줄(Hooks args exec form + continueOnBlock + $CLAUDE_EFFORT/effort.level + $CLAUDE_CODE_SESSION_ID + 터미널 출력 격리 + Skill(name *) 와일드카드), content-09.js +36줄(worktree.baseRef fresh|head + EnterWorktree 베이스 v2.1.128 후 v2.1.133 fresh 복원), content-17.js +72줄(--plugin-url zip 원격 + --plugin-dir zip + claude plugin details 토큰 비용 + experimental 매니페스트 + plugin install 자동 marketplace)"
+      match: true
+    - plan: "M13-02 ⭐⭐ 콘텐츠 갱신 (05/07/10/11/16/19)"
+      actual: "content-05.js +53줄(claude agents agent view + x-claude-code-agent-id/parent-agent-id 헤더 + OTEL agent_id), content-07.js +64줄(MCP stdio CLAUDE_PROJECT_DIR + workspace 예약명 + 메모리 누수 + SSE 16MB cap + OAuth refresh 동시성), content-10.js +66줄(claude agents/`/goal`/`/scroll-speed`/transcript nav/plugin details/`/mcp` Reconnect), content-11.js +56줄(/mcp Reconnect 핫리로드 + API key 비활성 정책 + OAuth refresh), content-16.js +51줄(agent view 통합 + agent-id 헤더 + 캐시 적중 개선), content-19.js +83줄(autoMode.hard_deny + parentSettingsBehavior + Skill(name *) + autoAllowBashIfSandboxed shell expansion)"
+      match: true
+    - plan: "M13-03 신규 29 — /goal 자율 목표 튜토리얼 추가"
+      actual: "content-29.js 430줄(overview/concepts/tutorials/examples/quiz 5-block, 9개 trackedFeatures), projects/29-goal-command/README.md 164줄, projects.js +20줄(29 엔트리 추가), index.html +1줄(script 태그). /loop(주기 기반)과의 차이, 완료 조건 작성법, --max-turns/--max-tokens 안전 가드, 인터랙티브/-p 헤드리스/Remote Control 모드 포함"
+      match: true
+    - plan: "M13-04 ⭐ 콘텐츠 갱신 (24/25)"
+      actual: "content-24.js +58줄(/goal 차별점 + API key 시 /schedule 자동 비활성 + CronList 정정), content-25.js +43줄(skillOverrides off/user-invocable-only/name-only + Skill(name *) 와일드카드 + /context all 토크나이저 정확도 + 서브에이전트 스킬 발견)"
+      match: true
+    - plan: "M13-05 version-track 2.1.126→2.1.139 + 29→30개 + 11개 보강 + 30개 검증 + ROADMAP M13"
+      actual: "version-track.json currentCLI 2.1.126→2.1.139, lastChecked 2026-05-13, 30개 엔트리 basedOn 일괄 2.1.139, 영향 11개 + 신규 29 trackedFeatures/notes 보강. ROADMAP M13 5/5 + last-updated 2026-05-13. MEMORY.md 갱신. node --check 30/30 OK, check-updates.js 30/30 최신"
+      match: true
+
+passloop:
+  g1:
+    score: 85
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 갱신 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JSON/JS 파싱 기반 구문 검증 매니페스트 + M13 매핑표.
+      v2.1.127~139 changelog 16개 항목 → 12개 영향 튜토리얼 매핑을 사전 작성(M11/M12 패턴 답습).
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 객체 보강 + 신규 콘텐츠 객체 1개)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node -e JSON.parse(version-track.json)"
+        result: "valid: true, currentCLI=2.1.139, tutorials.length=30"
+      - action: "node --check content-{05,06,07,09,10,11,16,17,19,24,25,29}.js"
+        result: "12/12 OK"
+      - action: "node studio/data/check-updates.js"
+        result: "기록=2.1.139, 설치=2.1.144(+5), 모든 튜토리얼이 최신 버전 범위 내 (30개)"
+  g3:
+    score: 88
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming convention 확인"
+        result: "v2.1.127~2.1.139 섹션 헤더 / 표 컬럼 / 비유 블록 — M7~M12 패턴 동일. content-09는 v2.1.128~133(원문 정확성 우선)"
+      - action: "structure consistency 확인"
+        result: "overview/concepts/tutorials/examples/quiz 5-block 변동 없음. 각 v-범위 섹션은 기존 자리(상단 또는 직전 v-범위 섹션 다음)에 삽입. 신규 content-29도 5-block 동일"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-29:430 / content-11:545 / content-09:598 (3개 통과), content-07:699 / content-05:767 / content-10:844 / content-16:848 / content-25:949 / content-24:1025 / content-17:1126 / content-06:1159 / content-19:1296 (9개는 정적 교육 콘텐츠 JS 프로젝트 예외 유지, M7~M12와 동일 분류). warning."
+      - action: "pipeline-completeness 3-Layer 검증"
+        result: "신규 튜토리얼 29 — 정의(projects.js 29 엔트리) → 실행(content-29.js STUDIO_CONTENT['29-goal-command']) → 와이어업(index.html script 태그) 매칭 OK"
+  g4:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "30/30 최신 범위 내, 회귀 없음. 설치 v2.1.144는 +5 노티(다음 사이클 대상)"
+      - action: "version-track.json 30개 엔트리 유효성"
+        result: "모두 basedOn 2.1.139, lastUpdated 2026-05-13 일괄 적용 — 누락 0"
+      - action: "12개 콘텐츠 파일 v2.1.127~2.1.139 섹션 위치 확인"
+        result: "11개는 기존 v2.1.121~2.1.126 섹션 또는 v2.1.116~2.1.119 섹션 직전/직후 일관 배치(M11/M12 패턴 답습). content-29는 신규(5-block 새로 구성)"
+  mqs: 92.0   # 85*0.15 + 96*0.35 + 88*0.30 + 96*0.20 = 12.75 + 33.6 + 26.4 + 19.2
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 + 메타데이터 — simplify 대상 아님)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 88
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "12개 콘텐츠 파일 중 9개가 600줄 초과(699~1296). 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M12 선례) 유지."
+    - rule: commit-convention-001
+      severity: info
+      detail: "아직 커밋 전. 커밋 메시지는 feat(studio) 스코프 + 한글 본문 예정 (M7~M12 패턴 동일: `feat(studio): M13 완료 — v2.1.139 튜토리얼 11종 갱신 + /goal 신규 추가` + `chore(proofline): M13 유지보수 Proofline 증명 기록 추가`)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 예정, 요청 범위 준수, 리팩토링/추가 기능 없음 — 통과."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M13 섹션 추가, 5/5 완료 체크, last-updated 2026-05-13. M12(v2.1.126) → M13(v2.1.139) minor+1 분배 + 신규 튜토리얼 1개. — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "신규 튜토리얼 29 — 3-Layer 완결: projects.js(정의) → content-29.js STUDIO_CONTENT(실행) → index.html script(와이어업). 기존 11개 콘텐츠 갱신은 version-track.json trackedFeatures/notes에 매핑 완결."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M13 5/5 완료, '나중에' 항목 없음 — 통과."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (workbook-pkg/skills/**/*.md 변경 없음, .claude/skills/update-check 미수정)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS + 보조 RTS
+  rts: 91.6
+  dts: 93.0
+  combinedScore: 92.6
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심) — 주력
+    accuracy: 95
+    completeness: 95
+    navigability: 88
+    clarity: 92
+    consistency: 94
+    maintainability: 93
+    # RTS 프로필 (코드 정합성) — 보조
+    rts_correctness: 95
+    rts_robustness: 90
+    rts_fp_fn: 90
+    rts_performance: 90
+    rts_consistency: 94
+    rts_coverage: 90
+  evidence:
+    accuracy:
+      action: "trackedFeatures 항목 8개 샘플 → GitHub Releases v2.1.127~2.1.139 body 직접 매칭"
+      result: >
+        Hooks args exec form(v2.1.139 body 'Added hook args: string[] field (exec form) that spawns the command directly without a shell'),
+        continueOnBlock(v2.1.139 body 'Added hook continueOnBlock config option for PostToolUse — set to true to feed the hook''s rejection reason back to Claude'),
+        worktree.baseRef(v2.1.133 body 'Added worktree.baseRef setting (fresh | head) to choose whether --worktree, EnterWorktree...'),
+        --plugin-url zip(v2.1.129 body 'Added --plugin-url <url> flag to install plugins from a zip archive at the given URL'),
+        claude plugin details(v2.1.139 body 'Added claude plugin details <name> to show a plugin''s component inventory and projected per-session token cost'),
+        /goal(v2.1.139 body 'Added /goal command: set a completion condition and Claude keeps working across turns until it''s met'),
+        claude agents agent view(v2.1.139 body 'Added agent view (Research Preview): a single list of every Claude Code session — running, blocked on you, or done'),
+        autoMode.hard_deny(v2.1.136 body 'Added settings.autoMode.hard_deny for auto mode classifier rules that block unconditionally') — 8/8 원문 일치
+      score: 95
+    completeness:
+      action: "M13 계획 5개 워크아이템 vs 실제 구현"
+      result: "5/5 완료, ⭐⭐⭐ 3건(06/09/17 — Hooks/worktree/plugin) + ⭐⭐ 6건(05/07/10/11/16/19 — agent view/MCP stdio/CLI/MCP connector/bg agent/permissions) + 신규 29(/goal) + ⭐ 2건(24/25 — loop-cron/skills-2.0) 모두 trackedFeatures 등록 + 콘텐츠 본문 반영. v127~139 매핑 합계 5+6+11+5+16+8+4+12+8+3+7+8=93 항목(중복 포함)"
+      score: 95
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 + version-track 동기화"
+      result: "11개는 'v2.1.127~2.1.139' 또는 'v2.1.139' 섹션 헤더, content-09만 'v2.1.128~133'(해당 기능 발생 시점 정확성). ROADMAP M13 5/5 링크. STATUS/MEMORY/version-track 30개 동기화. 신규 29 README + content + projects + index 4파일 연결"
+      score: 88
+    clarity:
+      action: "비유 일관성 + 한국어 가독성 + 신규 튜토리얼 명료성 확인"
+      result: "06번: 학교 인터폰(args exec form) + 양치 시간 알림(continueOnBlock), 09번: 새 학기 시작점(worktree.baseRef fresh|head), 17번: 학교 졸업 인증서 자동 검증(plugin details), 29번: 완주 조건이 있는 자율 학습(/goal vs /loop 시간표 차이) — 교육 타겟 적합"
+      score: 92
+    consistency:
+      action: "기존 28개 파일 섹션 헤더 패턴 vs 신규/수정 섹션 패턴"
+      result: "'### v2.1.127~2.1.139 X 개선사항' / '#### v2.1.127~2.1.139에서 추가된 기능' 동일 형식, '##### 부제목 (v2.1.xxx)' 하위 패턴 동일. 표 컬럼 '기능 / 설명 / 버전' 또는 '개선 / 설명 / 버전' 일관. projects.js 29 엔트리 필드 구성 28과 동일"
+      score: 94
+    maintainability:
+      action: "version-track.json + ROADMAP + MEMORY 동기화"
+      result: "30개 엔트리 basedOn 2.1.139 일괄, 영향받은 11개 + 신규 1개에 trackedFeatures + notes 명시적 보강. 각 항목 출처 버전(v2.1.128/129/133/136/139 등) 인라인 표기. MEMORY.md M13 패턴 명시(M9/M10과 동일) + 미공개 패치 처리 패턴 누적"
+      score: 93
+    rts_correctness:
+      action: "node --check + JSON.parse"
+      result: "12/12 + version-track.json 모두 통과"
+      score: 95
+    rts_robustness:
+      action: "check-updates.js 회귀 검사"
+      result: "30/30 최신 범위 내, 회귀 0"
+      score: 90
+    rts_fp_fn:
+      action: "M11/M12 분배 중복/누락 검사"
+      result: "단일 패치 버전(v2.1.123/130/134/135/138) 별도 매칭 없음(정확). 미공개 버전 처리 패턴 MEMORY 명시"
+      score: 90
+    rts_performance:
+      action: "정적 콘텐츠 변경 — 런타임 회귀 없음"
+      result: "DOM script 1개 추가(content-29.js), 로드 순서 영향 없음"
+      score: 90
+    rts_consistency:
+      action: "M11/M12 패턴 답습 검증"
+      result: "신규 튜토리얼 5개소 갱신(content-N.js/projects.js/index.html/version-track/README) 패턴 일치"
+      score: 94
+    rts_coverage:
+      action: "12/30 튜토리얼 영향 + 11개 trackedFeatures 보강"
+      result: "40% 영향 튜토리얼 커버, 16개 changelog 항목 100% 매핑"
+      score: 90
+
+loopbacks:
+  count: 0
+  history: []
