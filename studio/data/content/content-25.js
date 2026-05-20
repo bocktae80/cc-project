@@ -93,6 +93,49 @@ paths:
 
 > **비유**: 도서관 자동 분류기가 "과학 코너에 있는 책"만 반응하는 것처럼, 특정 파일 패턴에서만 스킬이 활성화됩니다!
 
+### v2.1.127~2.1.139 스킬 시스템 개선
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`skillOverrides\` 설정 정상화** | \`skillOverrides\`가 의도대로 동작 — \`"off"\`는 모델/슬래시 양쪽 모두 숨김, \`"user-invocable-only"\`는 모델에서만 숨김, \`"name-only"\`는 description을 접어 토큰 절약 | v2.1.129 |
+| **\`Skill(name *)\` 와일드카드 prefix** | 권한 규칙 \`Skill(name *)\`이 \`Bash(ls *)\`처럼 prefix 매칭 — \`Skill(name wb-*)\`로 플러그인 단위 일괄 허용 가능 | v2.1.139 |
+| **\`/context\` 플러그인 출처 표시** | \`/context\`가 플러그인 제공 스킬에 대해 **제공자 플러그인 이름**을 함께 표시 — 토큰 소비 추적 명확화 | v2.1.139 |
+| **\`/context all\` per-skill 토큰 정확도** | per-skill 토큰 추정이 **모델 토크나이저를 사용**하고 반올림 값으로 표시 (이전엔 char/4 근사) | v2.1.139 |
+| **skill argument 정규식 메타문자 안전화** | 스킬 인자 이름에 정규식 메타문자가 포함되면 인자 치환이 깨지던 문제 수정 | v2.1.139 |
+| **\`skills\` 매니페스트 엔트리 충돌 수정** | \`plugin.json\`의 \`skills\` 엔트리가 기본 \`skills/\` 디렉터리를 가리던 버그 — 파일 경로 나열 시 무음 실패 대신 에러 표시 | v2.1.136 |
+| **서브에이전트 스킬 발견 수정** | 서브에이전트가 Skill 도구로 project/user/plugin 스킬을 발견하지 못하던 문제 수정 | v2.1.133 |
+
+#### \`skillOverrides\` 사용 예
+
+\`\`\`json
+// .claude/settings.json
+{
+  "skillOverrides": {
+    "wb-admin-telemetry": "off",            // 모델 + /에서 완전 숨김
+    "wb-team-spawn": "user-invocable-only", // 모델 자율 호출만 차단, /로는 호출 가능
+    "camfit-cpf-codebase": "name-only"      // 이름만 노출, description 토큰 절약
+  }
+}
+\`\`\`
+
+| 값 | 모델 자율 호출 | 사용자 \`/\` 호출 | 토큰 |
+|----|--------------|----------------|------|
+| \`off\` | ❌ | ❌ | 0 (완전 차단) |
+| \`user-invocable-only\` | ❌ | ✓ | description 토큰 사용 |
+| \`name-only\` | ✓ (이름만) | ✓ | name만 (description 토큰 절약) |
+| (미지정) | ✓ | ✓ | name + description |
+
+\`\`\`
+비유: 도서관 책 노출 정책
+
+off                  → 폐가 (서고에서 꺼낼 수도 검색할 수도 없음)
+user-invocable-only  → 사서 요청만 가능 (책 목록에는 없지만 이름 알면 빌림)
+name-only            → 책장에 표지만 (제목만 보이고 줄거리는 가려짐)
+(기본)               → 풀 표시 (제목 + 줄거리 + 추천)
+\`\`\`
+
+> **활용**: 토큰 부족 상황에서 \`name-only\`로 description을 접으면 30~50% 토큰 절약. 모델이 어떤 스킬이 있는지는 알지만 description 없이 호출 결정을 내리도록 강제 가능.
+
 ### v2.1.121~2.1.126 스킬 시스템 개선
 
 | 개선 | 설명 | 버전 |

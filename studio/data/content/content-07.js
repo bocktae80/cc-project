@@ -158,6 +158,70 @@ Elicitation: "몇 층이세요?" → "3층이요" → 직접 전달! (양방향)
 | 폼 필드 | 구조화된 입력 (텍스트, 선택 등) |
 | 브라우저 URL | OAuth 인증 등 웹 기반 상호작용 |
 
+### v2.1.127~2.1.139 MCP 개선사항
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **stdio 서버에 \`CLAUDE_PROJECT_DIR\` 환경변수** | MCP stdio 서버가 시작 시 \`CLAUDE_PROJECT_DIR\` 환경변수를 받음 (훅과 동일). 플러그인 MCP config에서 \`${CLAUDE_PROJECT_DIR}\` placeholder 사용 가능 | v2.1.139 |
+| **\`/mcp\` Reconnect 자동 \`.mcp.json\` 갱신** | Reconnect 시 \`.mcp.json\` 편집을 **재시작 없이 자동 반영**. 실패 시에는 HTTP 상태/URL을 표시 | v2.1.139 |
+| **\`workspace\` 예약 서버명** | MCP 서버 이름 \`workspace\`가 **예약됨** — 기존에 이 이름을 쓰던 서버는 경고와 함께 스킵 | v2.1.128 |
+| **재연결 도구 리스트 폭증 방지** | MCP 서버 재연결 시 매번 전체 도구 이름 리스트를 대화에 흘려보내던 문제 해결 — 재공지 도구는 서버 prefix로 요약 | v2.1.128 |
+| **\`tools/list\` 실패 가시화** | MCP 서버가 연결됐으나 \`tools/list\`에 실패하면 1회 재시도 후 \`/mcp\`에 "connected · tools fetch failed" 표시 (이전엔 조용히 0 도구) | v2.1.132 |
+| **stdio 서버 비프로토콜 데이터 메모리 누수 수정** | stdio MCP 서버가 stdout에 비프로토콜 데이터를 쓰면 RSS가 10GB+ 까지 무한 증가하던 문제 수정 | v2.1.132 |
+| **HTTP/SSE 16MB SSE 프레임 캡** | HTTP/SSE MCP 서버가 비프로토콜 데이터를 스트림할 때 응답 본문이 **SSE 프레임당 16MB로 제한** | v2.1.139 |
+| **OAuth refresh 동시성 수정** | 여러 서버가 동시에 refresh token을 갱신할 때 토큰이 분실되던 문제 해결 — 다수 원격 MCP 서버 환경에서 매일 재인증 필요 없어짐 | v2.1.136 |
+| **\`/clear\` 후 MCP 서버 누락 수정** | VS Code/JetBrains/Agent SDK에서 \`/clear\` 후 \`.mcp.json\`/플러그인/claude.ai 커넥터 MCP 서버가 사라지던 버그 수정 | v2.1.136 |
+| **MCP tool 결과 비가시화 수정** | 서버가 content blocks 형태로 결과 반환 시 도구 결과가 안 보이던 버그 수정 | v2.1.136 |
+| **원격 MCP transient 재연결 일반화** | 일시적 실패 시 원격 MCP 서버 재연결 재시도가 **모든 사용자에게 활성화** | v2.1.139 |
+
+#### \`CLAUDE_PROJECT_DIR\`로 stdio MCP 서버를 프로젝트별 분기
+
+\`\`\`json
+// .claude/.mcp.json (또는 플러그인 manifest)
+{
+  "mcpServers": {
+    "project-tools": {
+      "command": "node",
+      "args": ["\${CLAUDE_PROJECT_DIR}/scripts/mcp-server.js"],
+      "env": {
+        "PROJECT_ROOT": "\${CLAUDE_PROJECT_DIR}",
+        "CONFIG_FILE": "\${CLAUDE_PROJECT_DIR}/.mcp/config.yaml"
+      }
+    }
+  }
+}
+\`\`\`
+
+\`\`\`javascript
+// scripts/mcp-server.js — 프로젝트 루트를 알고 동작하는 MCP 서버
+const projectDir = process.env.CLAUDE_PROJECT_DIR;
+const configPath = path.join(projectDir, '.mcp/config.yaml');
+// 프로젝트별 설정/스키마/도구 동적 로드
+\`\`\`
+
+\`\`\`
+비유: 직원 사물함에 "오늘 출근한 사무실 주소" 적힌 카드를 넣어줌
+
+기존: stdio MCP 서버는 자기가 어느 프로젝트에서 시작됐는지 모름
+      → 모든 프로젝트에서 같은 동작 (또는 cwd로 추측)
+이후: CLAUDE_PROJECT_DIR이 자동 주입
+      → 프로젝트별 schema 파일/도구/권한을 알아서 분기
+      → 플러그인 매니페스트에서도 ${CLAUDE_PROJECT_DIR} 치환 가능
+\`\`\`
+
+> 모노레포에서 워크스페이스마다 다른 MCP 동작을 원할 때 결정적입니다. \`cwd\`에 의존하지 않고도 프로젝트 루트를 정확히 알 수 있습니다.
+
+#### \`/mcp\` Reconnect 핫리로드
+
+\`\`\`
+.mcp.json 수정 → /mcp → Reconnect
+  v2.1.138 이전: 변경 무시 → claude 재시작 필요
+  v2.1.139+    : 디스크의 .mcp.json을 다시 읽어 즉시 적용
+                실패 시 HTTP 상태/URL을 표시 (예: "503 — https://server/mcp")
+\`\`\`
+
+> 원격 MCP 서버 URL을 바꿔가며 디버깅할 때 매번 \`claude --resume\`을 안 해도 됩니다.
+
 ### v2.1.121~2.1.126 MCP 개선사항
 
 | 개선 | 설명 | 버전 |

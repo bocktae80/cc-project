@@ -52,6 +52,59 @@ window.STUDIO_CONTENT["05-agent-teams"] = {
 | **SendMessage 자동 재개** | 중지된 에이전트에 SendMessage를 보내면 **자동으로 백그라운드에서 재개** (에러 대신) |
 | **배경 에이전트 킬 시 결과 보존** | 배경 에이전트를 킬해도 **부분 결과가 대화 컨텍스트에 보존** |
 
+### v2.1.127~2.1.139 변경사항
+
+| 변경 | 설명 | 버전 |
+|------|------|------|
+| **\`claude agents\` agent view (Research Preview)** | 실행 중 / 사용자 응답 대기 / 완료된 **모든 Claude Code 세션을 한 리스트에서** 보는 통합 뷰. 백그라운드 에이전트와 로컬 세션을 한 곳에서 추적/전환. \`claude agents\`로 진입 | v2.1.139 |
+| **\`agent_id\`/\`parent_agent_id\` API 헤더** | 서브에이전트의 API 요청에 \`x-claude-code-agent-id\` / \`x-claude-code-parent-agent-id\` 헤더 자동 첨부 + \`claude_code.llm_request\` OTEL span에 \`agent_id\` / \`parent_agent_id\` 속성 — 비용/지연 분석 시 어떤 에이전트가 호출했는지 추적 | v2.1.139 |
+| **\`/branch\` rewound 타임라인 수정** | \`/branch\` 포크가 rewound 타임라인을 포함한 세션에서 "tool_use ids were found without tool_result blocks"로 실패하던 문제 해결 | v2.1.122 |
+| **Windows 백그라운드 세션 키보드 입력 수정** | \`claude agents\`에서 백그라운드 세션을 다시 열면 키보드 입력이 죽던 Windows 버그 수정 | v2.1.132 |
+| **서브에이전트 진행 요약 캐시 적중 수정** | 서브에이전트 progress 요약이 프롬프트 캐시를 놓치던 문제 수정 (~3× cache_creation 감소) | v2.1.128 |
+| **유휴 서브에이전트 요약 반복 발동 방지** | 서브에이전트 트랜스크립트가 정적일 때 sub-agent 요약이 반복 발동되던 문제 수정 — 유휴 서브에이전트의 worst-case 토큰 비용 상한 | v2.1.128 |
+
+#### \`claude agents\` agent view (v2.1.139)
+
+\`\`\`bash
+claude agents
+
+# 인터랙티브 화면:
+# ┌─ Sessions ─────────────────────────────┐
+# │ ● PR-432 review     running   12:34   │
+# │ ⏸ data-migration    blocked   12:30   │  ← 사용자 응답 대기
+# │ ✓ cleanup-orphans   done      11:55   │
+# │ ✓ refactor-auth     done      11:48   │
+# └────────────────────────────────────────┘
+# Enter: open  d: detach  k: kill  ?: help
+\`\`\`
+
+\`\`\`
+비유: 회의실 예약 현황판
+
+기존: 백그라운드 에이전트는 /usage나 ps로만 보임 → 어떤 게 답변 대기 중인지 모름
+이후: claude agents = 회의실 현황판
+      → "회의 중(running) / 답변 기다림(blocked) / 종료(done)" 한눈에
+      → 클릭하면 그 세션으로 텔레포트
+\`\`\`
+
+> 멀티 에이전트 작업이 많아지면 가장 먼저 켜야 할 화면입니다. Remote Control과 결합하면 모바일에서도 "내가 답해줘야 할 세션"만 보일러플레이트로 정리됩니다.
+
+#### \`agent_id\` API 헤더로 비용 추적 (v2.1.139)
+
+\`\`\`
+HTTP/2 POST /v1/messages
+x-claude-code-agent-id: pr-reviewer-9f3a
+x-claude-code-parent-agent-id: main-session-2c1b
+\`\`\`
+
+| 활용 | 설명 |
+|------|------|
+| **비용 어트리뷰션** | OTEL \`claude_code.llm_request\` span의 \`agent_id\`/\`parent_agent_id\` 속성으로 어떤 에이전트가 토큰을 썼는지 분리 |
+| **장애 추적** | 특정 서브에이전트만 4xx/5xx가 몰릴 때 \`agent_id\` 필터로 격리 분석 |
+| **사용 패턴 분석** | parent → child 호출 그래프로 "자주 호출되는 서브에이전트" 식별 |
+
+> 프록시/게이트웨이에 OTEL 익스포터를 연결한 환경이라면 헤더만으로도 Grafana 대시보드를 분리할 수 있습니다.
+
 ### v2.1.116~2.1.119 변경사항
 
 | 변경 | 설명 | 버전 |

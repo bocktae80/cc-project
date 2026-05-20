@@ -301,6 +301,89 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
 | **샌드박스 \`rm\`/\`rmdir\` 보호 강화** | 샌드박스 auto-allow가 \`/\`, \`$HOME\` 등 핵심 시스템 디렉터리에 대한 \`rm\`/\`rmdir\`의 위험 경로 안전 검사를 더 이상 우회하지 못함 | v2.1.116 |
 | **\`cleanupPeriodDays\` 확장** | 보존 정리 스윕이 \`~/.claude/tasks/\`, \`~/.claude/shell-snapshots/\`, \`~/.claude/backups/\`까지 커버 | v2.1.117 |
 
+#### 보안 / 권한 수정 모음 (v2.1.127~2.1.139)
+
+| 수정 | 설명 | 버전 |
+|------|------|------|
+| **\`autoMode.hard_deny\` 규칙** | Auto mode 분류기 규칙에 **무조건 차단**을 정의 — 사용자 의도/허용 예외와 무관하게 차단 (\`hard_deny\`에 매칭되면 의도 평가 자체를 건너뜀) | v2.1.136 |
+| **\`parentSettingsBehavior\`** | 관리자 티어 키 (\`'first-wins' \| 'merge'\`) — SDK \`managedSettings\`(부모 티어)가 정책 머지에 참여할지 결정 | v2.1.133 |
+| **plan mode \`Edit(...)\` 차단 수정** | plan mode가 매칭되는 \`Edit(...)\` 허용 규칙이 존재할 때 파일 쓰기를 차단하지 못하던 버그 수정 — 이제 plan mode가 더 강하게 우선 | v2.1.136 |
+| **\`Skill(name *)\` 와일드카드 prefix** | \`Skill(name *)\` 권한 규칙이 \`Bash(ls *)\`처럼 **prefix 매칭**으로 정상 동작 (이전엔 정확 일치만) — \`Skill(name wb-*)\` 같은 플러그인 전체 일괄 허용 가능 | v2.1.139 |
+| **\`autoAllowBashIfSandboxed\` shell expansion 수정** | \`$VAR\` / \`$(cmd)\` 등 shell expansion이 포함된 명령을 자동 승인하지 못하던 문제 해결 | v2.1.139 |
+| **Hook 터미널 출력 격리** | 훅이 터미널에 출력 시 화면 위 대화형 프롬프트가 깨지던 보안/UX 버그 — 훅은 이제 터미널 접근 없이 실행 | v2.1.139 |
+| **MCP stdio 비프로토콜 메모리 누수 수정** | stdio MCP 서버가 stdout에 비프로토콜 데이터를 쓰면 RSS가 10GB+ 폭증하던 DoS 가능성 수정 (HTTP/SSE는 16MB 캡) | v2.1.132, 139 |
+| **HTTP/SSE 16MB 프레임 캡** | HTTP/SSE MCP 서버 응답 본문이 SSE 프레임당 16MB로 제한 — 악성/오동작 서버에 의한 메모리 폭주 차단 | v2.1.139 |
+
+#### \`autoMode.hard_deny\` — Auto mode 무조건 차단 규칙
+
+\`\`\`json
+// .claude/settings.json
+{
+  "autoMode": {
+    "rules": [
+      { "pattern": "Bash(curl http://*)", "action": "ask" }
+    ],
+    "hard_deny": [
+      { "pattern": "Bash(rm -rf /*)" },
+      { "pattern": "Bash(*sudo rm*)" },
+      { "pattern": "Edit(/etc/*)" }
+    ]
+  }
+}
+\`\`\`
+
+\`\`\`
+비유: 일반 출입증 vs 폭발물 반입 금지
+
+기존(rules): 분류기가 의도/맥락 분석 후 "허용/물어보기/거부" 결정
+            → 조건에 따라 우회 가능 (예: "안전한 cleanup이라 했음")
+이후(hard_deny): 의도와 무관하게 즉시 차단
+                → 사용자가 어떤 설명을 붙여도 변경 불가
+                → 운영 환경 안전망 (red button)
+\`\`\`
+
+| 규칙 | 평가 시점 | 우회 가능성 |
+|------|---------|------------|
+| \`rules\` | 분류기가 의도 평가 후 매칭 | 의도/맥락이 강하면 다른 분기 가능 |
+| \`hard_deny\` | 매칭 즉시 차단 | 우회 불가능 |
+
+> 실수로라도 일어나면 안 되는 작업(\`rm -rf /\`, 시스템 디렉터리 수정)에 사용합니다. 일반 차단은 여전히 \`rules\`로 표현하세요.
+
+#### \`parentSettingsBehavior\` — SDK managedSettings 정책 머지
+
+\`\`\`json
+// 조직 정책 (managed-settings.json)
+{
+  "parentSettingsBehavior": "merge"
+}
+\`\`\`
+
+| 값 | 동작 |
+|----|------|
+| \`first-wins\` (기본) | 우선순위가 높은 티어 하나만 적용, 부모 티어는 무시 |
+| \`merge\` | SDK \`managedSettings\`(부모 티어)도 정책 머지에 참여 — 조직 기본 + SDK 보강 |
+
+> SDK로 사내 도구를 만들면서 조직 정책 위에 **추가 제약을 얹고 싶을 때** 사용. 조직이 \`merge\`를 켜야 SDK 쪽 추가 정책이 효력을 가집니다.
+
+#### \`Skill(name *)\` 권한 와일드카드
+
+\`\`\`json
+{
+  "permissions": {
+    "allow": [
+      "Skill(name wb-*)",         // workbook 플러그인 스킬 전체
+      "Skill(name camfit-*)",     // camfit 플러그인 스킬 전체
+      "Skill(name plugin-dev-*)"
+    ],
+    "deny": [
+      "Skill(name wb-admin-*)"    // 단, 관리 스킬은 차단
+    ]
+  }
+}
+\`\`\`
+
+> 플러그인 단위로 스킬을 일괄 허용/차단할 수 있어, 스킬 30개+ 환경에서 권한 설정이 단순해집니다.
+
 #### 보안 / 권한 수정 모음 (v2.1.121~2.1.126)
 
 | 수정 | 설명 | 버전 |

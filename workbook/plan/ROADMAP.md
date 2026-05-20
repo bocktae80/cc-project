@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-05-04
+> 최종 갱신: 2026-05-13
 
 ## 완료된 마일스톤
 
@@ -99,5 +99,13 @@
 - [x] M12-02 — ⭐⭐ 콘텐츠 갱신 (08/11/16/18/19/25): `/skills` type-to-filter 검색 박스(v2.1.121), MCP `alwaysLoad` 커넥터 적용 + SDK `mcp_authenticate` `redirectUri` 지원(v2.1.121), `CLAUDE_CODE_FORK_SUBAGENT=1` SDK/`claude -p` 비대화형(v2.1.121), `ANTHROPIC_BEDROCK_SERVICE_TIER` 환경 변수(v2.1.122, default/flex/priority), `--dangerously-skip-permissions` 우회 경로 확장(v2.1.121/126: `.claude/skills/`, `.claude/agents/`, `.claude/commands/`, `.git/`, `.vscode/`, shell config), `claude_code.skill_activated` `invocation_trigger`(v2.1.126: user-slash/claude-proactive/nested-skill)
 - [x] M12-03 — ⭐ 콘텐츠 보강 (10/22): `/model` picker가 gateway `/v1/models` 엔드포인트 모델 리스트(v2.1.126, `ANTHROPIC_BASE_URL` 사용 시), Auto mode 권한 체크 정체 시 스피너 빨간색(v2.1.126), `/mcp` 중복 커넥터 hint(v2.1.122), `claude_code.at_mention` OTEL 이벤트(v2.1.122)
 - [x] M12-04 — version-track.json 2.1.119 → 2.1.126 bump + 영향 받은 10개 trackedFeatures/notes 보강 + 전체 29개 콘텐츠 구문 검증 통과
+
+### M13: 유지보수 — v2.1.139 갱신 (완료 5/5)
+
+- [x] M13-01 — ⭐⭐⭐ 콘텐츠 갱신 (06/09/17): Hooks `args: string[]` exec form + `continueOnBlock` + `$CLAUDE_EFFORT`/`effort.level` + `$CLAUDE_CODE_SESSION_ID` + 터미널 출력 격리 + `Skill(name *)` 와일드카드(v2.1.139), `worktree.baseRef: fresh|head` 분기 베이스 설정 + `EnterWorktree` 베이스 v2.1.128 후 v2.1.133에서 fresh 복원, `--plugin-url <url>` zip 원격 적용(v2.1.129) + `--plugin-dir` zip 지원(v2.1.128) + `claude plugin details` 토큰 비용(v2.1.139) + experimental 매니페스트 섹션(v2.1.129) + `plugin install` 자동 marketplace 갱신(v2.1.139)
+- [x] M13-02 — ⭐⭐ 콘텐츠 갱신 (05/07/10/11/16/19): `claude agents` agent view Research Preview + `x-claude-code-agent-id`/`parent-agent-id` API 헤더 + OTEL agent_id 속성(v2.1.139), MCP stdio 서버 `CLAUDE_PROJECT_DIR` 환경변수(v2.1.139) + `workspace` 예약 서버명(v2.1.128) + 비프로토콜 메모리 누수 수정(v2.1.132) + SSE 16MB 캡(v2.1.139) + OAuth refresh 동시성 수정(v2.1.136), CLI `/goal`/`claude plugin details`/`/scroll-speed`/transcript nav/`/mcp` Reconnect 핫리로드(v2.1.139), 커넥터 API key 충돌 시 비활성 정책(v2.1.139), 백그라운드 에이전트 캐시 적중 + 유휴 요약 반복 방지(v2.1.128), 권한 `autoMode.hard_deny`(v2.1.136) + `parentSettingsBehavior`(v2.1.133) + `Skill(name *)` 와일드카드(v2.1.139) + `autoAllowBashIfSandboxed` shell expansion 수정(v2.1.139)
+- [x] M13-03 — **29 — /goal 자율 목표** 신규 튜토리얼 추가 → [`29-goal-command`](../../projects/29-goal-command/): 완료 조건 기반 멀티턴 자율 실행(v2.1.139), `/loop`(주기 기반)과의 차이, 좋은 완료 조건 작성법, `--max-turns`/`--max-tokens` 안전 가드, 인터랙티브/`-p` 헤드리스/Remote Control 모드, 테스트 통과 자율 수정 + 보안 스캔 0건 시나리오 2종
+- [x] M13-04 — ⭐ 콘텐츠 갱신 (24/25): 24-loop-cron에 `/goal` 차별점 + API key 시 `/schedule` 자동 비활성(v2.1.139) + CronList 출력 정정(v2.1.136), 25-skills-2.0에 `skillOverrides` 정상화(off/user-invocable-only/name-only, v2.1.129) + `Skill(name *)` 와일드카드(v2.1.139) + `/context all` 토크나이저 정확도(v2.1.139) + 서브에이전트 스킬 발견(v2.1.133)
+- [x] M13-05 — version-track.json 2.1.126 → 2.1.139 bump + 29개 → 30개 추적 + 11개 영향 튜토리얼 trackedFeatures/notes 보강 + 전체 30개 콘텐츠 구문 검증 통과 + ROADMAP.md M13 기록
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

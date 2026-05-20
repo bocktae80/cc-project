@@ -165,6 +165,62 @@ MCP 커넥터는 **OAuth**를 사용합니다. 한 번 "허용" 버튼을 클릭
 | **시스템 프롬프트 캐싱** | ToolSearch 사용 시 글로벌 시스템 프롬프트 캐싱이 정상 동작 (v2.1.84) |
 | **플러그인 중복 억제** | 플러그인 MCP 서버가 조직 커넥터와 중복되면 자동 억제 (v2.1.83) |
 
+### v2.1.127~2.1.139 커넥터 개선사항
+
+| 개선 | 설명 |
+|------|------|
+| **\`/mcp\` Reconnect 자동 핫리로드** | Reconnect 시 \`.mcp.json\` 편집을 **재시작 없이 반영**. 실패 시 HTTP 상태/URL 표시 (예: "503 — https://server/mcp") (v2.1.139) |
+| **transient 재연결 일반화** | 일시적 실패 시 원격 MCP 서버 재연결 재시도가 **모든 사용자에게 활성화** (이전엔 일부 사용자) (v2.1.139) |
+| **API key 충돌 시 커넥터 비활성** | \`ANTHROPIC_API_KEY\` / \`apiKeyHelper\` / \`ANTHROPIC_AUTH_TOKEN\`이 설정되면 claude.ai MCP 커넥터, Remote Control, \`/schedule\`, 알림 환경설정이 **자동 비활성화** (Claude.ai 로그인이 별도로 있어도) — 사용하려면 API key를 해제 (v2.1.139) |
+| **OAuth refresh 동시성 수정** | 다수 커넥터가 동시에 refresh token을 갱신할 때 토큰이 분실되던 문제 — 매일 재인증 필요 사라짐 (v2.1.136) |
+| **\`/clear\` 후 MCP 서버 누락 수정** | VS Code/JetBrains/Agent SDK에서 \`/clear\` 후 claude.ai 커넥터가 사라지던 버그 수정 (v2.1.136) |
+| **\`/mcp\` 도구 카운트 표시** | 연결된 서버에 **도구 수가 표시**되고, 0 도구로 연결된 서버는 별도 표시 (v2.1.128) |
+| **재연결 시 도구 리스트 도배 방지** | 재연결마다 전체 도구 이름을 대화에 흘리던 문제 해결 — **서버 prefix로 요약** (v2.1.128) |
+| **\`workspace\` 예약 서버명** | MCP 서버 이름 \`workspace\`는 예약되어 동일 이름 서버는 경고와 함께 스킵 (v2.1.128) |
+
+#### API key 환경에서 커넥터/원격 기능 차단 정책 (v2.1.139)
+
+\`\`\`
+환경 변수 설정 상태:
+  ANTHROPIC_API_KEY 또는
+  apiKeyHelper 또는
+  ANTHROPIC_AUTH_TOKEN
+
+→ 자동 비활성화되는 기능:
+  • claude.ai MCP 커넥터 (Notion, Linear, Slack, Vercel...)
+  • Remote Control (/rc, /teleport)
+  • /schedule (예약 작업)
+  • 알림 환경설정 (notification preferences)
+
+→ 사용하려면:
+  - 해당 API key/token 환경변수 해제
+  - Claude.ai OAuth 로그인만 활성 유지
+\`\`\`
+
+\`\`\`
+비유: 회사 명함과 개인 ID 카드 동시 사용 금지
+
+기존: API key + Claude.ai 로그인이 둘 다 있으면 → 둘 다 작동 (정책 모호)
+이후: API key가 있으면 → 회사 자원만 (커넥터/원격 기능 비활성)
+      Claude.ai만 있으면 → 개인 기능까지 사용 가능
+      → 두 경로 혼선으로 인한 보안 사고 방지
+\`\`\`
+
+> 사내 API key + 개인 Claude.ai 로그인을 함께 쓰던 환경에서 v2.1.139 업그레이드 후 \`/mcp\`에서 커넥터가 보이지 않으면 \`unset ANTHROPIC_API_KEY\`를 먼저 시도하세요.
+
+#### \`/mcp\` Reconnect 핫리로드 (v2.1.139)
+
+기존엔 \`.mcp.json\` 수정 후 \`claude --resume\`이 필요했지만, 이제 \`/mcp\` → Reconnect만으로 디스크 변경이 즉시 반영됩니다.
+
+\`\`\`
+1) .mcp.json에서 서버 URL 수정
+2) /mcp → Reconnect
+3) 자동 핫리로드 (재시작 없음)
+   - 실패 시 "503 — https://server/mcp" 같은 명시적 에러
+\`\`\`
+
+> 원격 MCP 서버 URL을 바꿔가며 디버깅할 때, \`/clear\`나 \`--resume\` 없이 즉시 재연결할 수 있어 디버깅 사이클이 줄어듭니다.
+
 ### v2.1.121~2.1.126 커넥터 개선사항
 
 | 개선 | 설명 |

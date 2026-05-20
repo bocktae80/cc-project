@@ -246,6 +246,78 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.127~2.1.139 플러그인 개선사항
+
+**\`--plugin-url <url>\` 플래그 (v2.1.129)**: 플러그인 \`.zip\` 아카이브를 **URL에서 직접 가져와 현재 세션에 로드**하는 플래그. 마켓플레이스 등록이나 git clone 없이 임시 검증·시연·CI 환경에서 사용.
+
+\`\`\`bash
+# 동료가 공유한 zip 링크 즉시 적용
+claude --plugin-url https://example.com/plugins/auditor-1.2.0.zip
+
+# CI에서 빌드 산출물 zip을 즉석 적용
+claude --plugin-url "$ARTIFACT_URL" -p "변경된 파일 보안 스캔"
+\`\`\`
+
+**\`--plugin-dir\` zip 아카이브 지원 (v2.1.128)**: \`--plugin-dir\` 플래그가 디렉터리뿐 아니라 **\`.zip\` 아카이브 경로**도 받음. 로컬에 다운로드한 zip을 풀지 않고 그대로 적용 가능.
+
+\`\`\`bash
+# 풀지 않고 즉시 적용
+claude --plugin-dir ./downloads/my-plugin.zip
+\`\`\`
+
+**\`claude plugin details <name>\` (v2.1.139)**: 플러그인의 **컴포넌트 인벤토리 + 세션당 예상 토큰 비용**을 표시. 무거운 플러그인을 식별해서 활성화 여부 판단.
+
+\`\`\`bash
+claude plugin details camfit-cpf-plugin
+
+# 출력 예:
+# camfit-cpf-plugin v0.42.0
+# Components:
+#   Commands: 15
+#   Skills:   42 (model-invocable: 30, user-invocable: 12)
+#   Agents:   6
+#   Hooks:    8 (SessionStart, PreToolUse, PostToolUse...)
+#   MCP servers: 2
+# Estimated tokens per session: ~12,400 tokens
+#   - Skill descriptions: 8,200
+#   - Agent definitions:  2,800
+#   - Command frontmatter: 1,400
+\`\`\`
+
+> \`/context all\`이 보여주는 전체 토큰 추정과 짝을 이룹니다. 토큰 예산이 빠듯할 때 어떤 플러그인을 끌지 결정하는 근거가 됩니다.
+
+**\`experimental\` 매니페스트 섹션 (v2.1.129)**: 플러그인 매니페스트에서 \`themes\`와 \`monitors\`는 이제 \`"experimental": { ... }\` 아래에 선언하는 것이 권장. 기존 최상위 선언도 동작하나 \`claude plugin validate\`가 경고.
+
+\`\`\`json
+// .claude-plugin/plugin.json
+{
+  "name": "my-plugin",
+  "version": "1.0.0",
+  "experimental": {
+    "themes": ["./themes/ocean.json"],
+    "monitors": [{ "id": "deploy", "schedule": "*/5 * * * *" }]
+  }
+}
+\`\`\`
+
+> \`themes\`/\`monitors\`는 아직 진화 중이라 향후 스키마가 바뀔 수 있다는 신호입니다. \`experimental\` 아래로 옮기면 안정 API와 명확히 구분됩니다.
+
+**\`claude plugin install <name>@<marketplace>\` 자동 갱신 (v2.1.139)**: 플러그인 설치 명령이 마켓플레이스를 **자동으로 새로고침하고 재시도**한 뒤에 "찾을 수 없음" 보고. 새로 추가된 플러그인을 일일이 \`marketplace refresh\`하지 않아도 됨.
+
+**\`/plugin\` 설치된 플러그인 상세 정돈 (v2.1.139)**: 설치 플러그인 상세 보기에서 **훅 이벤트명과 MCP 서버명을 깔끔하게 표시** (이전엔 내부 식별자).
+
+**\`/context\` 플러그인 소스 표시 (v2.1.139)**: \`/context\`가 플러그인이 제공한 스킬에 대해 **제공자 플러그인 이름을 함께 표시** — 어떤 플러그인이 토큰을 많이 차지하는지 한눈에 파악.
+
+**플러그인 설치 marketplace 키-매니페스트 이름 불일치 수정 (v2.1.139)**: 마켓플레이스 키가 매니페스트의 \`name\`과 다를 때 plugin details가 로드 실패하던 문제 해결.
+
+**\`Stop\`/\`UserPromptSubmit\` 훅 캐시 정리 충돌 수정 (v2.1.136)**: 플러그인 캐시 정리가 실행 중인 세션이 사용하는 버전을 삭제해 \`Stop\`/\`UserPromptSubmit\` 훅이 실패하던 문제 해결.
+
+**\`skills\` 디렉토리 매니페스트 키 충돌 수정 (v2.1.136)**: \`plugin.json\`의 \`skills\` 엔트리가 기본 \`skills/\` 디렉터리를 가리던 버그 수정 — 파일 경로 나열 시 무음 실패 대신 명확한 에러 표시.
+
+**플러그인 uninstall/enable/disable 슬러그 대소문자 매칭 (v2.1.136)**: 플러그인 이름 슬러그를 **대소문자 무시**하고 매칭.
+
+**Windows 플러그인 슬래시 명령 공백 처리 (v2.1.136)**: 공백이 포함된 플러그인 슬래시 명령(예: \`/myplugin review\`)이 네임스페이스 형태로 정상 매칭.
+
 #### v2.1.121~2.1.126 플러그인 개선사항
 
 **\`claude plugin prune\` (v2.1.121)**: 다른 플러그인의 의존성으로 자동 설치됐다가 **부모 플러그인이 제거된 뒤 남은 고아 플러그인**을 일괄 제거하는 새 명령. 디스크 용량 회수 + \`/plugin\` 메뉴 정돈에 유용.

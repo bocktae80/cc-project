@@ -629,6 +629,26 @@ window.STUDIO_DATA = {
         { title: "런치 다이얼로그 & 취소", difficulty: 2, status: "completed" }
       ],
       prerequisites: ["14-code-security"]
+    },
+    {
+      id: "29-goal-command",
+      number: "29",
+      title: "/goal 자율 목표",
+      subtitle: "완료 조건 기반 멀티턴 자율 실행",
+      phase: "phase-6",
+      difficulty: 3,
+      status: "completed",
+      description: "v2.1.139에 추가된 /goal로 완료 조건을 설정하면 Claude가 턴을 넘어가며 자율 진행한다. 테스트 통과/빌드 성공/스캔 0건 같은 검증 가능한 조건에 강하다. interactive, -p 헤드리스, Remote Control 모두 지원하며 elapsed/turns/tokens 오버레이로 진행을 실시간 추적한다.",
+      concepts: ["/goal", "완료 조건", "자율 실행", "elapsed/turns/tokens 오버레이", "헤드리스 자율 검증"],
+      path: "../projects/29-goal-command/",
+      estimatedMinutes: 20,
+      relatedProjects: ["24-loop-cron", "23-ralph-loop", "16-background-agents"],
+      subExamples: [
+        { title: "인터랙티브 첫 /goal", difficulty: 2, status: "completed" },
+        { title: "헤드리스 -p --goal", difficulty: 3, status: "completed" },
+        { title: "중도 종료와 조건 변경", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["24-loop-cron"]
     }
   ]
 };
