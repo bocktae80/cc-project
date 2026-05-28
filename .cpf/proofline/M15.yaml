@@ -1,0 +1,271 @@
+milestone: M15
+startedAt: "2026-05-28T22:00:00Z"
+updatedAt: "2026-05-29T10:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{10,11,15,16,17,18,19,21,28}.js (정적 콘텐츠 객체 9개 갱신),
+  content-30.js (신규 튜토리얼 — Dynamic Workflows, 511줄), projects.js (30 엔트리 추가,
+  +20줄), index.html (content-30.js script 태그 1줄), version-track.json
+  (currentCLI 2.1.153→2.1.154, lastChecked 2026-05-29, 30개→31개 엔트리 basedOn 일괄
+  갱신, 영향 9개 trackedFeatures/notes 보강 + 30번 신규 엔트리), ROADMAP.md
+  (M15 섹션 5/5 완료 마킹).
+  실질적으로 교육 콘텐츠/메타데이터 + 신규 튜토리얼 1개이므로 Red Team은 DTS 프로필을 주력,
+  RTS(code)는 신규 튜토리얼의 3-Layer 와이어업(projects.js→content→index.html) 검증에 보조 적용.
+  스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  v2.1.154(Opus 4.8 출시) 단일 릴리스의 변경을 9개 기존 튜토리얼에 분배 + /workflows
+  신규 튜토리얼 1개 추가 — M9/M10/M13 패턴(신규 1 + 분배) 동일.
+  changelog 원문 매칭은 콘텐츠 작성 세션(이전)에서 수행했고, 본 마무리 세션(M15-05)은 작성된
+  콘텐츠와 version-track trackedFeatures/notes 간 일관성 + 전체 31개 구문 검증 + ID 일관성에 집중.
+
+fidelity:
+  pfs: 95
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M15 섹션)"
+  evidence:
+    - plan: "M15-01 ⭐⭐⭐ 콘텐츠 갱신 (21/16/17/28)"
+      actual: >
+        content-21.js(/simplify cleanup-only 동작 분리 — v2.1.154부터 /code-review --fix와
+        명확히 분리: /simplify는 reuse/simplification/efficiency/altitude만, 버그 헌팅은
+        /code-review 책임. 타임라인 표 + quiz explanation 갱신),
+        content-16.js(claude agents ! <command> 백그라운드 셸 세션 + claude --bg --exec,
+        /logout 정상화, ←← agents view Bedrock/Vertex/Foundry/텔레메트리 비활성 호환,
+        완료 알림 false-positive·pinned respawn·worktree 격리 우회·bg-pty-host CPU 폭주 수정 표 8행
+        + ! <command> 시연 블록),
+        content-17.js(defaultEnabled:false plugin.json/marketplace 표/예시 + 의존성 체인 유지 주석,
+        /plugin Discover 탭 디렉토리 매칭 pinning + 'suggested for this directory' 시연),
+        content-28.js(/simplify·/code-review --fix·/ultrareview 3자 책임 분리 표 — /ultrareview
+        =/code-review ultra 위치 불변 안내)
+      match: true
+    - plan: "M15-02 ⭐⭐⭐ 신규 튜토리얼 30 — Dynamic Workflows (/workflows)"
+      actual: >
+        projects/30-dynamic-workflows/README.md(난이도 ⭐⭐⭐, /workflows 개념 + /loop·/goal·
+        /workflows 3축 비교 + 4단계 따라하기 + 선택 가이드 표),
+        studio/data/content/content-30.js(511줄 — overview/concepts/tutorials/examples/quiz
+        5-block, STUDIO_CONTENT["30-dynamic-workflows"]),
+        projects.js 30 엔트리(phase-6, difficulty 3, status completed, subtitle '백그라운드
+        다중 에이전트 오케스트레이션', concepts 6종, prerequisites [29-goal-command],
+        relatedProjects [29,24,16], subExamples 3종),
+        index.html content-30.js script 태그.
+      match: true
+    - plan: "M15-03 ⭐⭐ 콘텐츠 갱신 (15/11/10/18)"
+      actual: >
+        content-15.js(/chrome 'Select browser…' 다중 브라우저 명시 선택 + 미고정 다중 연결 시
+        인-챗 선택 프롬프트, 상황별 동작 표),
+        content-11.js(stdio MCP 서브프로세스 CLAUDE_CODE_SESSION_ID/CLAUDECODE=1 환경변수 +
+        hooks 식별자 일치 시연, claude mcp list/get 미승인 .mcp.json ⏸ Pending approval 표시),
+        content-10.js(v2.1.154 Opus 4.8 출시 CLI 표 13행 — 기본 high effort + /effort xhigh,
+        /effort 라벨 Faster/Smarter, Lean system prompt 기본화, multiple-choice 자제,
+        Streaming tool execution 항상 활성, OPUS_4_6_FAST_MODE_OVERRIDE deprecated +
+        /effort xhigh 비교표),
+        content-18.js(/claude-api 스킬 Opus 4.8 + 4.7→4.8 마이그레이션 가이드 표 + TS diff 예제,
+        Opus 4.6 fast 모드 환경변수 deprecated, Lean system prompt SDK 토큰 감소)
+      match: true
+    - plan: "M15-04 ⭐ 콘텐츠 보강 (19)"
+      actual: >
+        content-19.js(+69줄 — 보안/권한 v2.1.154 수정 모음 표 6행 + rm -rf $HOME trailing-slash
+        차단 버그 시연, Auto-mode 데이터 유출(리포지토리 대량 전송) 감지 강화 패턴, $TMPDIR
+        샌드박스/논샌드박스 일관성, managed settings allowedMcpServers/deniedMcpServers 단일
+        무효 엔트리만 drop + claude doctor 경고 before/after 표)
+      match: true
+    - plan: "M15-05 version-track 2.1.153→2.1.154 + 31개 추적 + 9개 보강 + 31개 검증 + ROADMAP M15"
+      actual: >
+        version-track.json currentCLI 2.1.153→2.1.154, lastChecked 2026-05-29, 31개 엔트리
+        basedOn 일괄 2.1.154. 30번 신규 엔트리 추가(trackedFeatures 7종). 영향 9개
+        (10/11/15/16/17/18/19/21/28) trackedFeatures/notes 보강(각 항목 출처 v2.1.154 인라인 표기).
+        ROADMAP M15 5/5 + 헤더 완료 마킹. check-updates.js --bump 2.1.154 실행.
+        node require 평가 31/31 OK, ID 일관성(projects↔content↔version-track) 31/31 일치,
+        필수 필드 누락 0.
+      match: true
+
+passloop:
+  g1:
+    score: 85
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 갱신 + 신규 튜토리얼 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JSON/JS 파싱 기반 구문 검증 + ID 일관성 매니페스트 + M15 매핑표.
+      v2.1.154 단일 릴리스 → 9개 영향 튜토리얼 분배 + 신규 30 매핑 사전 작성(M9/M10/M13 패턴 답습).
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 객체 + 신규 튜토리얼 데이터)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node -e JSON.parse(version-track.json)"
+        result: "valid: true, currentCLI=2.1.154, tutorials.length=31, 30번 존재"
+      - action: "node require 평가 content-*.js (31개)"
+        result: "31/31 OK (escape 누락 0, 신규 content-30 포함)"
+      - action: "ID 일관성 (projects.js ↔ content keys ↔ version-track)"
+        result: "projects 31 / content 키 31 / version-track 31 — content 키 없는 projects 0, 30 필수 필드 누락 0"
+      - action: "node studio/data/check-updates.js --bump 2.1.154 + --all"
+        result: "기록=2.1.154, 모든 31개 튜토리얼이 최신 버전 범위 내 (installed gap +2 → M16에서 2.1.155~156 확인 필요 메모)"
+  g3:
+    score: 88
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming convention 확인"
+        result: "v2.1.154 섹션 헤더 / 표 컬럼(기능·설명·버전) / 비유 블록 — M7~M14 패턴 동일. content-30은 기존 5-block 구조 준수"
+      - action: "structure consistency 확인"
+        result: "overview/concepts/tutorials/examples/quiz 5-block 변동 없음. v2.1.154 섹션은 기존 직전 위치에 삽입. content-30 신규는 29-goal-command 구조 답습"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-10:912 / content-11:619 / content-15:664 / content-16:957 / content-17:1229 / content-18:1140 / content-19:1365 / content-21:725 / content-28:655 — 9개 600줄 초과(정적 교육 콘텐츠 JS 예외 유지, M7~M14 동일 분류). content-30:511(이하). warning."
+      - action: "pipeline-completeness 3-Layer 검증 (신규 30)"
+        result: "정의(projects.js 30 엔트리) → 실행(content-30.js STUDIO_CONTENT['30-dynamic-workflows']) → 와이어업(index.html script 태그) 1:1 매핑 OK. 9개 분배 갱신은 projects.js/index.html 변경 없이 content+version-track만 보강(정의-실행 갭 0)"
+  g4:
+    score: 95
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "31/31 최신 범위 내, 회귀 없음"
+      - action: "version-track.json 31개 엔트리 유효성"
+        result: "모두 basedOn 2.1.154, lastUpdated 2026-05-29 — 누락 0 (18-agent-sdk sdkVersions 중첩 구조 포함 정상)"
+      - action: "9개 콘텐츠 파일 v2.1.154 섹션 위치 확인"
+        result: "9개 모두 기존 최신 섹션 직전에 일관 배치(M11~M14 패턴 답습)"
+      - action: "신규 30 튜토리얼 렌더링 데이터 무결성"
+        result: "phase-6 그룹 편입, prerequisites 29-goal-command 존재, relatedProjects(29/24/16) 모두 실존 — 학습경로/카드 렌더링 데이터 완결"
+  mqs: 91.8   # 85*0.15 + 96*0.35 + 88*0.30 + 95*0.20 = 12.75 + 33.6 + 26.4 + 19.0 = 91.75
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 + 메타데이터 + 신규 튜토리얼 데이터 — simplify 대상 아님)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 89
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "갱신 9개 콘텐츠 파일이 600줄 초과(619~1365). 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M14 선례) 유지. 신규 content-30은 511줄로 한도 내."
+    - rule: commit-convention-001
+      severity: info
+      detail: "feat(studio) 스코프 + 한글 본문 본 커밋 예정. 본 Proofline 기록은 chore(proofline): M15 유지보수 Proofline 증명 기록 추가 별도 커밋 (M7~M14 패턴 동일)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 준수, 요청 범위(M15-05 마무리 진행) 준수. 불필요한 리팩토링 없음. lastChecked UTC 28→29 정정은 기존 엔트리와의 일관성 확보 목적."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M15 섹션 5/5 완료 체크 + 헤더 완료 마킹. M14(v2.1.153) → M15(v2.1.154) minor+1: 신규 튜토리얼 1개(30) + 분배 9개(M9/M10/M13 패턴). — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "신규 30 튜토리얼 3-Layer(projects.js 정의 → content-30 실행 → index.html 와이어업) 완결. 9개 분배 갱신은 version-track trackedFeatures/notes에 매핑 완결 — 선언/실행 갭 0."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M15 5/5 완료, '나중에' 항목 없음. installed CLI gap +2(2.1.155~156)는 백로그가 아닌 M16 차기 유지보수 사이클 대상으로 명시(version-track lastChecked/currentCLI는 2.1.154 정확)."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (.claude/skills/update-check 미수정, workbook 스킬 변경 없음)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS + 보조 RTS(신규 튜토리얼 와이어업)
+  rts: 92.0
+  dts: 92.6
+  combinedScore: 92.4
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심) — 주력
+    accuracy: 90
+    completeness: 94
+    navigability: 90
+    clarity: 93
+    consistency: 94
+    maintainability: 93
+    # RTS 프로필 (코드/데이터 정합성) — 보조
+    rts_correctness: 96
+    rts_robustness: 92
+    rts_fp_fn: 89
+    rts_performance: 90
+    rts_consistency: 94
+    rts_coverage: 91
+  evidence:
+    accuracy:
+      action: "trackedFeatures v2.1.154 항목 vs 작성된 콘텐츠 본문 교차 검증 (changelog 원문 매칭은 작성 세션에서 완료)"
+      result: >
+        본 마무리 세션에선 9개 갱신 + 1개 신규 콘텐츠 본문에 기술된 v2.1.154 변경(/simplify
+        cleanup-only 분리, claude agents ! <command> bg 셸, defaultEnabled:false, /chrome 브라우저
+        선택, stdio MCP CLAUDE_CODE_SESSION_ID/CLAUDECODE=1, Opus 4.8 기본 high+/effort xhigh,
+        /claude-api 4.7→4.8 마이그레이션, rm -rf $HOME trailing-slash, managed MCP 단일 무효
+        엔트리 drop, /workflows)을 version-track trackedFeatures/notes와 1:1 대조 — 불일치 0.
+        changelog 원문 직접 매칭은 콘텐츠 작성 세션에서 수행됨(본 세션 미재확인 → 보수적 90).
+      score: 90
+    completeness:
+      action: "M15 계획 5개 워크아이템 vs 실제 구현 매핑"
+      result: >
+        5/5 완료. ⭐⭐⭐ 5건(21/16/17/28 + 신규 30) + ⭐⭐ 4건(15/11/10/18) + ⭐ 1건(19) 모두
+        trackedFeatures 등록 + 콘텐츠 본문 반영. 신규 30은 README+content+projects+index+version-track
+        5개소 모두 갱신(신규 튜토리얼 5개소 동기화 규칙 충족).
+      score: 94
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 + 학습경로 편입 + version-track 동기화"
+      result: >
+        9개 갱신 모두 'v2.1.154' 섹션 헤더로 일관 배치. 신규 30은 phase-6 학습경로 노드 +
+        prerequisites 29-goal-command 연결로 /loop·/goal·/workflows 자율실행 3축 내비게이션 완성.
+        ROADMAP M15 5/5. version-track 31개 동기화.
+      score: 90
+    clarity:
+      action: "비유 일관성 + 한국어 가독성 + 신규 개념 전달력 확인"
+      result: >
+        21번: 교정 선생님 비유 유지 + cleanup-only vs 버그 헌팅 분리 표,
+        16번: ! <command> bg 셸 'nohup/tmux 통합' 대비표,
+        30번(신규): /loop(주기)·/goal(조건)·/workflows(분해) 3축 비교표 + 모노레포 마이그레이션
+        예제로 '한 컨텍스트로 안 되는 큰 작업' 직관 전달 — 중학생/비개발자 타겟 적합
+      score: 93
+    consistency:
+      action: "기존 30개 파일 섹션 패턴 vs M15 섹션/신규 튜토리얼 패턴"
+      result: >
+        'v2.1.154' 섹션 헤더 + 표 컬럼(기능/설명/버전) + '#### 부제목 (v2.1.154)' 하위 패턴 일관.
+        content-30은 다른 신규 튜토리얼(27/28/29)의 5-block(overview/concepts/tutorials/examples/quiz)
+        구조 정확 일치. projects.js 30 엔트리 필드 구성도 29 엔트리와 동형.
+      score: 94
+    maintainability:
+      action: "version-track.json + ROADMAP 동기화 + proofline 기록"
+      result: >
+        31개 엔트리 basedOn 2.1.154 일괄, 영향 9개 + 신규 1개에 trackedFeatures+notes 명시적 보강.
+        각 항목 출처 버전(v2.1.154) 인라인 표기. installed gap +2(2.1.155~156)를 M16 대상으로
+        명시 기록 — 다음 사이클 진입점 명확. .cpf/proofline/M15.yaml 재현 가능 산물로 보존.
+      score: 93
+    rts_correctness:
+      action: "node require 평가 + JSON.parse + ID 일관성"
+      result: "31/31 require OK + version-track.json valid. projects↔content↔version-track ID 31/31 일치, 필수 필드 누락 0"
+      score: 96
+    rts_robustness:
+      action: "check-updates.js 회귀 검사 + 신규 30 데이터 무결성"
+      result: "31/31 최신 범위, 회귀 0. 신규 30 prerequisites/relatedProjects 참조 무결(존재하지 않는 id 참조 0)"
+      score: 92
+    rts_fp_fn:
+      action: "분배 중복/누락 검사"
+      result: "v2.1.154 단일 릴리스 변경을 9개 튜토리얼에 분배 — 중복 추가 0. installed gap +2 버전(2.1.155~156)은 본 사이클 외부로 정확히 제외(M16 대상)"
+      score: 89
+    rts_performance:
+      action: "신규 script 태그 1개 + 콘텐츠 객체 증가 — 런타임 영향"
+      result: "content-30.js script 1개 추가(31번째), 갱신 콘텐츠 +337줄. 정적 로드라 영향 미미"
+      score: 90
+    rts_consistency:
+      action: "M9/M10/M13 패턴(신규 1 + 분배) 답습 검증"
+      result: "신규 튜토리얼 1(30) + 분배 9 + version-track bump + ROADMAP/proofline 갱신 + 신규 5개소 동기화 패턴 일치"
+      score: 94
+    rts_coverage:
+      action: "9/31 갱신 + 1 신규 + v2.1.154 changelog 묶음"
+      result: "29% 영향 튜토리얼 커버 + 신규 1. v2.1.154 주요 변경(이름변경 동작분리 1·신규 명령 /workflows 1·신규 옵션·보안 수정 다수) 매핑"
+      score: 91
+
+loopbacks:
+  count: 0
+  history: []
