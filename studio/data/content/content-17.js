@@ -246,7 +246,49 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
-#### v2.1.140~2.1.153 플러그인 개선사항
+#### v2.1.140~2.1.154 플러그인 개선사항
+
+**\`defaultEnabled: false\` (v2.1.154)** ⭐⭐⭐: 플러그인 매니페스트나 마켓플레이스 엔트리에서 \`defaultEnabled: false\`를 선언하면 **설치 후 자동 활성화되지 않음**. 사용자가 \`/plugin\` 또는 \`claude plugin enable\`로 명시적으로 켜야 동작. 무거운 플러그인이나 일부 사용자에게만 필요한 도구를 마켓플레이스에 올릴 때 유용.
+
+\`\`\`json
+// .claude-plugin/plugin.json
+{
+  "name": "heavy-debugger",
+  "version": "1.0.0",
+  "defaultEnabled": false   // ← 설치만 되고 활성화는 사용자 결정
+}
+\`\`\`
+
+\`\`\`bash
+$ claude plugin install heavy-debugger
+✓ Installed heavy-debugger (default disabled)
+  Run 'claude plugin enable heavy-debugger' or use /plugin to activate.
+
+$ claude plugin enable heavy-debugger
+✓ Enabled heavy-debugger
+\`\`\`
+
+| 옵션 | 설치 후 |
+|------|---------|
+| \`defaultEnabled\` 미지정 또는 \`true\` (기본) | 자동 활성화 |
+| \`defaultEnabled: false\` (v2.1.154+) | 명시적 활성화 필요 |
+
+> 활성화된 플러그인의 의존성으로 끌려온 경우엔 \`defaultEnabled: false\`여도 함께 활성화됩니다(의존성 체인은 그대로).
+
+**\`/plugin\` Discover 탭 디렉토리 매칭 pinning (v2.1.154)** ⭐⭐: \`/plugin\` Discover 탭에서 **현재 작업 디렉토리와 관련 신호가 매칭되는 플러그인**이 상단에 **pin**되어 표시. "suggested for this directory" annotation으로 명시. monorepo의 여러 패키지를 오가며 작업할 때 각 디렉토리에 맞는 플러그인을 빠르게 찾을 수 있음.
+
+\`\`\`
+# Next.js 프로젝트 디렉토리에서 /plugin Discover 열면:
+
+  📌 Suggested for this directory
+  ├─ next-perf-toolkit         ⭐⭐ "suggested for this directory"
+  ├─ react-best-practices      ⭐⭐ "suggested for this directory"
+
+  All plugins
+  ├─ database-migrator
+  ├─ docker-helpers
+  ├─ ...
+\`\`\`
 
 **Plugin dependency enforcement (v2.1.143)**: \`claude plugin disable\`이 **다른 활성 플러그인이 이 플러그인에 의존**하면 거부 (disable 체인 힌트 표시). \`claude plugin enable\`은 **전이 의존성을 자동으로 함께 활성화**.
 

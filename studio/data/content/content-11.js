@@ -165,7 +165,7 @@ MCP 커넥터는 **OAuth**를 사용합니다. 한 번 "허용" 버튼을 클릭
 | **시스템 프롬프트 캐싱** | ToolSearch 사용 시 글로벌 시스템 프롬프트 캐싱이 정상 동작 (v2.1.84) |
 | **플러그인 중복 억제** | 플러그인 MCP 서버가 조직 커넥터와 중복되면 자동 억제 (v2.1.83) |
 
-### v2.1.140~2.1.153 커넥터 개선사항
+### v2.1.140~2.1.154 커넥터 개선사항
 
 | 개선 | 설명 |
 |------|------|
@@ -178,6 +178,8 @@ MCP 커넥터는 **OAuth**를 사용합니다. 한 번 "허용" 버튼을 클릭
 | **plugin MCP env 중복 제거 수정** | 같은 명령에 환경 변수만 다른 플러그인 MCP 서버가 **잘못 중복 제거되던 문제** 수정 (v2.1.152) |
 | **MCP tool progress 표시** | MCP 도구 progress notification이 접힌 도구 뷰에서 렌더링되지 않던 문제 수정 (v2.1.153) |
 | **stateful MCP reconnect loop 수정** | optional GET SSE stream 없는 stateful MCP 서버가 \`tools/list\`에서 재연결 루프에 빠지던 v2.1.147 regression 수정 (v2.1.153) |
+| **Stdio MCP 환경변수 주입** | stdio MCP 서버 서브프로세스가 \`CLAUDE_CODE_SESSION_ID\` (현재 세션 ID)와 \`CLAUDECODE=1\` (호출 컨텍스트 식별)을 환경에서 받음 — 같은 세션의 hooks와 동일한 식별자라 상호 참조 가능 (v2.1.154) |
+| **\`claude mcp list\`/\`get\` Pending approval 표시** | 미승인 \`.mcp.json\` 서버를 출력 파이프 시에도 \`⏸ Pending approval\`로 표시 (이전엔 자동 승인되어 연결됨) (v2.1.154) |
 
 #### \`MCP_TOOL_TIMEOUT\` 원격 적용 (v2.1.142)
 
@@ -187,6 +189,39 @@ MCP_TOOL_TIMEOUT=300000 claude
 \`\`\`
 
 이전엔 \`MCP_TOOL_TIMEOUT\`이 stdio MCP 서버에만 적용됐는데, 이제 원격 HTTP/SSE MCP 서버에도 적용됩니다. 대용량 검색/생성을 수행하는 사내 MCP 서버에 유용해요.
+
+#### Stdio MCP 서브프로세스 환경변수 (v2.1.154)
+
+stdio로 띄운 MCP 서버 서브프로세스가 같은 세션의 hooks와 동일한 식별자를 받습니다.
+
+\`\`\`bash
+# MCP 서버 코드 (예: TypeScript)
+const sessionId = process.env.CLAUDE_CODE_SESSION_ID;
+const inClaude  = process.env.CLAUDECODE === "1";
+
+if (inClaude && sessionId) {
+  log(\`Started by Claude Code session \${sessionId}\`);
+  // → 같은 sessionId가 hooks에도 전달되므로 상호 참조 가능
+}
+\`\`\`
+
+| 변수 | 의미 |
+|------|------|
+| \`CLAUDE_CODE_SESSION_ID\` | 현재 세션 ID (hooks의 \`session_id\`와 일치) |
+| \`CLAUDECODE=1\` | "Claude Code 호출 컨텍스트"임을 식별 |
+
+> MCP 서버 안에서 세션별 캐시·로그 디렉토리를 분리하거나, hooks와 같은 세션의 활동을 묶어 분석할 때 유용합니다.
+
+#### \`claude mcp list\`/\`get\` Pending approval 표시 (v2.1.154)
+
+\`\`\`bash
+$ claude mcp list | cat
+linear          ✓ Connected
+sentry          ✓ Connected
+fancy-tool      ⏸ Pending approval   ← .mcp.json에 있으나 미승인
+\`\`\`
+
+이전엔 출력이 파이프되면 \`.mcp.json\` 서버를 자동 승인하고 연결해버렸지만, v2.1.154부터는 명시적으로 \`⏸ Pending approval\`을 보여주고 연결을 보류합니다. 스크립트가 의도치 않게 신뢰되지 않은 MCP 서버를 켜는 사고를 막아줘요.
 
 #### \`allowAllClaudeAiMcps\` (v2.1.149)
 

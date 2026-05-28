@@ -2,7 +2,7 @@ window.STUDIO_CONTENT = window.STUDIO_CONTENT || {};
 window.STUDIO_CONTENT["21-simplify"] = {
   overview: `## /code-review (구 /simplify) — 코드 품질 자동 개선
 
-> ⚠️ **v2.1.147 이름 변경 안내**: \`/simplify\`는 \`/code-review\`로 이름이 바뀌었어요. 기존 \`/simplify\` 명령은 \`/code-review --fix\`를 호출하는 alias로 살아있습니다(v2.1.152). effort 레벨(\`/code-review high\`), \`--comment\` 인라인 PR 코멘트, \`--fix\` 워킹 트리 자동 적용 옵션이 새로 추가됐어요.
+> ⚠️ **v2.1.154 동작 변경 안내**: \`/simplify\`는 이제 **cleanup-only 리뷰**(reuse / simplification / efficiency / altitude)만 적용합니다. 이전(v2.1.152)에는 \`/code-review --fix\`를 호출해 버그 헌팅까지 했지만, v2.1.154부터 둘이 명확히 분리됐어요: 버그는 \`/code-review\`(또는 \`/code-review --fix\`)로, 정리는 \`/simplify\`로. 이름 변경 히스토리는 그대로(v2.1.147에 \`/code-review\`로 이름 변경) effort 레벨·\`--comment\`·\`--fix\`는 \`/code-review\` 쪽에 있어요.
 
 **교정 선생님**을 생각해보세요! 작문 시험에서 글 내용은 안 바꾸고, 맞춤법과 띄어쓰기만 고쳐주는 선생님이 있잖아요?
 \`/code-review\`도 마찬가지! 코드의 **기능은 그대로** 두고, **가독성과 품질만 개선**해줍니다. (이전 이름인 \`/simplify\`도 여전히 작동해요.)
@@ -200,18 +200,21 @@ doSomething();
 
 \`/simplify\`는 v2.1.147에서 \`/code-review\`로 **이름이 바뀌었습니다**. 단순한 이름 변경이 아니라 **기능이 확장**됐어요.
 
-#### 이름 변경 + alias 유지
+#### 이름 변경 + 동작 분리 타임라인
 
 \`\`\`
 v2.1.146 이전: /simplify (코드 정리 + 자동 적용)
 v2.1.147:     /code-review (코드 리뷰 + 보고 only, --fix 없으면 적용 안 함)
 v2.1.152:     /simplify는 /code-review --fix를 호출하는 alias로 부활
+v2.1.154:     /simplify는 cleanup-only 리뷰(reuse/simplification/efficiency/altitude)로 분리
+              — /code-review --fix는 버그 헌팅 포함 풀 리뷰로 남음
 \`\`\`
 
 | 이전 | 새 명령 | 동작 |
 |------|---------|------|
-| \`/simplify\` | \`/code-review --fix\` (== /simplify alias) | 리뷰 + 자동 적용 |
-| — | \`/code-review\` | 리뷰만 보고, 적용은 사용자가 |
+| \`/simplify\` (v2.1.154+) | \`/simplify\` | **cleanup-only** 리뷰(reuse·simplification·efficiency·altitude) + 자동 적용 |
+| — | \`/code-review\` | **버그 헌팅 포함** 풀 리뷰, 보고만 (적용은 \`--fix\`) |
+| — | \`/code-review --fix\` | 버그 헌팅 포함 풀 리뷰 + 자동 적용 |
 | — | \`/code-review --comment\` | GitHub PR에 인라인 코멘트로 게시 |
 | — | \`/code-review high\` | effort 레벨 지정 (low/medium/high/ultra) |
 | — | \`/code-review ultra\` | 클라우드 멀티 에이전트 병렬 리뷰 (= /ultrareview) |
@@ -243,15 +246,16 @@ ultra       → 클라우드 멀티 에이전트 병렬 리뷰 (튜토리얼 28 
 #### 핵심 — 둘 다 살아있어요
 
 \`\`\`bash
-# 이전 사용자: /simplify 그대로 써도 됨
-> /simplify    # = /code-review --fix (자동 적용)
+# 정리만 하고 싶을 때 (v2.1.154+):
+> /simplify    # cleanup-only 리뷰 + 자동 적용
 
-# 새 사용자: /code-review 권장
-> /code-review high     # 깊은 리뷰만 보기
+# 버그까지 잡고 싶을 때:
+> /code-review high     # 풀 리뷰 (보고만)
+> /code-review --fix    # 풀 리뷰 + 자동 적용
 > /code-review --comment  # PR 코멘트로 남기기
 \`\`\`
 
-> **핵심 요약**: \`/simplify\` → \`/code-review\` 이름 변경(v2.1.147). \`/simplify\`는 \`/code-review --fix\`를 호출하는 alias로 살아있음(v2.1.152). 새 옵션: \`--fix\`(워킹 트리 적용), \`--comment\`(GitHub PR 인라인 코멘트), effort 레벨(low/medium/high/ultra). \`ultra\`는 클라우드 멀티 에이전트 병렬 리뷰(/ultrareview 통합).`
+> **핵심 요약**: v2.1.154부터 \`/simplify\`(cleanup-only)와 \`/code-review --fix\`(버그 헌팅 포함)가 **명확히 분리**됐어요. \`/simplify\`는 리유즈·단순화·효율·관점 정리만 적용하고, 버그 헌팅은 \`/code-review\` 쪽 책임입니다. 이름 변경 히스토리(v2.1.147)와 alias 부활(v2.1.152)은 동작 변경 타임라인의 일부에요. effort 레벨·\`--comment\`·\`--fix\`는 \`/code-review\` 옵션이고, \`ultra\`는 클라우드 멀티 에이전트 병렬 리뷰(/ultrareview 통합).`
     },
     {
       id: "before-after",
@@ -715,7 +719,7 @@ CLAUDE.md에 명시된 규칙:
         "/simplify와 /code-review는 서로 다른 명령이며 동시에 사용할 수 없다"
       ],
       answer: 1,
-      explanation: "v2.1.147에서 /simplify → /code-review로 이름이 바뀌었지만, v2.1.152에서 /simplify는 /code-review --fix를 호출하는 alias로 부활했어요. /code-review는 기본적으로 리뷰만 보고하고, --fix를 붙여야 워킹 트리에 자동 적용됩니다."
+      explanation: "v2.1.147에서 /simplify → /code-review로 이름이 바뀌었고, v2.1.152엔 /simplify가 /code-review --fix alias로 부활했지만 v2.1.154부터는 다시 분리됐어요. /simplify는 cleanup-only(reuse/simplification/efficiency/altitude) 리뷰만 적용하고, 버그 헌팅 포함 풀 리뷰는 /code-review(또는 /code-review --fix)에서 처리합니다."
     }
   ]
 };

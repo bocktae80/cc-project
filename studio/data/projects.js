@@ -649,6 +649,26 @@ window.STUDIO_DATA = {
         { title: "중도 종료와 조건 변경", difficulty: 2, status: "completed" }
       ],
       prerequisites: ["24-loop-cron"]
+    },
+    {
+      id: "30-dynamic-workflows",
+      number: "30",
+      title: "Dynamic Workflows",
+      subtitle: "백그라운드 다중 에이전트 오케스트레이션",
+      phase: "phase-6",
+      difficulty: 3,
+      status: "completed",
+      description: "v2.1.154에 Opus 4.8 출시와 함께 추가된 /workflows로 Claude가 수십~수백 개의 서브에이전트를 백그라운드에서 병렬 실행한다. 모노레포 마이그레이션, 대규모 리팩토링, 다중 관점 리뷰처럼 한 컨텍스트로는 못 하는 큰 작업을 분해·병렬 처리한다. /loop(주기)·/goal(조건)·/workflows(분해)의 자율 실행 3축을 완성한다.",
+      concepts: ["/workflows", "백그라운드 오케스트레이션", "서브에이전트 병렬", "/effort xhigh", "Opus 4.8 시너지", "Research Preview"],
+      path: "../projects/30-dynamic-workflows/",
+      estimatedMinutes: 25,
+      relatedProjects: ["29-goal-command", "24-loop-cron", "16-background-agents"],
+      subExamples: [
+        { title: "첫 워크플로우 만들기", difficulty: 2, status: "completed" },
+        { title: "/loop vs /goal vs /workflows 비교", difficulty: 3, status: "completed" },
+        { title: "/workflows 모니터링 & 결과 회수", difficulty: 2, status: "completed" }
+      ],
+      prerequisites: ["29-goal-command"]
     }
   ]
 };

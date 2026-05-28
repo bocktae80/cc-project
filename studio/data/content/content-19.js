@@ -289,6 +289,75 @@ allowRead: ["/sensitive/public/"] ← 그 안의 public만 허용!
          └── watch rm → rm 규칙 매칭 (차단!)
 \`\`\`
 
+#### 보안 / 권한 수정 모음 (v2.1.154)
+
+| 수정 | 설명 | 버전 |
+|------|------|------|
+| **\`rm -rf $HOME\` trailing-slash 차단** | \`HOME\` 환경변수가 \`/Users/me/\`처럼 trailing slash로 끝나는 경우 \`rm -rf $HOME\`이 dangerous path로 차단되지 않던 버그 — 이제 trailing slash와 무관하게 차단 | v2.1.154 |
+| **Auto-mode 데이터 유출 감지 강화** | Auto mode 분류기가 **데이터 유출(특히 리포지토리 대량 전송)** 패턴을 더 잘 감지 — 일반 작업 흐름에서 무관한 대량 파일 외부 송출 시 추가 검증 | v2.1.154 |
+| **\`$TMPDIR\` 샌드박스 일관성** | 같은 세션의 샌드박스 / 논샌드박스 Bash 명령이 서로 다른 \`$TMPDIR\`을 보던 문제 — 한 세션 내에서 동일한 임시 디렉토리 보장 | v2.1.154 |
+| **managed settings MCP 정책 견고화** | \`allowedMcpServers\` / \`deniedMcpServers\`의 **단일 무효 엔트리가 정책 전체를 무시**하게 만들던 보안 버그 — 해당 엔트리만 drop하고 \`claude doctor\` 경고로 알림 | v2.1.154 |
+| **Auto mode 차단 사유 명확화** | safety classifier가 reasoning 토큰을 다 쓰면 잘못된 "could not evaluate this action" 메시지로 차단되던 문제 — 명확한 사유 표시 | v2.1.154 |
+| **\`autoMode\`/PreToolUse 효율 파라미터 호환** | effort 파라미터를 지원하지 않는 모델에서 \`CLAUDE_CODE_ALWAYS_ENABLE_EFFORT\`로 인한 API 400 에러 수정 | v2.1.154 |
+
+#### \`rm -rf $HOME\` trailing-slash 버그 (v2.1.154)
+
+\`\`\`bash
+# 이전엔 차단되지 않을 수 있었음:
+export HOME="/Users/me/"   # ← trailing slash
+rm -rf $HOME               # → 정규화 누락 → 차단 우회 가능
+
+# v2.1.154+: 정규화 후 검사
+                          # → /Users/me 와 동일 취급 → 차단
+\`\`\`
+
+\`\`\`
+보호 동작:
+  rm -rf $HOME          → 차단 (dangerous path)
+  rm -rf $HOME/         → 차단 (trailing slash 정규화)
+  rm -rf "$HOME/"       → 차단 (인용도 정규화 후)
+  rm -rf $HOME/Downloads → 프롬프트 (구체 경로는 사용자 결정)
+\`\`\`
+
+> **보안 권고**: \`HOME\` 환경변수가 어디서 설정되든 (\`profile\`, IDE, 도커 컨테이너) 일관되게 차단되는 게 정상입니다. 이 버그는 trailing slash가 있는 환경에서만 재현됐어요.
+
+#### Auto-mode 데이터 유출 감지 강화 (v2.1.154)
+
+Auto mode가 **대량 파일을 외부로 전송하는 패턴**을 더 보수적으로 검사합니다.
+
+\`\`\`
+감지 패턴 (예시):
+  - 작업 흐름과 무관한 \`tar | curl\` / \`rsync\` 외부 송출
+  - 다수 파일을 한 번에 외부 API에 \`POST\`
+  - 리포지토리 전체를 \`zip\` 후 업로드
+
+대응:
+  → "수상한 패턴 — 사용자 확인" 프롬프트
+  → 의도된 백업/배포일 가능성이 있으면 사용자가 명시적으로 승인
+\`\`\`
+
+> 일반 개발 워크플로우(빌드 산출물 1~2개 업로드, 로그 1개 발송)는 영향 없음. **저장소 통째로 외부에 보내는 류의 시나리오**에서만 추가 검증이 들어갑니다.
+
+#### managed settings MCP 정책 견고화 (v2.1.154)
+
+\`\`\`json
+// managed-settings.json
+{
+  "allowedMcpServers": [
+    "https://valid-server.example.com",
+    "invalid-entry-without-protocol",   // ← 무효 엔트리
+    "https://another-valid.example.com"
+  ]
+}
+\`\`\`
+
+| 이전 동작 | v2.1.154 동작 |
+|----------|--------------|
+| 무효 엔트리 1개로 **전체 정책 무시** → 모든 MCP 허용됨 | 무효 엔트리만 drop, 나머지 정책은 강제 |
+| 사용자에게 안내 없음 | \`claude doctor\`에서 경고 표시 |
+
+> 조직 관리자가 정책 파일에 오타가 있어도 보안 정책 전체가 무너지지 않습니다. \`claude doctor\`를 주기적으로 확인하세요.
+
 #### 보안 / 권한 수정 모음 (v2.1.116~2.1.119)
 
 | 수정 | 설명 | 버전 |

@@ -702,11 +702,38 @@ POST /v1/sessions
 
 > \`/claude-api\` 스킬이 v2.1.97에서 Managed Agents 가이드를 포함하도록 확장됐습니다.
 > 도구 표면 설계, 컨텍스트 관리, 캐싱 전략 가이드를 함께 다룹니다.
+> v2.1.154부터는 **Claude Opus 4.8 지원 + 4.7 → 4.8 마이그레이션** 가이드도 같이 다룹니다.
 
-#### v2.1.140~2.1.153 SDK 개선사항
+#### Opus 4.7 → Opus 4.8 마이그레이션 핵심 (v2.1.154)
+
+| 항목 | Opus 4.7 | Opus 4.8 | 액션 |
+|------|---------|---------|------|
+| 모델 ID | \`claude-opus-4-7\` | \`claude-opus-4-8\` | 필요한 호출 지점만 교체 — 둘 다 활성 |
+| 기본 effort | 사용자 설정 | **high (자동)** | xhigh 필요한 작업에만 \`/effort xhigh\` |
+| 자기 코드 결함 누락률 | 기준 | **1/4 수준** | 코드 생성/리뷰 워크플로우 재평가 가치 |
+| Fast 모드 | 2x 비용 / 2x 속도 | **2x 비용 / 2.5x 속도** | 같은 가격에 더 빠름 |
+| Lean system prompt | 적용 안 됨 | **기본 적용** | 시스템 토큰 사용량 감소 |
+| 도구 호출 stability | 기준 | 동일 | API 시그니처 변경 없음 |
+
+\`\`\`typescript
+// Opus 4.7 → 4.8 변경: 모델 ID만 교체
+await client.messages.create({
+-  model: "claude-opus-4-7",
++  model: "claude-opus-4-8",
+  messages: [{ role: "user", content: "..." }],
+  // ...
+});
+\`\`\`
+
+> **\`/claude-api\` 스킬에서 \`migration: 4.7-to-4.8\`을 호출하면** 코드베이스 내 \`claude-opus-4-7\` 사용 지점을 스캔하고 필요한 곳만 교체합니다.
+
+#### v2.1.140~2.1.154 SDK 개선사항
 
 | 개선 | 설명 | 버전 |
 |------|------|------|
+| **\`/claude-api\` 스킬 Opus 4.8 가이드** | \`/claude-api\` 스킬에 **Claude Opus 4.8 지원 + 4.7 → 4.8 마이그레이션 가이드** 추가. 코드 변경 포인트, 동작 차이, 캐시 전략 비교 포함 | v2.1.154 |
+| **Opus 4.6 fast 모드 환경변수 deprecated** | \`CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE\`는 2026-06-01에 제거됨. 대안: \`/model claude-opus-4-6[1m]\` 후 \`/fast on\` | v2.1.154 |
+| **Lean system prompt 기본화** | Haiku / Sonnet / Opus 4.7 이하를 **제외한** 모델에서 짧은 시스템 프롬프트 기본 — SDK가 시스템 토큰을 덜 먹음 | v2.1.154 |
 | **Agent tool \`subagent_type\` 매칭 완화** | \`"Code Reviewer"\` → \`code-reviewer\`로 정규화 — **케이스, 공백, 하이픈/언더스코어 차이 허용** | v2.1.140 |
 | **subagent frontmatter MCP \`--strict-mcp-config\` 존중** | 서브에이전트 프론트매터의 MCP 서버 정의가 \`--strict-mcp-config\`, \`--bare\`, 원격 모드, 엔터프라이즈 managed MCP allow/deny 정책을 **무시하던 버그** 해결 (v2.1.153) | v2.1.153 |
 | **inline \`mcpServers\` 유지** | \`--strict-mcp-config\`이 명시적으로 전달된 \`--agents\` / SDK \`agents\`의 inline \`mcpServers\`를 **더 이상 제거하지 않음** (블록된 MCP 서버는 가시적 경고) | v2.1.153 |

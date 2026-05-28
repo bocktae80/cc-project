@@ -93,7 +93,43 @@ Chrome 확장이 클로드 CLI와 브라우저 사이를 연결해줍니다.
 | TV 화면 | TV 디스플레이 | Chrome 브라우저 |
 
 > **핵심 요약**: Chrome 확장은 Claude CLI와 브라우저를 연결하는 다리(적외선 센서) 역할을 합니다.
-> 설치 후 WebSocket으로 연결되며, 사용자 요청 → CLI → 확장 → 브라우저 순서로 명령이 전달됩니다.`
+> 설치 후 WebSocket으로 연결되며, 사용자 요청 → CLI → 확장 → 브라우저 순서로 명령이 전달됩니다.
+
+#### \`/chrome\` 브라우저 선택 (v2.1.154)
+
+여러 브라우저가 동시에 연결되어 있을 수 있어요(예: 개발용 Chrome + 테스트용 Chrome Canary + Brave). v2.1.154부터는 어떤 브라우저로 명령을 보낼지 명시적으로 고를 수 있습니다.
+
+\`\`\`bash
+# 1) 명시적으로 골라두기
+> /chrome
+[ ] Chrome (Default)       — daily work
+[ ] Chrome Canary          — testing channel
+[ ] Brave                  — privacy mode
+> Select browser…
+[1] Chrome (Default)
+[2] Chrome Canary
+[3] Brave
+> 2
+✓ Routing browser commands to Chrome Canary
+\`\`\`
+
+\`\`\`bash
+# 2) 인-챗 선택 (브라우저 명령이 발화되는데 다중 연결일 때)
+> https://example.com 스크린샷 찍어줘
+⚠ Multiple browsers connected. Which one?
+  [1] Chrome (Default)
+  [2] Chrome Canary
+> 1
+[screenshot] taken on Chrome (Default)
+\`\`\`
+
+| 상황 | 동작 |
+|------|------|
+| 브라우저 1개 연결 | 자동 선택 (이전과 동일) |
+| 다중 연결 + \`/chrome\`으로 고정 | 고정된 브라우저로 전송 |
+| 다중 연결 + 미고정 | **인-챗 선택 프롬프트** (v2.1.154 신규) |
+
+> 이전엔 다중 연결 환경에서 어느 브라우저로 갈지 예측이 어려웠지만, v2.1.154부터는 사용자가 명시적으로 라우팅을 결정할 수 있습니다.`
     },
     {
       id: "browser-capabilities",

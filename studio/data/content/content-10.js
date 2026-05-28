@@ -287,6 +287,48 @@ v2.1.74 /context:
 | **\`ANTHROPIC_WORKSPACE_ID\`** | Workload Identity Federation에서 federation rule이 여러 워크스페이스를 커버할 때 **특정 워크스페이스로 토큰 스코프 제한** (v2.1.141) |
 | **터미널 풀스크린 활성 스크린 토글** | \`CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1\` 환경변수로 풀스크린의 alternate-screen 렌더러를 끄고 native scrollback에 대화 유지 (v2.1.132) |
 
+#### v2.1.154 — Opus 4.8 출시 (CLI 관점)
+
+| 기능 | 설명 |
+|------|------|
+| **Opus 4.8 기본 high effort** | Opus 4.8이 출시되면서 기본 effort가 \`high\`로 자동 상승, 가장 어려운 작업용 \`/effort xhigh\`가 신규 (v2.1.154) |
+| **\`/effort\` 라벨 정리** | 슬라이더 라벨이 "Speed"/"Intelligence"에서 **"Faster"/"Smarter"**로 변경 — 의미 명확화 (v2.1.154) |
+| **Lean system prompt 기본화** | Haiku / Sonnet / Opus 4.7 이하를 **제외한** 모든 모델에서 짧은 시스템 프롬프트가 기본 — 컨텍스트 절약 (v2.1.154) |
+| **자제된 multiple-choice 질문** | Claude가 이미 충분한 컨텍스트가 있으면 더 이상 객관식 질문을 띄우지 않고 진행 (v2.1.154) |
+| **\`! <command>\` 백그라운드 셸** | \`claude agents\` dispatch에서 \`! <command>\`로 셸 명령을 **백그라운드 세션**으로 실행 + attach/detach. \`claude --bg --exec '<command>'\`로도 동일 (튜토리얼 16 참조) (v2.1.154) |
+| **\`claude agents\` \`/logout\` 정상화** | 이제 정상 사인아웃 (이전엔 사용자가 백그라운드 세션으로 보내져 로그아웃이 안 됨) (v2.1.154) |
+| **\`←←\` agents view 호환성 확장** | \`←←\` 단축키로 agents view 열기가 Bedrock / Vertex / Foundry 및 텔레메트리 비활성 환경에서도 동작 (v2.1.154) |
+| **\`/remote-control\` autocomplete** | Remote Control이 이미 활성이면 autocomplete가 **"Disconnect Remote Control"**을 보여줌 (v2.1.154) |
+| **Streaming tool execution 항상 활성화** | 텔레메트리 비활성/Bedrock/Vertex/Foundry 환경에서도 항상 켜짐 (이전엔 피처 플래그) (v2.1.154) |
+| **\`CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE\` deprecated** | 2026-06-01에 제거됨. Opus 4.6 fast 모드를 쓰려면 \`/model claude-opus-4-6[1m]\` 후 \`/fast on\` (v2.1.154) |
+| **Auto-mode 분류기 강화** | 데이터 유출 감지(특히 리포지토리 대량 전송)와 \`rm -rf $HOME\` trailing-slash 차단 개선 (튜토리얼 19 참조) (v2.1.154) |
+| **\`$TMPDIR\` 일관성** | 같은 세션의 샌드박스 / 논샌드박스 Bash 명령이 동일한 \`$TMPDIR\`을 보도록 수정 (v2.1.154) |
+| **managed settings MCP 정책 견고화** | \`allowedMcpServers\`/\`deniedMcpServers\`의 **단일 무효 엔트리가 전체 정책을 무시**하던 문제 → 해당 엔트리만 drop + \`claude doctor\` 경고 (v2.1.154) |
+| **Workflow 도구** | \`/workflows\` — Claude가 워크플로우를 만들고 백그라운드에서 수십~수백 에이전트를 오케스트레이션 (튜토리얼 30 참조) (v2.1.154) |
+
+#### \`/effort xhigh\` — 가장 어려운 작업용
+
+\`\`\`bash
+# 단발성
+/effort xhigh
+> 이 RFC의 영향 영역을 분석해서 단계별 롤아웃 워크플로우 만들어줘
+
+# 표
+low / medium / high / xhigh
+       (기본 — Opus 4.7)
+                  (Opus 4.8 기본)
+                          (Opus 4.8 신규, 최상위)
+\`\`\`
+
+| 모델 | 기본 effort | \`xhigh\` 사용 가능 |
+|------|------------|--------------------|
+| Opus 4.7 | 사용자 설정 (이전) | ✗ (자동 high로 폴백) |
+| Opus 4.8 | **high (자동)** | ✓ |
+| Sonnet 4.6 | 사용자 설정 | ✗ |
+| Haiku 4.5 | 사용자 설정 | ✗ |
+
+> 큰 워크플로우 설계, 복잡한 의존성 그래프 분석, 보안 깊이 분석처럼 **사고의 폭과 깊이가 모두 필요한 작업**에 권장됩니다.
+
 #### v2.1.127~2.1.139에서 추가된 기능
 
 | 기능 | 설명 |

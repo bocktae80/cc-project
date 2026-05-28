@@ -210,7 +210,7 @@ Monitor (신규) → 스마트 앱에서 실시간 알림 (각 단계마다)
 이후: 서브에이전트 실패 → 에러 + 부분 결과도 함께 전달
 \`\`\`
 
-### v2.1.140~2.1.153 백그라운드 에이전트 강화
+### v2.1.140~2.1.154 백그라운드 에이전트 강화
 
 | 변경 | 설명 | 버전 |
 |------|------|------|
@@ -222,6 +222,38 @@ Monitor (신규) → 스마트 앱에서 실시간 알림 (각 단계마다)
 | **\`/bg\` 옵션 보존** | \`/bg\`로 분리해도 \`--mcp-config\`, \`--settings\`, \`--add-dir\`, \`--plugin-dir\`, \`--strict-mcp-config\`, \`--fallback-model\`, \`--allow-dangerously-skip-permissions\`가 유지됨 | v2.1.143 |
 | **AppLogs/Permissions 'Claude Code'** | macOS Privacy & Security 패널에서 백그라운드 에이전트가 "Claude Code"로 표시 + **업그레이드 후에도 권한 유지** | v2.1.153 |
 | **\`/bg\` 대답 미보존 버그 수정** | \`/bg\`로 응답 중 분리하면 응답이 백그라운드 세션에서 계속됨 (이전엔 dropped) | v2.1.153 |
+| **\`! <command>\` 백그라운드 셸 세션** | \`claude agents\` dispatch 입력에서 \`! <command>\`를 치면 셸 명령을 **백그라운드 세션으로 실행**해 attach/detach 가능. \`claude --bg --exec '<command>'\`로도 동일 동작 | **v2.1.154** |
+| **\`claude agents\`의 \`/logout\`** | 이제 정상 사인아웃 동작 (이전엔 사용자가 백그라운드 세션으로 보내져 로그아웃이 안 됨) | **v2.1.154** |
+| **\`←←\` agents view 호환성 확장** | \`←←\` 단축키로 agents view 열기가 Bedrock/Vertex/Foundry 및 텔레메트리 비활성 환경에서도 동작 | **v2.1.154** |
+| **백그라운드 완료 알림 false-positive 수정** | 1M 컨텍스트 모델에서 백그라운드 완료 알림이 "out of context" 동작을 조기 트리거하던 버그 수정 | **v2.1.154** |
+| **백그라운드 사용자 목표 보존** | 스케줄된 \`/command\`가 발화돼도 분류기가 원래 목표를 잃지 않음 | **v2.1.154** |
+| **Pinned 세션 respawn 폭주 수정** | Claude Code 업데이트 후 pinned 백그라운드 세션이 매분 재생성되어 알림이 쏟아지던 버그 수정 | **v2.1.154** |
+| **서브에이전트 worktree 격리 우회 수정** | 백그라운드 세션의 서브에이전트가 격리 가드를 우회해 공유 체크아웃에 쓰던 버그 수정 | **v2.1.154** |
+| **\`claude --bg-pty-host\` CPU 폭주 수정** | macOS에서 데몬이 종료된 후 orphan \`--bg-pty-host\` 프로세스가 100% CPU로 도는 버그 수정 | **v2.1.154** |
+
+#### \`! <command>\` 백그라운드 셸 세션 (v2.1.154)
+
+새로운 입력 방식: \`claude agents\`에서 \`! <command>\` 또는 CLI에서 \`claude --bg --exec '<command>'\`.
+
+\`\`\`bash
+# 1) agents view에서
+$ claude agents
+> ! npm run build:all
+# → 빌드를 백그라운드 세션으로 실행
+# → 진행 중 다른 화면 작업, 끝나면 알림
+
+# 2) CLI에서 직접
+$ claude --bg --exec 'pytest tests/integration --maxfail=5'
+# → 같은 동작. attach/detach 자유롭게
+\`\`\`
+
+| 기존 방법 | \`! <command>\` |
+|----------|----------------|
+| nohup/tmux로 별도 관리 | \`claude agents\`에 통합 표시 |
+| 진행/실패 알림 직접 구성 | 자동 알림 + agents view |
+| attach 어려움 | Pinned 세션처럼 attach/detach |
+
+> 빌드, 통합 테스트, 마이그레이션 스크립트처럼 "오래 걸리고 결과만 확인하면 되는" 작업에 유용합니다.
 
 #### \`/resume\` 백그라운드 세션 — 잊혀진 세션 찾기
 
