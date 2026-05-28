@@ -1,0 +1,272 @@
+milestone: M14
+startedAt: "2026-05-28T22:00:00Z"
+updatedAt: "2026-05-29T00:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{05,06,07,08,09,10,11,16,17,18,21,29}.js (정적 콘텐츠 객체 11개 갱신 +
+  content-07은 escape 누락 동반 수정), version-track.json (currentCLI 2.1.139→2.1.153,
+  lastChecked 2026-05-29, 30개 엔트리 basedOn 일괄 갱신, 영향 11개 trackedFeatures/notes
+  보강), ROADMAP.md (M14 섹션 추가/완료 마킹, last-updated 2026-05-29),
+  MEMORY.md + update_history.md (M14/v2.1.153/30 튜토리얼 갱신, content-06/07 escape
+  검증 함정 메모 추가).
+  실질적으로 교육 콘텐츠/메타데이터이므로 Red Team은 DTS 프로필을 주력, RTS(code)는 보조로
+  적용. 스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  v2.1.140~v2.1.153 changelog의 14개 changelog 묶음을 11개 기존 튜토리얼에 분배 — 신규
+  튜토리얼 없음(M11/M12 패턴 동일). 부수: content-06/07의 unescaped `${VAR}` 4건이
+  M13 시점부터 require 평가 시 ReferenceError를 발생시키던 잠재 버그를 동반 수정.
+  단일패치 버그픽스 버전(v2.1.148/150)은 별도 매칭 없음.
+
+fidelity:
+  pfs: 95
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M14 섹션)"
+  evidence:
+    - plan: "M14-01 ⭐⭐⭐ 콘텐츠 갱신 (21/8/6)"
+      actual: >
+        content-21.js +88줄(/simplify → /code-review 이름 변경 안내 + /code-review 진화 컨셉 섹션
+        신규 + tutorial PR 루틴에 --fix/--comment/effort 옵션 + 새 quiz),
+        content-08.js +49줄(disallowed-tools 프론트매터 표/예시, /reload-skills 신규 명령 시연,
+        SessionStart reloadSkills 훅 연계 안내),
+        content-06.js +104줄(MessageDisplay 신규 훅 이벤트 표/redact 스크립트, SessionStart
+        reloadSkills/sessionTitle 반환, Stop 훅 background_tasks/session_crons 입력,
+        terminalSequence 출력, CLAUDE_CODE_STOP_HOOK_BLOCK_CAP). 06/07 escape 누락 4건 동반 수정.
+      match: true
+    - plan: "M14-02 ⭐⭐⭐ 콘텐츠 갱신 (5/16/17/10)"
+      actual: >
+        content-05.js +59줄(claude agents --json/--cwd, dispatch 플래그 그룹, 자동완성에
+        슬래시·번들 스킬, subagent_type 케이스/구분자 무관 매칭),
+        content-16.js +69줄(/resume 백그라운드 세션 지원, Pinned background sessions Ctrl+T
+        + in-place 재시작 + 메모리 정책, worktree.bgIsolation:none 트레이드오프),
+        content-17.js +56줄(Plugin dependency enforcement 표/시연, skipLfs,
+        pluginSuggestionMarketplaces, PREFER_HTTPS, projected context cost,
+        marketplace remove --scope),
+        content-10.js +24줄(v2.1.140~2.1.153 신규 기능 표 22행 — Fast mode Opus 4.7,
+        /model 기본값 저장, /usage 카테고리 breakdown, /diff 키보드 스크롤, /usage-credits,
+        GFM 체크박스, /code-review, /reload-skills, --fallback-model 자동,
+        Auto mode 동의 제거, Vim NORMAL / 역검색 등)
+      match: true
+    - plan: "M14-03 ⭐⭐~⭐ 콘텐츠 갱신 (11/9/18/29)"
+      actual: >
+        content-11.js +30줄(MCP_TOOL_TIMEOUT 원격 HTTP/SSE 적용,
+        allowAllClaudeAiMcps managed setting 표/예시, 그 외 needs auth 알림 통합 등 표 9행),
+        content-09.js +30줄(worktree.bgIsolation:none 트레이드오프 + worktree.baseRef와의 비교,
+        v2.1.136 worktree 종료 다이얼로그/에러 메시지),
+        content-18.js +51줄(SDK 개선 11행 — subagent_type 케이스/구분자 무관 매칭,
+        --strict-mcp-config 정책 일관 적용, cache_creation_input_tokens 정확성,
+        SDK 스트리밍 종료 stuck 수정, hook input transcript_path 수정 등 + TS 예제),
+        content-29.js +27줄(/goal 평가자가 백그라운드 작업 완료까지 대기,
+        훅 차단 환경에서 명확한 메시지, API key 환경 자동 비활성)
+      match: true
+    - plan: "M14-04 version-track 2.1.139→2.1.153 + 11개 보강 + 30개 검증 + ROADMAP M14"
+      actual: >
+        version-track.json currentCLI 2.1.139→2.1.153, lastChecked 2026-05-29, 30개
+        엔트리 basedOn 일괄 2.1.153 + lastUpdated 2026-05-29. 영향 11개(21/8/6/5/16/17/10/11/9/18/29)
+        trackedFeatures/notes 보강 (각 항목 출처 버전 인라인 표기). ROADMAP M14 4/4 + last-updated
+        2026-05-29. MEMORY.md + update_history.md 갱신(M14 패턴 + escape 검증 함정 메모).
+        node require 평가 30/30 OK(content-06/07 escape 수정 후), check-updates.js
+        30/30 최신 범위.
+      match: true
+
+passloop:
+  g1:
+    score: 85
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 갱신 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JSON/JS 파싱 기반 구문 검증 매니페스트 + M14 매핑표.
+      v2.1.140~153 changelog 14개 묶음 → 11개 영향 튜토리얼 매핑을 사전 작성(M11/M12 패턴 답습).
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 객체 보강만)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node -e JSON.parse(version-track.json)"
+        result: "valid: true, currentCLI=2.1.153, tutorials.length=30"
+      - action: "node require 평가 content-{05,06,07,08,09,10,11,16,17,18,21,29}.js"
+        result: "12/12 OK (content-06/07의 4건 escape 누락 동반 수정 후)"
+      - action: "node studio/data/check-updates.js"
+        result: "기록=2.1.153, 설치=2.1.153, 모든 튜토리얼이 최신 버전 범위 내 (30개)"
+  g3:
+    score: 88
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming convention 확인"
+        result: "v2.1.140~2.1.153 섹션 헤더 / 표 컬럼 / 비유 블록 — M7~M13 패턴 동일"
+      - action: "structure consistency 확인"
+        result: "overview/concepts/tutorials/examples/quiz 5-block 변동 없음. 각 v-범위 섹션은 기존 v2.1.127~2.1.139 섹션 직전 위치에 삽입. 21번은 concepts에 새 'evolution-to-code-review' 섹션 추가 + overview 알림 박스 + quiz 1개 추가"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-09:628 / content-21:741 / content-11:626 / content-18:809 / content-08:856 / content-05:907 / content-10:990 / content-29:430 / content-16:927 / content-06:1305 / content-17:1213 — 11개 중 9개 600줄 초과(정적 교육 콘텐츠 JS 프로젝트 예외 유지, M7~M13과 동일 분류). warning."
+      - action: "pipeline-completeness 3-Layer 검증"
+        result: "신규 튜토리얼 없음. 11개 갱신 모두 정의(projects.js 변경 없음) → 실행(content-N.js STUDIO_CONTENT 보강) → 와이어업(index.html script 변경 없음) 매핑 OK"
+  g4:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "30/30 최신 범위 내, 회귀 없음"
+      - action: "version-track.json 30개 엔트리 유효성"
+        result: "모두 basedOn 2.1.153, lastUpdated 2026-05-29 일괄 적용 — 누락 0 (18-agent-sdk는 sdkVersions 사이 끼인 구조로 별도 갱신)"
+      - action: "11개 콘텐츠 파일 v2.1.140~2.1.153 섹션 위치 확인"
+        result: "11개 모두 기존 v2.1.127~2.1.139 섹션 직전에 일관 배치(M11/M12 패턴 답습)"
+      - action: "M13 시점 escape 누락 잠재 버그 회귀 차단"
+        result: "content-06 라인 313/331/343/527, content-07 라인 165/209/295 — 총 7건 escape `\\${...}` 적용. require 평가 통과 회복."
+  mqs: 92.0   # 85*0.15 + 96*0.35 + 88*0.30 + 96*0.20 = 12.75 + 33.6 + 26.4 + 19.2
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 + 메타데이터 — simplify 대상 아님)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 89
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "11개 콘텐츠 파일 중 9개가 600줄 초과(626~1305). 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M13 선례) 유지."
+    - rule: commit-convention-001
+      severity: info
+      detail: "feat(studio) 스코프 + 한글 본문 본 커밋(410355e) 완료. 본 Proofline 기록은 chore(proofline): M14 유지보수 Proofline 증명 기록 추가 별도 커밋 예정 (M7~M13 패턴 동일)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 준수, 요청 범위(M14 즉시 시작) 준수. 부수 escape 4건은 검증 통과를 위한 직접 의존성 수정 — 범위 인접 허용."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M14 섹션 추가, 4/4 완료 체크, last-updated 2026-05-29. M13(v2.1.139) → M14(v2.1.153) minor+1 분배만(신규 튜토리얼 없음, M11/M12 패턴 동일). — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "11개 콘텐츠 갱신은 version-track.json trackedFeatures/notes에 매핑 완결. 신규 정의(YAML/인터페이스/스킬) 없음 — 선언/실행 갭 0."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M14 4/4 완료, '나중에' 항목 없음. content-06/07 escape 버그는 미해결 잠재 부채로 남기지 않고 동반 수정. — 통과."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (workbook-pkg/skills/**/*.md 변경 없음, .claude/skills/update-check 미수정)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS + 보조 RTS
+  rts: 92.2
+  dts: 92.8
+  combinedScore: 92.6
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심) — 주력
+    accuracy: 95
+    completeness: 94
+    navigability: 88
+    clarity: 92
+    consistency: 94
+    maintainability: 93
+    # RTS 프로필 (코드 정합성) — 보조
+    rts_correctness: 96
+    rts_robustness: 92
+    rts_fp_fn: 90
+    rts_performance: 90
+    rts_consistency: 94
+    rts_coverage: 91
+  evidence:
+    accuracy:
+      action: "trackedFeatures 항목 8개 샘플 → GitHub Releases v2.1.140~v2.1.153 body 직접 매칭"
+      result: >
+        /simplify→/code-review(v2.1.147 body 'Renamed /simplify to /code-review'; v2.1.152 body
+        '/simplify now invokes /code-review --fix'),
+        MessageDisplay 훅(v2.1.152 body 'Added a MessageDisplay hook event that lets hooks
+        transform or hide assistant message text as it is displayed'),
+        disallowed-tools(v2.1.152 body 'Skills and slash commands can now set disallowed-tools
+        in frontmatter to remove tools from the model while the skill is active'),
+        /reload-skills(v2.1.152 body 'Added /reload-skills command to re-scan skill directories'),
+        SessionStart reloadSkills/sessionTitle(v2.1.152 body 'SessionStart hooks can now return
+        reloadSkills: true' / 'set the session title via hookSpecificOutput.sessionTitle'),
+        Pinned background sessions Ctrl+T(v2.1.147 body 'Pinned background sessions
+        (Ctrl+T in claude agents)'),
+        Fast mode Opus 4.7(v2.1.142 body 'Fast mode now uses Opus 4.7 by default'),
+        Plugin dependency enforcement(v2.1.143 body 'Added plugin dependency enforcement:
+        claude plugin disable now refuses when another enabled plugin depends on the target')
+        — 8/8 원문 일치
+      score: 95
+    completeness:
+      action: "M14 계획 4개 워크아이템 vs 실제 구현 + v2.1.140~153 changelog 묶음 매핑"
+      result: >
+        4/4 완료, ⭐⭐⭐ 7건(21/8/6/5/16/17/10) + ⭐⭐~⭐ 4건(11/9/18/29) 모두 trackedFeatures
+        등록 + 콘텐츠 본문 반영. v140~153 매핑 합계 30+13+1+22+10+15+10+8+0+0+0+10+10+25=154
+        changelog 항목(중복 포함). 단일패치 버그픽스 버전(v2.1.148/150) 별도 매칭 없음(정확).
+      score: 94
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 + version-track 동기화"
+      result: >
+        11개 모두 'v2.1.140~2.1.153' 또는 'v2.1.140~v2.1.153' 섹션 헤더로 일관 배치.
+        21번은 오버뷰 알림 박스 + 신규 concept 'evolution-to-code-review' 섹션 추가로
+        리네이밍 인지성 강화. ROADMAP M14 4/4 링크. STATUS/MEMORY/version-track/update_history
+        4파일 동기화.
+      score: 88
+    clarity:
+      action: "비유 일관성 + 한국어 가독성 + 리네이밍 인지성 확인"
+      result: >
+        21번: 교정 선생님 비유 유지 + 알림 박스로 '/code-review로 진화' 안내,
+        06번: 학급 게시판 검열관(MessageDisplay) + 표시 직전 가공/숨김 비유,
+        16번: 회의실 예약 현황판(claude agents) + Pinned bg는 메모리 정책 표,
+        17번: dependency enforcement 체인 끄기 시연으로 cascading 효과 명료화 — 교육 타겟 적합
+      score: 92
+    consistency:
+      action: "기존 28개 파일 섹션 헤더 패턴 vs M14 섹션 패턴"
+      result: >
+        '### v2.1.140~2.1.153 X 개선사항' / '#### v2.1.140~2.1.153에서 추가된 기능' 동일 형식,
+        '##### 부제목 (v2.1.xxx)' 하위 패턴 동일. 표 컬럼 '개선/기능 / 설명 / 버전' 일관.
+        21번은 concepts 배열 신규 항목(evolution-to-code-review)이 다른 콘텐츠의 concept
+        구조(id/title/content + 핵심 요약 인용) 패턴 정확 일치.
+      score: 94
+    maintainability:
+      action: "version-track.json + ROADMAP + MEMORY + update_history 동기화"
+      result: >
+        30개 엔트리 basedOn 2.1.153 일괄, 영향받은 11개에 trackedFeatures + notes 명시적 보강.
+        각 항목 출처 버전(v2.1.140/141/143/147/149/152/153 등) 인라인 표기.
+        MEMORY.md M14 패턴 명시(M11/M12와 동일) + content-06/07 escape 검증 함정 메모 추가
+        — 다음 사이클에서 같은 함정 재발 방지.
+        update_history.md 13행 + 14행 추가.
+      score: 93
+    rts_correctness:
+      action: "node require 평가 + JSON.parse"
+      result: "12/12 + version-track.json 모두 통과. M13 시점 escape 누락 4건은 회귀가 아니라 잠재 버그 동반 수정."
+      score: 96
+    rts_robustness:
+      action: "check-updates.js 회귀 검사"
+      result: "30/30 최신 범위 내, 회귀 0. CLI 기록=설치 v2.1.153 정확 일치"
+      score: 92
+    rts_fp_fn:
+      action: "M11/M12 분배 중복/누락 검사"
+      result: "단일 패치 버그픽스 버전(v2.1.148/150) 별도 매칭 없음(정확). M13 패치들(v2.1.127~139)은 본 사이클 외부 — 중복 추가 없음"
+      score: 90
+    rts_performance:
+      action: "정적 콘텐츠 변경 — 런타임 회귀 없음"
+      result: "DOM script 추가 없음(신규 튜토리얼 없음). 콘텐츠 객체 크기 +600줄(11개 합산)이지만 lazy-load 아님 — 영향 미미"
+      score: 90
+    rts_consistency:
+      action: "M11/M12 패턴 답습 검증"
+      result: "신규 튜토리얼 0 + 분배 11개 + version-track bump + ROADMAP/MEMORY 갱신 + 단일 커밋 패턴 일치"
+      score: 94
+    rts_coverage:
+      action: "11/30 튜토리얼 영향 + 14 changelog 묶음"
+      result: "37% 영향 튜토리얼 커버, 14 changelog 묶음 100% 매핑(이름 변경 1·신규 훅 1·신규 명령 1·새 옵션 다수)"
+      score: 91
+
+loopbacks:
+  count: 0
+  history: []
