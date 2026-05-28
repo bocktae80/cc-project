@@ -162,7 +162,7 @@ Elicitation: "몇 층이세요?" → "3층이요" → 직접 전달! (양방향)
 
 | 개선 | 설명 | 버전 |
 |------|------|------|
-| **stdio 서버에 \`CLAUDE_PROJECT_DIR\` 환경변수** | MCP stdio 서버가 시작 시 \`CLAUDE_PROJECT_DIR\` 환경변수를 받음 (훅과 동일). 플러그인 MCP config에서 \`${CLAUDE_PROJECT_DIR}\` placeholder 사용 가능 | v2.1.139 |
+| **stdio 서버에 \`CLAUDE_PROJECT_DIR\` 환경변수** | MCP stdio 서버가 시작 시 \`CLAUDE_PROJECT_DIR\` 환경변수를 받음 (훅과 동일). 플러그인 MCP config에서 \`\${CLAUDE_PROJECT_DIR}\` placeholder 사용 가능 | v2.1.139 |
 | **\`/mcp\` Reconnect 자동 \`.mcp.json\` 갱신** | Reconnect 시 \`.mcp.json\` 편집을 **재시작 없이 자동 반영**. 실패 시에는 HTTP 상태/URL을 표시 | v2.1.139 |
 | **\`workspace\` 예약 서버명** | MCP 서버 이름 \`workspace\`가 **예약됨** — 기존에 이 이름을 쓰던 서버는 경고와 함께 스킵 | v2.1.128 |
 | **재연결 도구 리스트 폭증 방지** | MCP 서버 재연결 시 매번 전체 도구 이름 리스트를 대화에 흘려보내던 문제 해결 — 재공지 도구는 서버 prefix로 요약 | v2.1.128 |
@@ -206,7 +206,7 @@ const configPath = path.join(projectDir, '.mcp/config.yaml');
       → 모든 프로젝트에서 같은 동작 (또는 cwd로 추측)
 이후: CLAUDE_PROJECT_DIR이 자동 주입
       → 프로젝트별 schema 파일/도구/권한을 알아서 분기
-      → 플러그인 매니페스트에서도 ${CLAUDE_PROJECT_DIR} 치환 가능
+      → 플러그인 매니페스트에서도 \${CLAUDE_PROJECT_DIR} 치환 가능
 \`\`\`
 
 > 모노레포에서 워크스페이스마다 다른 MCP 동작을 원할 때 결정적입니다. \`cwd\`에 의존하지 않고도 프로젝트 루트를 정확히 알 수 있습니다.
@@ -292,7 +292,7 @@ const configPath = path.join(projectDir, '.mcp/config.yaml');
 | **macOS keychain race 수정** | 동시 MCP 토큰 refresh가 방금 갱신된 OAuth 토큰을 덮어써 \`/login\` 프롬프트가 뜨던 문제 수정 | v2.1.118 |
 | **\`Authenticate\`/\`Re-authenticate\` 메뉴 복원** | \`/mcp\` 메뉴가 \`headersHelper\`로 설정된 서버의 OAuth 액션을 숨기던 문제 수정 | v2.1.119 |
 | **\`Invalid OAuth error response\` 수정** | OAuth 디스커버리에서 서버가 비-JSON 응답을 반환할 때 발생하던 \`Invalid OAuth error response\` 에러 수정 | v2.1.119 |
-| **\`${ENV_VAR}\` 헤더 치환** | HTTP/SSE/WebSocket MCP 서버의 \`headers\`에 있는 \`${ENV_VAR}\` 자리표시자가 요청 전에 치환되지 않던 문제 수정 | v2.1.119 |
+| **\`\${ENV_VAR}\` 헤더 치환** | HTTP/SSE/WebSocket MCP 서버의 \`headers\`에 있는 \`\${ENV_VAR}\` 자리표시자가 요청 전에 치환되지 않던 문제 수정 | v2.1.119 |
 | **\`--client-secret\` 토큰 교환** | \`client_secret_post\` 방식 서버용 \`--client-secret\` 클라이언트 시크릿이 토큰 교환 시 전송되지 않던 문제 수정 | v2.1.119 |
 
 #### MCP 재구성 병렬화 효과 (v2.1.119)

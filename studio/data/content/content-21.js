@@ -1,21 +1,25 @@
 window.STUDIO_CONTENT = window.STUDIO_CONTENT || {};
 window.STUDIO_CONTENT["21-simplify"] = {
-  overview: `## /simplify — 코드 품질 자동 개선
+  overview: `## /code-review (구 /simplify) — 코드 품질 자동 개선
+
+> ⚠️ **v2.1.147 이름 변경 안내**: \`/simplify\`는 \`/code-review\`로 이름이 바뀌었어요. 기존 \`/simplify\` 명령은 \`/code-review --fix\`를 호출하는 alias로 살아있습니다(v2.1.152). effort 레벨(\`/code-review high\`), \`--comment\` 인라인 PR 코멘트, \`--fix\` 워킹 트리 자동 적용 옵션이 새로 추가됐어요.
 
 **교정 선생님**을 생각해보세요! 작문 시험에서 글 내용은 안 바꾸고, 맞춤법과 띄어쓰기만 고쳐주는 선생님이 있잖아요?
-\`/simplify\`도 마찬가지! 코드의 **기능은 그대로** 두고, **가독성과 품질만 개선**해줍니다.
+\`/code-review\`도 마찬가지! 코드의 **기능은 그대로** 두고, **가독성과 품질만 개선**해줍니다. (이전 이름인 \`/simplify\`도 여전히 작동해요.)
 
 ### 이런 상황에서 유용해요
-- **코드 리뷰 전**: "PR 올리기 전에 스타일 지적 미리 잡아줘" — /simplify로 자동 교정
+- **코드 리뷰 전**: "PR 올리기 전에 스타일 지적 미리 잡아줘" — \`/code-review --fix\`로 자동 교정 + 적용
 - **복잡한 코드 정리**: "동작은 하는데 읽기 어려운 코드야" — 중첩/중복을 깔끔하게 개선
 - **팀 컨벤션 적용**: "새 팀원 코드를 팀 스타일에 맞추고 싶어" — CLAUDE.md 규칙 기반 자동 통일
+- **PR 인라인 코멘트**: "GitHub PR에 코멘트로 남기고 싶어" — \`/code-review --comment\`로 줄 단위 PR 코멘트 자동 작성
 
 ### 이 튜토리얼에서 배우는 것
 | 순서 | 내용 | 탭 |
 |------|------|-----|
-| 1 | /simplify의 동작 원리와 5대 원칙 | 💡 개념 |
-| 2 | 첫 실행, 설정 커스터마이즈, PR 전 루틴 | 🔧 실습 |
-| 3 | 중첩 삼항 개선, 팀 컨벤션 자동 적용 실전 | 💻 예제 |
+| 1 | /code-review의 동작 원리와 5대 원칙 | 💡 개념 |
+| 2 | /simplify → /code-review 이름 변경 + 새 옵션 (--fix, --comment, effort) | 💡 개념 |
+| 3 | 첫 실행, 설정 커스터마이즈, PR 전 루틴 | 🔧 실습 |
+| 4 | 중첩 삼항 개선, 팀 컨벤션 자동 적용 실전 | 💻 예제 |
 
 ### 왜 필요할까?
 
@@ -188,6 +192,66 @@ doSomething();
 > **외우기 쉬운 순서**: **재품효일가** (재사용, 품질, 효율, 일관성, 가독성)
 
 > **핵심 요약**: /simplify는 재사용(중복 → 공통 함수), 품질(의미 있는 네이밍), 효율(불필요한 중간 변수 제거), 일관성(프로젝트 컨벤션 통일), 가독성(중첩 줄이기) 5가지 원칙으로 코드를 개선합니다.`
+    },
+    {
+      id: "evolution-to-code-review",
+      title: "/code-review로 진화 (v2.1.147~152)",
+      content: `### /simplify가 /code-review로 진화했어요!
+
+\`/simplify\`는 v2.1.147에서 \`/code-review\`로 **이름이 바뀌었습니다**. 단순한 이름 변경이 아니라 **기능이 확장**됐어요.
+
+#### 이름 변경 + alias 유지
+
+\`\`\`
+v2.1.146 이전: /simplify (코드 정리 + 자동 적용)
+v2.1.147:     /code-review (코드 리뷰 + 보고 only, --fix 없으면 적용 안 함)
+v2.1.152:     /simplify는 /code-review --fix를 호출하는 alias로 부활
+\`\`\`
+
+| 이전 | 새 명령 | 동작 |
+|------|---------|------|
+| \`/simplify\` | \`/code-review --fix\` (== /simplify alias) | 리뷰 + 자동 적용 |
+| — | \`/code-review\` | 리뷰만 보고, 적용은 사용자가 |
+| — | \`/code-review --comment\` | GitHub PR에 인라인 코멘트로 게시 |
+| — | \`/code-review high\` | effort 레벨 지정 (low/medium/high/ultra) |
+| — | \`/code-review ultra\` | 클라우드 멀티 에이전트 병렬 리뷰 (= /ultrareview) |
+
+#### effort 레벨 — 얼마나 깊게 볼지 정해요
+
+\`\`\`
+low/medium  → 적은 수의 고신뢰도 발견만 (PR 직전 빠른 점검용)
+high        → 더 넓은 커버리지, 불확실한 발견도 포함
+ultra       → 클라우드 멀티 에이전트 병렬 리뷰 (튜토리얼 28 참조)
+\`\`\`
+
+#### --fix vs --comment 차이
+
+\`\`\`
+/code-review            → 결과를 채팅에 보고 (적용 X)
+/code-review --fix      → 결과를 워킹 트리에 자동 적용 (이전 /simplify와 동일)
+/code-review --comment  → GitHub PR에 줄 단위 인라인 코멘트로 게시 (적용 X)
+\`\`\`
+
+#### 왜 이름이 바뀌었나?
+
+\`/simplify\`는 "단순화"라는 한 가지 행동만 시사했지만, 실제로는 **리뷰 + 제안 + 선택적 적용**이 본질입니다. \`/code-review\`로 바꾸면서:
+
+- **목적이 명확**: "이 코드를 리뷰해줘"가 더 자연스러움
+- **GitHub 워크플로 통합**: \`--comment\`로 PR에 직접 코멘트 가능
+- **단계 분리**: 리뷰(찾기) ≠ 적용(고치기) 분리 — 검토할 시간 확보
+
+#### 핵심 — 둘 다 살아있어요
+
+\`\`\`bash
+# 이전 사용자: /simplify 그대로 써도 됨
+> /simplify    # = /code-review --fix (자동 적용)
+
+# 새 사용자: /code-review 권장
+> /code-review high     # 깊은 리뷰만 보기
+> /code-review --comment  # PR 코멘트로 남기기
+\`\`\`
+
+> **핵심 요약**: \`/simplify\` → \`/code-review\` 이름 변경(v2.1.147). \`/simplify\`는 \`/code-review --fix\`를 호출하는 alias로 살아있음(v2.1.152). 새 옵션: \`--fix\`(워킹 트리 적용), \`--comment\`(GitHub PR 인라인 코멘트), effort 레벨(low/medium/high/ultra). \`ultra\`는 클라우드 멀티 에이전트 병렬 리뷰(/ultrareview 통합).`
     },
     {
       id: "before-after",
@@ -433,7 +497,12 @@ PR 생성
 
 - **커밋 전에 실행**: 코드를 작성하고 커밋하기 직전이 가장 좋은 타이밍
 - **부분 수락 가능**: 모든 제안을 수락할 필요 없음 — 마음에 드는 것만!
-- **반복 실행 OK**: 한 번으로 부족하면 다시 실행해도 됨`,
+- **반복 실행 OK**: 한 번으로 부족하면 다시 실행해도 됨
+- **/code-review 모드 선택 (v2.1.147+)**:
+  - 빠르게: \`/code-review medium\` (PR 직전 점검)
+  - 꼼꼼하게: \`/code-review high\` (큰 PR, 보안 PR)
+  - PR 코멘트로 받기: \`/code-review --comment\` (셀프 리뷰 흔적 남기기)
+  - 자동 적용: \`/code-review --fix\` (= 이전 /simplify)`,
       terminals: [
         {
           command: "# PR 전 루틴 예시",
@@ -637,6 +706,16 @@ CLAUDE.md에 명시된 규칙:
       ],
       answer: 1,
       explanation: "/simplify의 변경 제안은 선택적으로 수락/거부할 수 있어요. 교정 선생님의 빨간 펜 표시 중 마음에 드는 것만 반영하는 것과 같습니다. git으로 되돌리기도 가능해요."
+    },
+    {
+      question: "v2.1.147에서 /simplify는 어떻게 바뀌었나요?",
+      options: [
+        "/simplify는 완전히 삭제되었고, /code-review로 대체되었다",
+        "/simplify는 /code-review로 이름이 바뀌었지만, /simplify는 /code-review --fix를 호출하는 alias로 살아있다",
+        "/simplify와 /code-review는 서로 다른 명령이며 동시에 사용할 수 없다"
+      ],
+      answer: 1,
+      explanation: "v2.1.147에서 /simplify → /code-review로 이름이 바뀌었지만, v2.1.152에서 /simplify는 /code-review --fix를 호출하는 alias로 부활했어요. /code-review는 기본적으로 리뷰만 보고하고, --fix를 붙여야 워킹 트리에 자동 적용됩니다."
     }
   ]
 };

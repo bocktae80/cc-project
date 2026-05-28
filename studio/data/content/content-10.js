@@ -261,6 +261,32 @@ v2.1.74 /context:
 | **Shift+↑/↓ 스크롤** | 풀스크린 모드에서 선택을 뷰포트 밖으로 확장 시 뷰포트도 함께 스크롤 (v2.1.113) |
 | **\`/extra-usage\`** | Remote Control(모바일/웹) 클라이언트에서도 \`/extra-usage\` 실행 가능 (v2.1.113) |
 
+#### v2.1.140~2.1.153에서 추가된 기능
+
+| 기능 | 설명 |
+|------|------|
+| **Fast mode → Opus 4.7** | Fast mode 기본 모델이 Opus 4.6 → **4.7**로 업그레이드. \`CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE=1\`로 옛 모델 유지 (v2.1.142) |
+| **\`/model\` 기본값 저장** | \`/model\`로 선택하면 **새 세션의 기본값**으로 저장됨 (IDE 동작과 일치). 현재 세션만 변경하려면 피커에서 \`s\` 키. 키바인딩 \`modelPicker:setAsDefault\`는 \`modelPicker:thisSessionOnly\`로 이름 변경 (v2.1.144, 153) |
+| **\`/usage\` 카테고리 breakdown** | 사용량 한도에 영향을 주는 요인을 **카테고리별로 분리** — skills / subagents / plugins / MCP 서버별 비용 (v2.1.149) |
+| **\`/diff\` 키보드 스크롤** | \`/diff\` 상세 뷰에서 **방향키, \`j\`/\`k\`, PgUp/PgDn, Space, Home/End**로 스크롤 (v2.1.149) |
+| **\`/extra-usage\` → \`/usage-credits\`** | 사용량 크레딧 명령어 이름 변경 (옛 이름도 alias로 유지) (v2.1.144) |
+| **\`/usage\` 대용량 세션 파일 포함** | \`/usage\` breakdown에 큰 세션 파일도 표시 — 스트리밍 read로 메모리 평탄 유지 (v2.1.152) |
+| **GFM 태스크 리스트 체크박스** | Markdown 출력이 \`- [ ] todo\` / \`- [x] done\`을 **실제 체크박스로 렌더링** (이전엔 일반 bullet) (v2.1.149) |
+| **\`/code-review\` (구 \`/simplify\`)** | \`/simplify\`가 \`/code-review\`로 이름 변경 + effort 레벨(\`/code-review high\`) + \`--fix\` 워킹 트리 적용 + \`--comment\` GitHub PR 인라인 코멘트. \`/simplify\`는 \`/code-review --fix\` alias로 유지 (튜토리얼 21 참조) (v2.1.147, 152) |
+| **\`/reload-skills\` 신규 명령** | 세션 재시작 없이 스킬 디렉터리 재스캔 (튜토리얼 8 참조) (v2.1.152) |
+| **\`--fallback-model\` 자동 전환** | 주 모델이 unavailable이면 모든 요청을 실패시키는 대신 **나머지 세션을 fallback model로 전환** (v2.1.152) |
+| **Auto mode 동의 제거** | Auto mode가 더 이상 opt-in 동의를 요구하지 않음 — 기본 활성 (v2.1.152) |
+| **Vim NORMAL \`/\` 역검색** | Vim mode에서 NORMAL 모드 \`/\`가 **역방향 히스토리 검색** (Ctrl+R, bash/zsh vi-mode와 동일) (v2.1.152) |
+| **Thinking 요약 가독성** | 접힌 그룹의 thinking 요약이 **최소 3초 표시**, 마크다운 렌더, 10줄 캡. 풀스크린에서 "Thinking for Ns" 카운트 라이브 (v2.1.152) |
+| **\`/doctor\` 마지막 업데이트 결과** | \`/doctor\`가 **이전 업데이트 시도의 결과**를 표시 + npm 글로벌 설치 자동 업데이트 불가 시 일회성 알림 (v2.1.153) |
+| **\`/feedback\` 최근 세션 첨부** | 24시간/7일 내 최근 세션을 \`/feedback\` 리포트에 포함해 컨텍스트 압축 이전 대화도 함께 보고 (v2.1.141, 150) |
+| **Rewind "Summarize up to here"** | Rewind 메뉴에 **이 지점까지 압축** 옵션 — 최근 턴은 유지하면서 옛 컨텍스트 압축 (v2.1.141) |
+| **Status line \`COLUMNS\`/\`LINES\`** | Status line 명령에 \`COLUMNS\`/\`LINES\` 환경변수 전달 — 터미널 폭에 맞춰 출력 크기 조절 가능 (v2.1.153) |
+| **Status line JSON에 PR 정보** | Status line JSON 입력에 **GitHub repo + PR 정보** 자동 포함 (감지 시) (v2.1.145) |
+| **MCP "needs auth" 알림 통합** | MCP 서버와 커넥터의 별도 "needs authentication" 시작 알림을 **하나의 메시지로 통합** (v2.1.153) |
+| **\`ANTHROPIC_WORKSPACE_ID\`** | Workload Identity Federation에서 federation rule이 여러 워크스페이스를 커버할 때 **특정 워크스페이스로 토큰 스코프 제한** (v2.1.141) |
+| **터미널 풀스크린 활성 스크린 토글** | \`CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1\` 환경변수로 풀스크린의 alternate-screen 렌더러를 끄고 native scrollback에 대화 유지 (v2.1.132) |
+
 #### v2.1.127~2.1.139에서 추가된 기능
 
 | 기능 | 설명 |

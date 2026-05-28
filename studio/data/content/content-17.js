@@ -246,6 +246,67 @@ claude plugin remove @team/deploy-plugin
 | GitHub | \`plugin add github:user/repo\` | 코드 공개, 무료 | 버전 관리 수동 |
 | 로컬 | \`plugin add ./path\` | 빠른 테스트, 비공개 | 공유 어려움 |
 
+#### v2.1.140~2.1.153 플러그인 개선사항
+
+**Plugin dependency enforcement (v2.1.143)**: \`claude plugin disable\`이 **다른 활성 플러그인이 이 플러그인에 의존**하면 거부 (disable 체인 힌트 표시). \`claude plugin enable\`은 **전이 의존성을 자동으로 함께 활성화**.
+
+\`\`\`bash
+$ claude plugin disable workbook-base
+✗ Cannot disable: 3 plugins depend on this
+  - workbook-extra (depends on workbook-base ^1.0)
+  - cpf-plugin (depends on workbook-base)
+  - camfit-admin (depends on workbook-extra → workbook-base)
+
+# 체인을 한꺼번에 끄려면:
+  claude plugin disable camfit-admin workbook-extra cpf-plugin workbook-base
+
+$ claude plugin enable cpf-plugin
+✓ Enabled cpf-plugin (also enabled: workbook-base 1.2.0)
+\`\`\`
+
+**\`skipLfs\` 옵션 (v2.1.153)**: GitHub/git 플러그인 마켓플레이스 소스에서 **Git LFS 다운로드를 건너뛰는** 옵션. 대용량 디자인 에셋이 LFS로 관리되는 플러그인을 가볍게 가져올 때 유용.
+
+\`\`\`json
+// .claude/marketplace.json
+{
+  "sources": [
+    {
+      "type": "github",
+      "repo": "team/heavy-design-plugin",
+      "skipLfs": true   // ← LFS 에셋 제외
+    }
+  ]
+}
+\`\`\`
+
+**\`pluginSuggestionMarketplaces\` managed setting (v2.1.152)**: 관리자가 **컨텍스트 기반 플러그인 제안에 노출될 조직 마켓플레이스를 화이트리스트**로 지정. 외부 마켓플레이스에서 무차별 제안이 뜨는 걸 막을 수 있음.
+
+\`\`\`json
+// managed-settings.json
+{
+  "pluginSuggestionMarketplaces": [
+    "internal-marketplace",
+    "claude-anthropic-official"
+  ]
+}
+\`\`\`
+
+**\`CLAUDE_CODE_PLUGIN_PREFER_HTTPS\` (v2.1.141)**: GitHub 플러그인 소스를 **SSH 대신 HTTPS로 클론**. SSH 키 없는 환경(원격 빌드러너, 보안 jump host)에서 유용.
+
+\`\`\`bash
+# CI에서
+CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1 claude plugin install github:team/internal
+# git+https://github.com/team/internal.git 형태로 클론
+\`\`\`
+
+**Projected context cost (v2.1.143)**: \`/plugin\` 마켓플레이스 browse 패널에 **턴당/호출당 토큰 추정치**가 표시되어 설치 전 비용 가늠 가능.
+
+**\`claude plugin marketplace remove --scope\` (v2.1.152)**: \`marketplace remove\`도 \`add\`/\`install\`/\`uninstall\`처럼 \`--scope user|project|local\`을 받음. 스코프 명시로 의도치 않은 글로벌 마켓플레이스 제거 방지.
+
+**\`/plugin\` 선택 후 동작 (v2.1.152)**: enable/disable/uninstall 후 자동으로 **Installed 리스트로 복귀**.
+
+**\`/plugin\` Discover/Browse 패널 (v2.1.145)**: 설치 전 미리보기에 플러그인의 commands/agents/skills/hooks/MCP servers/LSP servers 목록이 표시됨.
+
 #### v2.1.127~2.1.139 플러그인 개선사항
 
 **\`--plugin-url <url>\` 플래그 (v2.1.129)**: 플러그인 \`.zip\` 아카이브를 **URL에서 직접 가져와 현재 세션에 로드**하는 플래그. 마켓플레이스 등록이나 git clone 없이 임시 검증·시연·CI 환경에서 사용.

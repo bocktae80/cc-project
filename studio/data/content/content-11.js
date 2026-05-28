@@ -165,6 +165,45 @@ MCP 커넥터는 **OAuth**를 사용합니다. 한 번 "허용" 버튼을 클릭
 | **시스템 프롬프트 캐싱** | ToolSearch 사용 시 글로벌 시스템 프롬프트 캐싱이 정상 동작 (v2.1.84) |
 | **플러그인 중복 억제** | 플러그인 MCP 서버가 조직 커넥터와 중복되면 자동 억제 (v2.1.83) |
 
+### v2.1.140~2.1.153 커넥터 개선사항
+
+| 개선 | 설명 |
+|------|------|
+| **\`MCP_TOOL_TIMEOUT\` 원격 적용** | \`MCP_TOOL_TIMEOUT\`이 **원격 HTTP/SSE MCP 서버의 per-request fetch 타임아웃**도 올림 — 이전엔 60초 캡에 묶여 있었음 (v2.1.142) |
+| **\`allowAllClaudeAiMcps\` managed setting** | 관리자가 \`managed-mcp.json\` 외에 **claude.ai 클라우드 MCP 커넥터 전체를 로드 허용**할 수 있는 정책 (v2.1.149) |
+| **MCP "needs auth" 알림 통합** | MCP 서버와 커넥터의 별도 "needs authentication" 시작 알림을 **하나의 메시지로 통합** (v2.1.153) |
+| **Remote MCP egress proxy 수정** | Remote Control 세션에서 egress proxy가 활성화된 경우 원격 MCP 서버가 연결 실패하던 문제 해결 (v2.1.152) |
+| **subagent MCP \`--strict-mcp-config\` 존중** | 서브에이전트(Agent tool) 프론트매터 MCP 서버가 \`--strict-mcp-config\`, \`--bare\`, 원격 모드, 엔터프라이즈 managed MCP config, allow/deny 정책을 **무시하던 문제** 해결 (v2.1.153) |
+| **inline \`mcpServers\` 보존** | \`--strict-mcp-config\`이 명시적으로 전달된 에이전트 정의(\`--agents\` / SDK \`agents\`)의 inline \`mcpServers\`를 더 이상 제거하지 않음. 블록된 서브에이전트 MCP 서버는 가시적 경고 표시 (v2.1.153) |
+| **plugin MCP env 중복 제거 수정** | 같은 명령에 환경 변수만 다른 플러그인 MCP 서버가 **잘못 중복 제거되던 문제** 수정 (v2.1.152) |
+| **MCP tool progress 표시** | MCP 도구 progress notification이 접힌 도구 뷰에서 렌더링되지 않던 문제 수정 (v2.1.153) |
+| **stateful MCP reconnect loop 수정** | optional GET SSE stream 없는 stateful MCP 서버가 \`tools/list\`에서 재연결 루프에 빠지던 v2.1.147 regression 수정 (v2.1.153) |
+
+#### \`MCP_TOOL_TIMEOUT\` 원격 적용 (v2.1.142)
+
+\`\`\`bash
+# 60초 캡을 풀고 5분까지 허용
+MCP_TOOL_TIMEOUT=300000 claude
+\`\`\`
+
+이전엔 \`MCP_TOOL_TIMEOUT\`이 stdio MCP 서버에만 적용됐는데, 이제 원격 HTTP/SSE MCP 서버에도 적용됩니다. 대용량 검색/생성을 수행하는 사내 MCP 서버에 유용해요.
+
+#### \`allowAllClaudeAiMcps\` (v2.1.149)
+
+\`\`\`json
+// managed-settings.json (엔터프라이즈)
+{
+  "allowAllClaudeAiMcps": true
+}
+\`\`\`
+
+| 설정 | 동작 |
+|------|------|
+| \`false\` (기본) | \`managed-mcp.json\`에 명시된 커넥터만 로드 |
+| \`true\` | claude.ai 클라우드 MCP 커넥터 전체를 로드 (개인 사용자 경험과 동일) |
+
+> 엔터프라이즈에서 보수적인 화이트리스트 vs 광범위 허용 정책을 한 줄로 토글할 수 있어요.
+
 ### v2.1.127~2.1.139 커넥터 개선사항
 
 | 개선 | 설명 |

@@ -210,6 +210,83 @@ Monitor (신규) → 스마트 앱에서 실시간 알림 (각 단계마다)
 이후: 서브에이전트 실패 → 에러 + 부분 결과도 함께 전달
 \`\`\`
 
+### v2.1.140~2.1.153 백그라운드 에이전트 강화
+
+| 변경 | 설명 | 버전 |
+|------|------|------|
+| **\`/resume\` 백그라운드 세션 지원** | \`claude --bg\` 또는 agent view에서 시작한 세션이 **\`/resume\` 피커에 인터랙티브 세션과 함께 표시** (\`bg\` 배지로 구분) | v2.1.144 |
+| **Pinned background sessions (\`Ctrl+T\`)** | \`claude agents\`에서 \`Ctrl+T\`로 핀 → 유휴 상태에서도 살아있음, **업데이트 적용을 위한 in-place 재시작**, 메모리 압박 시 비핀 세션부터 해제 | v2.1.147 |
+| **\`worktree.bgIsolation: "none"\`** | 백그라운드 세션이 \`EnterWorktree\` 없이 **워킹 카피를 직접 편집** 가능 — worktree가 비실용적인 모노레포에 유용 | v2.1.143 |
+| **백그라운드 모델/effort 보존** | 유휴 상태에서 깨어난 백그라운드 세션이 사용자가 설정한 모델과 effort 레벨을 그대로 유지 | v2.1.143 |
+| **백그라운드 완료 알림에 elapsed** | 백그라운드 서브에이전트 완료 알림에 경과 시간 추가 (예: "Agent completed · 3h 2m 5s") | v2.1.144 |
+| **\`/bg\` 옵션 보존** | \`/bg\`로 분리해도 \`--mcp-config\`, \`--settings\`, \`--add-dir\`, \`--plugin-dir\`, \`--strict-mcp-config\`, \`--fallback-model\`, \`--allow-dangerously-skip-permissions\`가 유지됨 | v2.1.143 |
+| **AppLogs/Permissions 'Claude Code'** | macOS Privacy & Security 패널에서 백그라운드 에이전트가 "Claude Code"로 표시 + **업그레이드 후에도 권한 유지** | v2.1.153 |
+| **\`/bg\` 대답 미보존 버그 수정** | \`/bg\`로 응답 중 분리하면 응답이 백그라운드 세션에서 계속됨 (이전엔 dropped) | v2.1.153 |
+
+#### \`/resume\` 백그라운드 세션 — 잊혀진 세션 찾기
+
+\`\`\`bash
+$ /resume
+
+# 피커 화면 (v2.1.144+)
+# ┌─ Sessions ─────────────────────────────────┐
+# │ ● [bg] migrate-users     bg   1h 20m ago │
+# │ ● refactor-auth          ─     2h ago    │
+# │ ● scan-vulns             bg   3h ago     │
+# └────────────────────────────────────────────┘
+\`\`\`
+
+이전엔 \`claude --bg\`로 시작한 세션이 \`/resume\` 피커에 안 나와서 \`claude agents\`로만 접근해야 했어요. 이제 인터랙티브 세션과 동일하게 검색하고 이어갈 수 있어요.
+
+#### Pinned background sessions — 살려두기 (Ctrl+T)
+
+\`\`\`bash
+$ claude agents
+
+# ┌─ Sessions ─────────────────────────────────┐
+# │ 📌 ● daily-monitor       running   12:34   │  ← 핀
+# │    ⏸ pr-review-432       blocked   12:30   │
+# │    ✓ cleanup-orphans     done      11:55   │
+# └────────────────────────────────────────────┘
+# Ctrl+T: pin/unpin   메모리 부족 시 핀 안 된 세션부터 해제
+\`\`\`
+
+| 기존 | Pinned 세션 |
+|------|------------|
+| 유휴 N분 → 자동 종료 | 유휴여도 살아있음 |
+| CLI 업데이트 → 다음 시작 시 적용 | **in-place 재시작**으로 즉시 적용 |
+| 메모리 부족 → 모두 동등하게 종료 | 핀 안 된 세션부터 종료 |
+
+> 매시간 폴링하는 모니터 에이전트, 매일 아침 깨우는 데일리 에이전트에 유용. \`Ctrl+T\`로 토글합니다.
+
+#### \`worktree.bgIsolation: "none"\` — worktree 우회
+
+\`\`\`json
+// .claude/settings.json
+{
+  "worktree": {
+    "bgIsolation": "none"   // 기본: "auto"
+  }
+}
+\`\`\`
+
+| 설정 | 동작 |
+|------|------|
+| \`"auto"\` (기본) | 백그라운드 세션이 \`EnterWorktree\`로 격리된 워크트리에서 편집 |
+| \`"none"\` (v2.1.143+) | 워킹 카피 **직접 편집** (격리 없음) |
+
+\`\`\`
+worktree.bgIsolation: "none"의 트레이드오프
+
+장점: 워크트리 생성 비용/제약 없음
+      → 거대 모노레포, 빌드 캐시 공유, 심볼릭 링크 의존 프로젝트에 유리
+
+단점: 백그라운드 세션과 메인 세션이 같은 파일을 만지면 충돌
+      → 백그라운드는 읽기 위주 + 확실히 격리된 영역에만 쓰기 권장
+\`\`\`
+
+> 대안으로 \`worktree.baseRef: "head"\`(v2.1.133)도 비교 검토. baseRef는 어디서 분기할지, bgIsolation은 워크트리 자체를 쓸지 결정합니다.
+
 ### \`claude agents\` agent view 통합 (v2.1.139)
 
 기존엔 \`/usage\`, \`ps\`, 텔레메트리 대시보드를 번갈아 봐야 백그라운드 세션 상태를 파악할 수 있었지만, v2.1.139에서 **단일 리스트**로 통합됐습니다.

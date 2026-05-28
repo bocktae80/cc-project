@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-05-13
+> 최종 갱신: 2026-05-29
 
 ## 완료된 마일스톤
 
@@ -107,5 +107,12 @@
 - [x] M13-03 — **29 — /goal 자율 목표** 신규 튜토리얼 추가 → [`29-goal-command`](../../projects/29-goal-command/): 완료 조건 기반 멀티턴 자율 실행(v2.1.139), `/loop`(주기 기반)과의 차이, 좋은 완료 조건 작성법, `--max-turns`/`--max-tokens` 안전 가드, 인터랙티브/`-p` 헤드리스/Remote Control 모드, 테스트 통과 자율 수정 + 보안 스캔 0건 시나리오 2종
 - [x] M13-04 — ⭐ 콘텐츠 갱신 (24/25): 24-loop-cron에 `/goal` 차별점 + API key 시 `/schedule` 자동 비활성(v2.1.139) + CronList 출력 정정(v2.1.136), 25-skills-2.0에 `skillOverrides` 정상화(off/user-invocable-only/name-only, v2.1.129) + `Skill(name *)` 와일드카드(v2.1.139) + `/context all` 토크나이저 정확도(v2.1.139) + 서브에이전트 스킬 발견(v2.1.133)
 - [x] M13-05 — version-track.json 2.1.126 → 2.1.139 bump + 29개 → 30개 추적 + 11개 영향 튜토리얼 trackedFeatures/notes 보강 + 전체 30개 콘텐츠 구문 검증 통과 + ROADMAP.md M13 기록
+
+### M14: 유지보수 — v2.1.153 갱신 (완료 4/4)
+
+- [x] M14-01 — ⭐⭐⭐ 콘텐츠 갱신 (21/8/6): `/simplify` → `/code-review` 이름 변경 + alias 유지(v2.1.147, 152), `--fix`/`--comment`/effort 레벨, `disallowed-tools` 프론트매터(v2.1.152), `/reload-skills` 신규 명령(v2.1.152), `MessageDisplay` 신규 훅 이벤트(v2.1.152), SessionStart 훅 `reloadSkills`/`sessionTitle` 반환(v2.1.152), Stop 훅 `background_tasks`/`session_crons` 입력(v2.1.145), `terminalSequence` 훅 출력(v2.1.141), `CLAUDE_CODE_STOP_HOOK_BLOCK_CAP`(v2.1.143)
+- [x] M14-02 — ⭐⭐⭐ 콘텐츠 갱신 (5/16/17/10): `claude agents --json`/`--cwd`/dispatch 플래그(v2.1.141~145), 자동완성에 슬래시·번들 스킬(v2.1.153), `/resume` 백그라운드 세션 지원(v2.1.144), Pinned background sessions(Ctrl+T)(v2.1.147), `worktree.bgIsolation: "none"`(v2.1.143), Plugin dependency enforcement(v2.1.143), `skipLfs`(v2.1.153), `pluginSuggestionMarketplaces`(v2.1.152), `CLAUDE_CODE_PLUGIN_PREFER_HTTPS`(v2.1.141), projected context cost(v2.1.143), Fast mode Opus 4.7 기본(v2.1.142), `/model` 기본값 저장(v2.1.144, 153), `/usage` 카테고리 breakdown(v2.1.149), `/diff` 키보드 스크롤(v2.1.149), `/extra-usage` → `/usage-credits`(v2.1.144), GFM 체크박스(v2.1.149), `--fallback-model` 자동 전환(v2.1.152), Auto mode 동의 제거(v2.1.152), Vim NORMAL `/` 역검색(v2.1.152), Status line `COLUMNS`/`LINES`(v2.1.153), Status line JSON PR 정보(v2.1.145), `ANTHROPIC_WORKSPACE_ID`(v2.1.141)
+- [x] M14-03 — ⭐⭐~⭐ 콘텐츠 갱신 (11/9/18/29): `MCP_TOOL_TIMEOUT` 원격 HTTP/SSE 적용(v2.1.142), `allowAllClaudeAiMcps` managed setting(v2.1.149), MCP "needs auth" 알림 통합(v2.1.153), `worktree.bgIsolation: "none"` 활용(v2.1.143), worktree 샌드박스 정책 정밀화(v2.1.149), Agent tool `subagent_type` 케이스/구분자 무관 매칭(v2.1.140), 서브에이전트 MCP `--strict-mcp-config` 정책 일관 적용(v2.1.153), `cache_creation_input_tokens` 보고 정확성(v2.1.153), `/goal` 평가자 백그라운드 작업 대기(v2.1.143), `/goal` 훅 차단 환경 명확한 메시지(v2.1.140)
+- [x] M14-04 — version-track.json 2.1.139 → 2.1.153 bump + 11개 영향 튜토리얼 trackedFeatures/notes 보강 + 전체 30개 콘텐츠 구문 검증 통과(content-06/07 escape 버그 4개 동반 수정) + check-updates.js --bump 2.1.153 + ROADMAP.md M14 기록
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

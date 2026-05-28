@@ -314,6 +314,53 @@ AI: (내부적으로) Skill 도구 호출 → /security-review 실행
 
 > 100개 이상의 스킬이 등록된 환경(워크북/CPF 등)에서 가장 체감 차이가 큽니다. 키워드는 스킬명·설명에 모두 매칭됩니다.
 
+#### v2.1.152 \`disallowed-tools\` 프론트매터
+
+스킬/슬래시 명령 프론트매터에 \`disallowed-tools\`를 선언하면 **활성화 중 해당 도구가 모델에서 제거**됩니다. 이전엔 \`allowed-tools\`로 화이트리스트만 가능했는데, 이제 블랙리스트 방식이 가능해요.
+
+\`\`\`yaml
+---
+name: doc-writer
+description: 문서 작성 전용 스킬
+allowed-tools: [Read, Write, Edit]
+disallowed-tools: [Bash, WebFetch]   # ← 활성화 중 차단
+---
+
+이 스킬이 활성화되면 Bash/WebFetch는 모델에 노출되지 않습니다.
+문서 작성에만 집중하세요.
+\`\`\`
+
+\`\`\`
+allowed-tools         disallowed-tools     동작
+─────────────────    ──────────────────   ──────────────────
+(없음)               (없음)               모든 도구 사용 가능
+[Read, Write]        (없음)               Read, Write만
+(없음)               [Bash, WebFetch]     Bash, WebFetch 제외 전부
+[Read, Bash]         [Bash]               Read만 (disallowed가 우선)
+\`\`\`
+
+> **활용**: 문서 작성 스킬에서 Bash 차단, 데이터 분석 스킬에서 Write 차단, 검토 전용 스킬에서 Edit 차단 등 **의도치 않은 부작용 방지**.
+
+#### v2.1.152 \`/reload-skills\` 신규 명령
+
+세션을 재시작하지 않고도 \`.claude/skills/\` 디렉토리를 **다시 스캔**해서 새로 추가/수정된 스킬을 즉시 인식합니다.
+
+\`\`\`bash
+# 새 스킬을 디렉토리에 복사한 후
+> /reload-skills
+✓ Scanned 47 skills (3 new, 1 updated, 0 removed)
+
+# 즉시 사용 가능
+> /new-skill-name
+\`\`\`
+
+\`\`\`
+이전 (v2.1.151 이하): 새 스킬 추가 → 세션 재시작 필요 (cmd+R)
+v2.1.152+:           새 스킬 추가 → /reload-skills → 즉시 인식
+\`\`\`
+
+연계 — **SessionStart 훅이 \`reloadSkills: true\`를 반환**하면 자동으로 같은 동작을 수행합니다(튜토리얼 6 참조). 팀 공유 스킬 동기화 자동화에 유용해요.
+
 #### 레거시 호환
 
 기존 \`.claude/commands/review.md\` 파일도 계속 동작합니다.

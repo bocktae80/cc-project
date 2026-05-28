@@ -52,6 +52,77 @@ window.STUDIO_CONTENT["05-agent-teams"] = {
 | **SendMessage 자동 재개** | 중지된 에이전트에 SendMessage를 보내면 **자동으로 백그라운드에서 재개** (에러 대신) |
 | **배경 에이전트 킬 시 결과 보존** | 배경 에이전트를 킬해도 **부분 결과가 대화 컨텍스트에 보존** |
 
+### v2.1.140~2.1.153 변경사항
+
+| 변경 | 설명 | 버전 |
+|------|------|------|
+| **\`claude agents --json\`** | 활성 Claude 세션 목록을 **JSON으로 출력** — tmux-resurrect, 상태바, 세션 피커 스크립트에서 활용 가능 | v2.1.145 |
+| **\`claude agents --cwd <path>\`** | 세션 목록을 **특정 디렉토리로 스코프** — 멀티 프로젝트 환경에서 현재 작업 폴더 세션만 보기 | v2.1.141 |
+| **\`claude agents\` 풍부한 시작 옵션** | \`--add-dir\` \`--settings\` \`--mcp-config\` \`--plugin-dir\` \`--permission-mode\` \`--model\` \`--effort\` \`--dangerously-skip-permissions\` 플래그가 dashboard와 dispatched 백그라운드 세션 모두에 적용 | v2.1.141~143 |
+| **자동완성에 슬래시 + 번들 스킬** | \`claude agents\`의 dispatch 입력 자동완성에 **네이티브 슬래시 명령 + 번들 스킬** 포함 (이전엔 프로젝트 스킬만) | v2.1.153 |
+| **PR 컬럼 표시** | \`claude agents\` PR 컬럼이 PR 1개면 \`PR #N\`, 여러 개면 \`N PRs\`로 표시 | v2.1.153 |
+| **터미널 탭 타이틀에 awaiting count** | \`claude agents\` 터미널 탭 타이틀에 응답 대기 중인 에이전트 수를 표시 — 다른 윈도우에서도 알림 인지 | v2.1.145 |
+| **Stop/SubagentStop 훅 입력 확장** | \`background_tasks\`/\`session_crons\` 필드 추가 — 종료 시점에 살아있는 백그라운드 작업/스케줄 확인 (튜토리얼 6 참조) | v2.1.145 |
+| **Agent tool \`subagent_type\` 케이스/구분자 무시** | \`subagent_type: "Code Reviewer"\` → \`code-reviewer\`로 자동 매칭 — 케이스, 공백, 하이픈/언더스코어 차이 허용 | v2.1.140 |
+| **Agent SDK MCP 멀웨어 fp 수정** | Agent 색상 팔레트 업데이트 + cancelled subagent 권한 프롬프트 race condition 수정 | v2.1.140, 152 |
+
+#### \`claude agents --json\` — 스크립트로 세션 추적
+
+\`\`\`bash
+$ claude agents --json
+[
+  {
+    "id": "abc-123",
+    "name": "PR-432 review",
+    "status": "running",
+    "cwd": "/Users/kent/Work/camfit",
+    "model": "claude-opus-4-7",
+    "started_at": "2026-05-28T12:34:56Z"
+  },
+  {
+    "id": "def-456",
+    "name": "data-migration",
+    "status": "blocked",
+    "cwd": "/Users/kent/Work/cc-project",
+    "awaiting_input_since": "2026-05-28T12:30:01Z"
+  }
+]
+\`\`\`
+
+| 활용 | 설명 |
+|------|------|
+| **tmux 상태바** | \`blocked\` 세션 수를 jq로 카운트해 상태바에 표시 |
+| **세션 피커** | fzf와 결합해 \`claude agents --json \| jq -r '.[] \| ...' \| fzf\`로 빠른 전환 |
+| **세션 복원** | tmux-resurrect 스타일로 종료 전 상태를 캡처해 다음 부팅 시 복원 |
+
+#### \`claude agents\` 풍부한 시작 옵션 (v2.1.141~143)
+
+\`\`\`bash
+# 특정 프로젝트만 dispatching에서 사용
+claude agents --cwd /Users/kent/Work/camfit \\
+              --model claude-opus-4-7 \\
+              --effort high \\
+              --permission-mode auto \\
+              --mcp-config ./.mcp.json \\
+              --add-dir ../camfit-shared
+\`\`\`
+
+> 이전엔 \`claude agents\`에서 dispatched된 백그라운드 세션이 부모와 같은 환경을 그대로 상속받았는데, 이제 dashboard 진입 시점에 백그라운드 세션의 기본값을 명시적으로 지정할 수 있어요.
+
+#### Agent tool \`subagent_type\` 매칭 완화 (v2.1.140)
+
+\`\`\`json
+// 이전엔 정확 일치만 (코드 리뷰어 / code reviewer 모두 실패)
+{ "subagent_type": "code-reviewer" }   // ✓
+
+// v2.1.140+: 케이스/구분자 무관
+{ "subagent_type": "Code Reviewer" }   // ✓ code-reviewer로 정규화
+{ "subagent_type": "code_reviewer" }   // ✓
+{ "subagent_type": "CodeReviewer" }    // ✓
+\`\`\`
+
+> AI가 자연어로 받아 적은 에이전트 이름이 미세하게 어긋나도 자동 매칭됩니다. 휴먼/AI 모두 오타 부담 감소.
+
 ### v2.1.127~2.1.139 변경사항
 
 | 변경 | 설명 | 버전 |

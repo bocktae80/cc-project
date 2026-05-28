@@ -703,6 +703,52 @@ POST /v1/sessions
 > \`/claude-api\` 스킬이 v2.1.97에서 Managed Agents 가이드를 포함하도록 확장됐습니다.
 > 도구 표면 설계, 컨텍스트 관리, 캐싱 전략 가이드를 함께 다룹니다.
 
+#### v2.1.140~2.1.153 SDK 개선사항
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **Agent tool \`subagent_type\` 매칭 완화** | \`"Code Reviewer"\` → \`code-reviewer\`로 정규화 — **케이스, 공백, 하이픈/언더스코어 차이 허용** | v2.1.140 |
+| **subagent frontmatter MCP \`--strict-mcp-config\` 존중** | 서브에이전트 프론트매터의 MCP 서버 정의가 \`--strict-mcp-config\`, \`--bare\`, 원격 모드, 엔터프라이즈 managed MCP allow/deny 정책을 **무시하던 버그** 해결 (v2.1.153) | v2.1.153 |
+| **inline \`mcpServers\` 유지** | \`--strict-mcp-config\`이 명시적으로 전달된 \`--agents\` / SDK \`agents\`의 inline \`mcpServers\`를 **더 이상 제거하지 않음** (블록된 MCP 서버는 가시적 경고) | v2.1.153 |
+| **\`cache_creation_input_tokens\` 정확성** | API가 cache write를 nested \`cache_creation\` breakdown으로만 보고할 때 트랜스크립트/result usage에서 \`cache_creation_input_tokens\`가 0으로 보고되던 문제 수정 | v2.1.153 |
+| **SDK 스트리밍 종료 stuck 수정** | 모델/로그인 전환 후 트랜스크립트에 stale thinking-block signature가 남아 세션이 멈추던 문제 — 사전 제거 + 재시도 안전망 | v2.1.152 |
+| **SDK hook input \`transcript_path\` 수정** | \`EnterWorktree\`로 cwd가 바뀐 후 훅이 존재하지 않는 \`transcript_path\`를 받던 문제 해결 | v2.1.141 |
+| **stale stop hook 무한 루프 보호** | Stop 훅이 8회 연속 block을 반환하면 자동으로 턴 종료 (CLAUDE_CODE_STOP_HOOK_BLOCK_CAP로 조정) | v2.1.143 |
+| **Agent SDK MCP 새로고침 부분 실패 처리** | \`reload_plugins\`가 사용자 MCP 서버를 **병렬로 재연결** (이전엔 직렬) | v2.1.117 |
+| **\`PushNotification\` SDK 호스팅** | SDK 호스팅 세션에서 Remote Control 활성화 시 \`PushNotification\`이 잘못 비활성으로 보고되던 문제 수정 | v2.1.152 |
+| **early OTel 스팬 보존** | SDK/headless 모드에서 logger 초기화 전 발생한 early analytics 이벤트가 누락되던 문제 수정 | v2.1.141 |
+
+#### Agent tool \`subagent_type\` 매칭 완화 (v2.1.140)
+
+\`\`\`json
+// 이전엔 정확 일치만
+{ "subagent_type": "code-reviewer" }
+
+// v2.1.140+ 모두 매칭됨 (정규화)
+{ "subagent_type": "Code Reviewer" }
+{ "subagent_type": "code_reviewer" }
+{ "subagent_type": "CodeReviewer" }
+\`\`\`
+
+SDK에서 자연어로 받은 에이전트 이름을 그대로 \`subagent_type\`에 넘겨도 동작합니다. 다음 코드는 모두 \`code-reviewer\` 에이전트를 호출해요.
+
+\`\`\`typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+await client.messages.create({
+  model: "claude-opus-4-7",
+  messages: [{
+    role: "user",
+    content: "PR을 리뷰해줘"
+  }],
+  tools: [{
+    type: "agent",
+    subagent_type: "Code Reviewer"   // ← 자연어 그대로 OK
+  }]
+});
+\`\`\`
+
 #### v2.1.121~2.1.126 SDK 개선사항
 
 | 개선 | 설명 | 버전 |
