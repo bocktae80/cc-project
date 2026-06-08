@@ -1,16 +1,16 @@
 {
   "_description": "각 튜토리얼이 기반한 Claude Code 버전을 추적합니다. 업데이트 시 이 파일과 현재 버전을 비교하여 갱신이 필요한 튜토리얼을 식별합니다.",
   "_usage": "node studio/data/check-updates.js 로 갱신 필요 항목 확인",
-  "lastChecked": "2026-05-29",
-  "currentCLI": "2.1.154",
+  "lastChecked": "2026-06-09",
+  "currentCLI": "2.1.168",
   "sdkVersions": {
     "python": "0.1.44",
     "typescript": "0.2.61"
   },
   "tutorials": {
     "01-memory-system": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "CLAUDE.md",
         "auto-memory (proactive save)",
@@ -26,8 +26,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "02-file-operations": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Read",
         "Write",
@@ -37,13 +37,14 @@
         "Edit works on Bash-viewed files without Read (v2.1.89)",
         "Edit shorter old_string anchors (v2.1.91)",
         "Write diff 60% faster on files with tabs/&/$ (v2.1.92)",
-        "CLAUDE_CODE_PERFORCE_MODE Edit/Write read-only file hint (v2.1.98)"
+        "CLAUDE_CODE_PERFORCE_MODE Edit/Write read-only file hint (v2.1.98)",
+        "Edit no longer requires a separate Read after viewing a file with grep — single-file grep/egrep/fgrep commands satisfy the read-before-edit check (v2.1.160)"
       ],
-      "notes": "v2.1.101 버전 범프"
+      "notes": "v2.1.160 (M16): grep으로 본 파일은 별도 Read 없이 Edit 가능 — 단일 파일 grep/egrep/fgrep이 read-before-edit 충족"
     },
     "03-code-search": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Glob",
         "Grep",
@@ -52,13 +53,14 @@
         ".jj/.sl VCS directory exclusion (v2.1.86)",
         "Grep ripgrep ENOENT fallback to system rg + self-heal (v2.1.101)",
         "Native macOS/Linux builds: Glob/Grep replaced by embedded bfs/ugrep via Bash (v2.1.117)",
-        "Glob/Grep visibility fix when Bash denied via permissions (v2.1.119)"
+        "Glob/Grep visibility fix when Bash denied via permissions (v2.1.119)",
+        "--tools: explicitly listing Grep/Glob now provides the dedicated search tools on native builds with embedded search (previously silently ignored) (v2.1.162)"
       ],
-      "notes": "v2.1.119 갱신 (M11-01): 네이티브 빌드에서 Glob/Grep을 Bash 임베드 bfs/ugrep으로 대체"
+      "notes": "v2.1.162 (M16): 네이티브(임베디드 검색) 빌드에서 --tools에 Grep/Glob 명시 시 전용 검색 도구 제공(이전엔 무시)"
     },
     "03d-debug-features": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "--debug flag",
         "/debug command"
@@ -66,8 +68,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "04-web-search": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "WebSearch",
         "WebFetch",
@@ -76,8 +78,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "05-agent-teams": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "TeamCreate",
         "Task",
@@ -118,13 +120,16 @@
         "claude agents terminal tab title shows awaiting-input count (v2.1.145)",
         "Agent tool subagent_type case- and separator-insensitive matching ('Code Reviewer' → code-reviewer) (v2.1.140)",
         "Agent SDK subagent (Agent tool) frontmatter MCP servers honor --strict-mcp-config, --bare, remote mode, enterprise managed MCP config, allow/deny policies (v2.1.153)",
-        "--strict-mcp-config no longer strips inline mcpServers from explicitly-passed agent definitions; blocked subagent MCP servers show visible warning (v2.1.153)"
+        "--strict-mcp-config no longer strips inline mcpServers from explicitly-passed agent definitions; blocked subagent MCP servers show visible warning (v2.1.153)",
+        "claude agents: settings.json `agent` field honored for dispatched sessions, with --agent <name> override (v2.1.157)",
+        "claude agents --json includes waitingFor showing what a waiting session is blocked on (e.g. permission prompt) (v2.1.162)",
+        "SendMessage relayed messages carry no user permissions — receiver rejects relayed permission requests and blocks auto mode (v2.1.166)"
       ],
-      "notes": "v2.1.153 갱신 (M14-02): claude agents --json/--cwd/dispatch 플래그 + 자동완성에 슬래시·번들 스킬 + PR 컬럼, subagent_type 케이스/구분자 무관 매칭(v2.1.140), 서브에이전트 MCP --strict 정책 존중"
+      "notes": "v2.1.157~166 (M16): claude agents `agent` 필드+--agent 오버라이드, --json waitingFor, SendMessage 중계 메시지 권한 미보유"
     },
     "06-hooks": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "16+ hook events (PreToolUse, PostToolUse, Stop, SessionStart/End, etc.)",
         "4 hook types (command, http, prompt, agent)",
@@ -176,13 +181,16 @@
         "Stop/SubagentStop hook input includes background_tasks and session_crons fields — block exit if work pending (v2.1.145)",
         "terminalSequence hook JSON output field — desktop notifications, window titles, bells without a controlling terminal (v2.1.141)",
         "CLAUDE_CODE_STOP_HOOK_BLOCK_CAP — Stop hooks blocking repeatedly end turn with warning after 8 consecutive blocks (default 8) (v2.1.143)",
-        "prompt/agent hook for SessionStart/Setup/SubagentStart shows clear 'use command-type hook instead' error (v2.1.142)"
+        "prompt/agent hook for SessionStart/Setup/SubagentStart shows clear 'use command-type hook instead' error (v2.1.142)",
+        "Stop/SubagentStop hooks can return hookSpecificOutput.additionalContext to give Claude feedback and keep the turn going without being labeled a hook error (v2.1.163)",
+        "tool_decision telemetry events include tool_parameters (bash commands, MCP/skill names) when OTEL_LOG_TOOL_DETAILS=1 (v2.1.157)",
+        "OTEL_RESOURCE_ATTRIBUTES values included as labels on metric datapoints — slice usage metrics by custom dimensions (v2.1.161)"
       ],
-      "notes": "v2.1.153 갱신 (M14-01): MessageDisplay 신규 훅(메시지 표시 직전 가공/숨김), SessionStart reloadSkills/sessionTitle 반환, Stop 훅 background_tasks/session_crons 입력, terminalSequence 출력, Stop hook block cap"
+      "notes": "v2.1.157~163 (M16): Stop/SubagentStop 훅 additionalContext 반환(에러 아님, 턴 계속), tool_decision tool_parameters, OTEL_RESOURCE_ATTRIBUTES 메트릭 라벨"
     },
     "07-mcp-server": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "MCP protocol",
         "stdio/SSE",
@@ -232,8 +240,8 @@
       "notes": "v2.1.139 갱신 (M13-02): stdio 서버 CLAUDE_PROJECT_DIR 주입(플러그인 placeholder 치환), /mcp Reconnect 자동 .mcp.json 갱신, workspace 예약 서버명, 메모리 누수/OAuth refresh 수정"
     },
     "08-skills-commands": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "SKILL.md directory structure",
         "Agent Skills open standard",
@@ -257,13 +265,15 @@
         "/skills Enter key now pre-fills /<skill-name> in prompt instead of closing dialog (v2.1.119)",
         "disallowed-tools frontmatter for skills/slash commands — remove tools from model while skill active (blacklist counterpart to allowed-tools) (v2.1.152)",
         "/reload-skills command — re-scan skill directories without restarting session (v2.1.152)",
-        "Plugins with root-level SKILL.md (no skills/ subdirectory) now surfaced as a skill (v2.1.142)"
+        "Plugins with root-level SKILL.md (no skills/ subdirectory) now surfaced as a skill (v2.1.142)",
+        "Skills: \\$ escape syntax to include a literal $ before a digit in command bodies (v2.1.163)",
+        "/plugin list command to list installed plugins, with --enabled/--disabled filters (v2.1.163)"
       ],
-      "notes": "v2.1.153 갱신 (M14-01): disallowed-tools 블랙리스트 프론트매터, /reload-skills 신규 명령으로 세션 재시작 없이 스킬 재스캔, 루트 레벨 SKILL.md 표면화"
+      "notes": "v2.1.163 (M16): 명령 본문 숫자 앞 리터럴 $용 \\$ 이스케이프 문법, /plugin list --enabled/--disabled"
     },
     "09-worktree": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "git worktree",
         "agent isolation",
@@ -283,13 +293,15 @@
         "Worktree exit dialog warning about uncommitted files in correct directory after worktree removal (v2.1.136)",
         "Stale worktree fixed in --worktree error message — clearer collision report (v2.1.136)",
         "worktree.bgIsolation: 'none' setting — background sessions edit working copy directly without EnterWorktree (for monorepos where worktrees are impractical) (v2.1.143)",
-        "Sandbox write allowlist in git worktrees covers only the shared .git directory instead of entire main repository root (with hooks/ and config denied) (v2.1.149)"
+        "Sandbox write allowlist in git worktrees covers only the shared .git directory instead of entire main repository root (with hooks/ and config denied) (v2.1.149)",
+        "EnterWorktree can switch between Claude-managed worktrees mid-session (v2.1.157)",
+        "Worktrees managed by Claude are left unlocked when the agent finishes, so git worktree remove/prune can clean them up (v2.1.157)"
       ],
-      "notes": "v2.1.153 갱신 (M14-03): worktree.bgIsolation:none로 백그라운드 격리 우회(거대 모노레포에 유리), 워크트리 샌드박스 정책 정밀화"
+      "notes": "v2.1.157 (M16): EnterWorktree로 세션 중 워크트리 간 전환, 종료 시 워크트리 unlock(remove/prune 가능)"
     },
     "10-cli-master": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "claude auth",
         "claude agents",
@@ -436,13 +448,18 @@
         "/workflows — Claude builds a workflow and orchestrates dozens~hundreds of background subagents (see tutorial 30) (v2.1.154)",
         "Auto-mode classifier strengthened: data-exfiltration detection (esp. bulk repo transfer) + rm -rf $HOME trailing-slash block (see tutorial 19) (v2.1.154)",
         "$TMPDIR consistency between sandboxed and non-sandboxed Bash commands in the same session (v2.1.154)",
-        "managed settings allowedMcpServers/deniedMcpServers: a single invalid entry no longer voids the entire policy — only that entry dropped + claude doctor warning (v2.1.154)"
+        "managed settings allowedMcpServers/deniedMcpServers: a single invalid entry no longer voids the entire policy — only that entry dropped + claude doctor warning (v2.1.154)",
+        "fallbackModel setting — try up to 3 fallback models in sequence; --fallback-model now applies to interactive sessions too (v2.1.166)",
+        "CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE removed — the env var is now a no-op (v2.1.160)",
+        "Clicking a slash command in autocomplete fills it into the prompt instead of running immediately; press Enter to run (v2.1.162)",
+        "MAX_THINKING_TOKENS=0 / --thinking disabled / per-model toggle disables thinking on default-thinking models (except 3P providers) (v2.1.166)",
+        "/effort confirms when the chosen level will persist as default; claude update announces the target version before downloading (v2.1.162/166)"
       ],
-      "notes": "v2.1.154 갱신 (M15-03): Opus 4.8 출시 — 기본 high effort + /effort xhigh 신규, /effort 라벨 Faster/Smarter, Lean system prompt 기본화, multiple-choice 질문 자제, ! <command> bg 셸, /logout 정상화, Streaming tool execution 항상 활성, OPUS_4_6_FAST_MODE_OVERRIDE deprecated(06/01 제거), /workflows 신규(튜토리얼30)"
+      "notes": "v2.1.160~166 (M16): fallbackModel(최대 3개 대체 모델, 인터랙티브 적용), OPUS_4_6_FAST_MODE_OVERRIDE 완전 제거(no-op), 슬래시 자동완성 클릭 시 입력창 채움, MAX_THINKING_TOKENS=0 thinking 비활성화, /effort 기본값 지속 확인"
     },
     "11-mcp-connectors": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "MCP connectors",
         "OAuth",
@@ -483,8 +500,8 @@
       "notes": "v2.1.154 갱신 (M15-03): stdio MCP 서브프로세스 CLAUDE_CODE_SESSION_ID/CLAUDECODE=1 환경변수(hooks와 동일 식별자), claude mcp list/get 미승인 .mcp.json 서버 파이프 시에도 ⏸ Pending approval 표시(자동 승인 방지)"
     },
     "12-figma-mcp": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Figma MCP",
         "Code to Canvas",
@@ -495,8 +512,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "13-teleport": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "& prefix",
         "/teleport",
@@ -514,8 +531,8 @@
       "notes": "v2.1.119 갱신 (M11-03): /color Remote Control 동기화, --continue/--resume /add-dir 세션 발견"
     },
     "14-code-security": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "security scan",
         "OWASP",
@@ -536,13 +553,14 @@
         "/dev/tcp /dev/udp redirect prompting (v2.1.98)",
         "LSP which fallback command injection fix (v2.1.101)",
         "OS CA certificate store trust by default, CLAUDE_CODE_CERT_STORE=bundled (v2.1.101)",
-        "sandboxed Bash mktemp fix after fresh boot (v2.1.101)"
+        "sandboxed Bash mktemp fix after fresh boot (v2.1.101)",
+        "Prompt before writing to shell startup files (.zshenv, .zlogin, .bash_login) and ~/.config/git/, which could otherwise lead to unintended command execution (v2.1.160)"
       ],
-      "notes": "v2.1.101 갱신: LSP 커맨드 인젝션, OS CA 자동 신뢰, 샌드박스 mktemp"
+      "notes": "v2.1.160 (M16): 셸 시작 파일(.zshenv/.zlogin/.bash_login)·~/.config/git/ 쓰기 전 프롬프트 — 의도치 않은 명령 실행 방지"
     },
     "15-browser-automation": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Chrome extension",
         "browser control",
@@ -554,8 +572,8 @@
       "notes": "v2.1.154 갱신 (M15-03): /chrome 'Select browser…' 다중 브라우저 명시 선택 + 미고정 다중 연결 시 인-챗 브라우저 선택 프롬프트 (단일 연결은 기존처럼 자동 선택)"
     },
     "16-background-agents": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "run_in_background",
         "TaskOutput deprecated → Read (v2.1.83)",
@@ -586,13 +604,16 @@
         "Background user goal preserved when a scheduled /command fires — classifier no longer loses the original goal (v2.1.154)",
         "Pinned background session respawn storm fixed — no longer recreated every minute after a Claude Code update (v2.1.154)",
         "Subagent worktree isolation bypass fixed — background-session subagents no longer write to the shared checkout past the isolation guard (v2.1.154)",
-        "claude --bg-pty-host orphan process 100% CPU spin fixed on macOS after the daemon exits (v2.1.154)"
+        "claude --bg-pty-host orphan process 100% CPU spin fixed on macOS after the daemon exits (v2.1.154)",
+        "claude agents rows show done/total before the detail when work is fanned out; peek shows the longest-running item; URL input filters to that session (v2.1.161/166)",
+        "Background agent sessions update to a new Claude Code version in the background, so opening after an update no longer waits on a cold restart (v2.1.163)",
+        "claude agents --json includes waitingFor showing what a waiting session is blocked on (v2.1.162)"
       ],
-      "notes": "v2.1.154 갱신 (M15-01): claude agents ! <command> 백그라운드 셸 세션 + claude --bg --exec, /logout 정상화, ←← agents view Bedrock/Vertex/Foundry/텔레메트리 비활성 호환, 완료 알림 false-positive·pinned respawn·worktree 격리 우회·bg-pty-host CPU 폭주 버그 수정"
+      "notes": "v2.1.161~166 (M16): claude agents done/total 표시, 백그라운드 버전 자동 업데이트(콜드 재시작 없음), --json waitingFor"
     },
     "17-plugin-system": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         ".claude-plugin/plugin.json manifest",
         "claude plugin install/uninstall/enable/disable/update",
@@ -664,17 +685,21 @@
         "/plugin returns to Installed list after enabling, disabling, or uninstalling a plugin (v2.1.152)",
         "Plugins blocked by managed-settings tracked via /doctor and /plugin Errors tab (v2.1.143)",
         "defaultEnabled: false in plugin.json / marketplace entry — plugin installs but is not auto-activated; user must enable via /plugin or claude plugin enable (dependency-chain activation still applies) (v2.1.154)",
-        "/plugin Discover tab pins plugins matching the current working directory at the top with a 'suggested for this directory' annotation (v2.1.154)"
+        "/plugin Discover tab pins plugins matching the current working directory at the top with a 'suggested for this directory' annotation (v2.1.154)",
+        "Plugins in .claude/skills directories are automatically loaded, no marketplace required (v2.1.157)",
+        "claude plugin init <name> scaffolds a new plugin in .claude/skills (v2.1.157)",
+        "Autocomplete for /plugin arguments: subcommands, installed plugin names, plugins from known marketplaces (v2.1.157)",
+        "/plugin list command lists installed plugins, with --enabled/--disabled filters (v2.1.163)"
       ],
-      "notes": "v2.1.154 갱신 (M15-01): defaultEnabled:false(설치 후 수동 활성화, 의존성 체인은 유지), /plugin Discover 탭 디렉토리 매칭 pinning + 'suggested for this directory' 표시"
+      "notes": "v2.1.157~163 (M16): .claude/skills 플러그인 자동 로드(마켓플레이스 불필요), claude plugin init 스캐폴딩, /plugin 자동완성, /plugin list 필터"
     },
     "18-agent-sdk": {
-      "basedOn": "2.1.154",
+      "basedOn": "2.1.168",
       "sdkVersions": {
         "python": "0.1.44",
         "typescript": "0.2.61"
       },
-      "lastUpdated": "2026-05-29",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Agent SDK",
         "effort/thinking",
@@ -705,13 +730,16 @@
         "/claude-api skill now covers Claude Opus 4.8 support + 4.7→4.8 migration guide (code change points, behavior diffs, cache strategy comparison) (v2.1.154)",
         "Opus 4.8 vs 4.7: default effort high (auto), ~1/4 self-code defect miss rate, fast mode 2x cost / 2.5x speed, lean system prompt default; model ID claude-opus-4-7 → claude-opus-4-8 (both remain active, swap only the call sites you need) (v2.1.154)",
         "CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE deprecated, removed 2026-06-01 (alternative: /model claude-opus-4-6[1m] then /fast on) (v2.1.154)",
-        "Lean system prompt default for models other than Haiku/Sonnet/Opus 4.7 and earlier — SDK consumes fewer system tokens (v2.1.154)"
+        "Lean system prompt default for models other than Haiku/Sonnet/Opus 4.7 and earlier — SDK consumes fewer system tokens (v2.1.154)",
+        "fallbackModel setting — try up to 3 fallback models in sequence; --fallback-model applies to interactive sessions (v2.1.166)",
+        "MAX_THINKING_TOKENS=0 / --thinking disabled disables thinking on default-thinking models except 3P providers (v2.1.166)",
+        "Auto mode available on Bedrock, Vertex, and Foundry for Opus 4.7 and Opus 4.8 via CLAUDE_CODE_ENABLE_AUTO_MODE=1 (v2.1.158)"
       ],
-      "notes": "v2.1.154 갱신 (M15-03): /claude-api 스킬에 Opus 4.8 지원 + 4.7→4.8 마이그레이션 가이드 추가(모델 ID 교체·동작 차이·캐시 전략), Opus 4.6 fast 모드 환경변수 deprecated(06/01 제거), Lean system prompt 기본화로 SDK 시스템 토큰 감소"
+      "notes": "v2.1.158~166 (M16): fallbackModel(다중 대체 모델), MAX_THINKING_TOKENS=0/--thinking disabled, Auto mode Bedrock/Vertex/Foundry 지원(opt-in)"
     },
     "19-permissions-deep": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "permission modes",
         "wildcard patterns",
@@ -772,13 +800,18 @@
         "$TMPDIR consistency — sandboxed and non-sandboxed Bash commands in the same session now see the same temp directory (v2.1.154)",
         "managed settings allowedMcpServers/deniedMcpServers: a single invalid entry no longer voids the entire policy — only that entry is dropped + claude doctor warning (v2.1.154)",
         "Auto-mode block reason clarified — no longer shows wrong 'could not evaluate this action' when the safety classifier exhausts reasoning tokens (v2.1.154)",
-        "autoMode/PreToolUse effort param compatibility — CLAUDE_CODE_ALWAYS_ENABLE_EFFORT no longer causes an API 400 on models that don't support effort (v2.1.154)"
+        "autoMode/PreToolUse effort param compatibility — CLAUDE_CODE_ALWAYS_ENABLE_EFFORT no longer causes an API 400 on models that don't support effort (v2.1.154)",
+        "deny rules support glob in the tool-name position (\"*\" blocks all tools); allow rules reject non-MCP globs; unknown tool names in deny warn at startup (v2.1.166)",
+        "acceptEdits mode prompts before writing build-tool config files that grant code execution (.npmrc, .yarnrc*, bunfig.toml, .bazelrc, .pre-commit-config.yaml, .devcontainer/, etc.) (v2.1.160)",
+        "requiredMinimumVersion / requiredMaximumVersion managed settings — refuse to start if version is outside the allowed range (v2.1.163)",
+        "Auto mode available on Bedrock/Vertex/Foundry (Opus 4.7/4.8) via CLAUDE_CODE_ENABLE_AUTO_MODE=1 opt-in (v2.1.158)",
+        "WebFetch permission rules apply to built-in preapproved domains; explicit WebFetch(domain:...) deny/ask/allow rules take precedence (v2.1.162)"
       ],
-      "notes": "v2.1.154 갱신 (M15-04): rm -rf $HOME trailing-slash 차단 버그 수정, Auto-mode 데이터 유출(리포지토리 대량 전송) 감지 강화, $TMPDIR 샌드박스/논샌드박스 일관성, managed settings MCP 단일 무효 엔트리만 drop + claude doctor 경고, Auto mode 차단 사유 명확화, effort 파라미터 호환 수정"
+      "notes": "v2.1.158~166 (M16): deny 룰 glob 지원(* = 전체 차단), acceptEdits 빌드설정파일 프롬프트, requiredMinimum/MaximumVersion managed 설정, Auto mode 3P 확산, WebFetch 권한 룰 우선"
     },
     "20-ide-integration": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "VS Code extension",
         "@-mention",
@@ -793,13 +826,14 @@
         "VSCode session history restore fix (v2.1.83)",
         "VSCode Max plan Sonnet fallback after OAuth refresh fix (v2.1.86)",
         "@-mention file autocomplete performance improvement (v2.1.85)",
-        "VSCode settings.json parse failure warning banner (v2.1.94)"
+        "VSCode settings.json parse failure warning banner (v2.1.94)",
+        "Renamed Windsurf to Devin Desktop in the /ide menu, /terminal-setup, and /scroll-speed, following the editor's rebrand (v2.1.162)"
       ],
-      "notes": "v2.1.101 버전 범프"
+      "notes": "v2.1.162 (M16): /ide·/terminal-setup·/scroll-speed에서 Windsurf → Devin Desktop 리브랜드 반영"
     },
     "21-simplify": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/simplify",
         "code quality",
@@ -813,8 +847,8 @@
       "notes": "v2.1.153 갱신 (M14-01): /simplify → /code-review 이름 변경 + alias 유지 + --fix/--comment + effort 레벨"
     },
     "22-batch-mode": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "-p pipe mode",
         "output format",
@@ -831,8 +865,8 @@
       "notes": "v2.1.119 갱신 (M11-02): --print 모드가 agent frontmatter tools/disallowedTools 존중"
     },
     "23-ralph-loop": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Ralph Loop",
         "PRD",
@@ -843,8 +877,8 @@
       "notes": "v2.1.101 버전 범프 (직접 관련 변경 없음)"
     },
     "24-loop-cron": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/loop command",
         "CronCreate",
@@ -870,8 +904,8 @@
       "notes": "v2.1.139 갱신 (M13-04): /goal 조건 기반 자율 실행 추가(주기 기반 /loop과 차별화), API key 시 /schedule 자동 비활성, CronList 출력 정정. 새 /goal 튜토리얼은 29번 별도"
     },
     "25-skills-2.0": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "Progressive Disclosure 3-level",
         "SKILL.md advanced frontmatter (allowed-tools, context, agent, hooks)",
@@ -906,8 +940,8 @@
       "notes": "v2.1.139 갱신 (M13-04): skillOverrides 정상화(off/user-invocable-only/name-only), Skill(name *) 와일드카드 prefix, /context all 토크나이저 정확도, 서브에이전트 스킬 발견"
     },
     "26-team-onboarding": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/team-onboarding command (v2.1.101)",
         "30-day usage data analysis",
@@ -919,8 +953,8 @@
       "notes": "v2.1.101에서 추가된 /team-onboarding 커맨드 전용 튜토리얼 신규 생성"
     },
     "27-prompt-caching": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "ENABLE_PROMPT_CACHING_1H env var for 1-hour TTL (API key, Bedrock, Vertex, Foundry) (v2.1.108)",
         "FORCE_PROMPT_CACHING_5M env var for 5-minute forced TTL (v2.1.108)",
@@ -931,8 +965,8 @@
       "notes": "M9 신규 튜토리얼 — v2.1.108 프롬프트 캐싱 TTL 제어 (v2.1.114 버전 범프)"
     },
     "28-ultrareview": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/ultrareview command — cloud-based multi-agent parallel code review with critique loop (v2.1.111)",
         "/ultrareview <PR#> — fetch GitHub PR via gh CLI and review (v2.1.111)",
@@ -948,8 +982,8 @@
       "notes": "v2.1.154 갱신 (M15-01): /simplify(cleanup-only)와 /code-review --fix(버그 헌팅 포함) 책임 분리 명확화 — /ultrareview(=/code-review ultra) 클라우드 멀티 에이전트 병렬 리뷰 위치는 그대로"
     },
     "29-goal-command": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/goal command — completion-condition-based multi-turn autonomous execution (v2.1.139)",
         "Interactive / -p headless / Remote Control all supported (v2.1.139)",
@@ -966,8 +1000,8 @@
       "notes": "v2.1.153 갱신 (M14-03): /goal 평가자가 백그라운드 작업 완료까지 대기(race 해결), 훅 차단 환경에서 명확한 에러 메시지 표시"
     },
     "30-dynamic-workflows": {
-      "basedOn": "2.1.154",
-      "lastUpdated": "2026-05-29",
+      "basedOn": "2.1.168",
+      "lastUpdated": "2026-06-09",
       "trackedFeatures": [
         "/workflows command — ask Claude to build a workflow; it orchestrates dozens~hundreds of subagents in the background to decompose and parallelize a large task (v2.1.154)",
         "Introduced alongside the Opus 4.8 launch as the background-orchestration paradigm (v2.1.154)",
@@ -975,9 +1009,12 @@
         "3-axis autonomous execution model: /loop (period-based) vs /goal (condition-based) vs /workflows (decomposition/parallel-based) (v2.1.154)",
         "Opus 4.8 + /effort xhigh synergy for designing large workflows with complex dependency graphs (v2.1.154)",
         "Plan → background parallel execution → merge into a single prioritized report; artifacts at .claude/workflows/<timestamp>-<slug>/ (v2.1.154)",
-        "Research Preview — interface evolving rapidly (v2.1.154)"
+        "Research Preview — interface evolving rapidly (v2.1.154)",
+        "Renamed the dynamic-workflow trigger keyword from `workflow` to `ultracode` — the word \"workflow\" no longer triggers a run; asking in your own words still works; trigger keyword highlighted in violet in the prompt input (v2.1.160)",
+        "/effort ultracode level exposes dynamic workflows; not offered on models that do not support xhigh (v2.1.160)",
+        "Added a \"Workflow keyword trigger\" setting in /config to stop the word \"workflow\" from triggering a run; backspace right after the trigger keyword dismisses the request (same as alt+w) (v2.1.157)"
       ],
-      "notes": "M15 신규 튜토리얼 — v2.1.154 /workflows 백그라운드 멀티 에이전트 오케스트레이션 (Opus 4.8 출시 동반). /loop·/goal·/workflows 자율 실행 3축 완성, Research Preview"
+      "notes": "v2.1.157~160 (M16): 동적 워크플로우 트리거 키워드 workflow → ultracode 변경(사용자 동작 변경), /effort ultracode 레벨, /config 'Workflow keyword trigger' 설정 + alt+w/Backspace 취소"
     }
   }
 }

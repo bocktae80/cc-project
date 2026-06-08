@@ -1300,7 +1300,17 @@ claude
 \`\`\`
 
 > **핵심**: 팀에서는 "공통 차단 규칙"을 먼저 정하고,
-> 역할별로 "허용 목록"만 다르게 설정하는 게 효율적이에요!`,
+> 역할별로 "허용 목록"만 다르게 설정하는 게 효율적이에요!
+
+### v2.1.158~166 업데이트 — 권한 규칙 강화
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **deny 룰 glob 지원** | deny 룰의 **도구 이름 위치에 glob** 사용 가능(\`"*"\` = 모든 도구 차단). allow 룰은 non-MCP glob 거부, deny의 미지 도구명은 시작 시 경고 | v2.1.166 |
+| **\`acceptEdits\` 빌드 설정 파일 프롬프트** | \`acceptEdits\` 모드가 코드 실행 권한을 부여하는 빌드 설정 파일(\`.npmrc\`/\`.yarnrc*\`/\`bunfig.toml\`/\`.bazelrc\`/\`.pre-commit-config.yaml\`/\`.devcontainer/\`)에 쓰기 전 프롬프트 | v2.1.160 |
+| **\`requiredMinimumVersion\`/\`requiredMaximumVersion\`** | managed 설정 — 허용 버전 범위 밖이면 Claude Code가 시작을 거부하고 승인된 버전으로 안내 | v2.1.163 |
+| **Auto mode 3P 제공자 지원** | Bedrock/Vertex/Foundry(Opus 4.7·4.8)에서 \`CLAUDE_CODE_ENABLE_AUTO_MODE=1\` opt-in | v2.1.158 |
+| **WebFetch 권한 룰 우선** | WebFetch 권한 룰이 기본 사전승인 도메인에도 적용 — 명시적 \`WebFetch(domain:...)\` deny/ask/allow가 우선 | v2.1.162 |`,
       checklist: [
         "역할별로 다른 권한 설정을 설계할 수 있다",
         "공통 차단 규칙(deny)의 중요성을 이해한다",

@@ -785,7 +785,13 @@ try {
 }
 \`\`\`
 
-> **팁**: 기존 @src/routes/ 패턴을 참조하면, Claude가 일관된 스타일로 코드를 생성해요!`,
+> **팁**: 기존 @src/routes/ 패턴을 참조하면, Claude가 일관된 스타일로 코드를 생성해요!
+
+### v2.1.162 업데이트 — Devin Desktop 리브랜드
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **Windsurf → Devin Desktop** | \`/ide\` 메뉴, \`/terminal-setup\`, \`/scroll-speed\`에서 에디터 리브랜드에 맞춰 **Windsurf를 Devin Desktop으로** 표기 변경 | v2.1.162 |`,
       checklist: [
         "Cursor의 Agent 모드에서 Claude Code를 사용할 수 있다",
         "Cmd+I로 인라인 편집을 할 수 있다",

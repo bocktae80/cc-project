@@ -522,7 +522,15 @@ Agent Teams에서도 에이전트끼리 메시지를 주고받습니다.
 }
 \`\`\`
 
-> **핵심 요약**: SendMessage로 에이전트 간 소통합니다. 1:1 메시지(message), 전체 공지(broadcast), 종료 요청(shutdown_request) 3가지 타입이 있으며, broadcast는 비용이 많으므로 긴급할 때만 사용합니다.`
+> **핵심 요약**: SendMessage로 에이전트 간 소통합니다. 1:1 메시지(message), 전체 공지(broadcast), 종료 요청(shutdown_request) 3가지 타입이 있으며, broadcast는 비용이 많으므로 긴급할 때만 사용합니다.
+
+### v2.1.157~166 업데이트 — claude agents 강화
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`agent\` 필드 + \`--agent <name>\`** | \`settings.json\`의 \`agent\` 필드가 dispatch 세션에 적용되고, \`--agent <name>\`로 오버라이드 가능 | v2.1.157 |
+| **\`claude agents --json\`의 \`waitingFor\`** | 대기 중인 세션이 **무엇에 막혔는지**(예: 권한 프롬프트)를 JSON에 표시 | v2.1.162 |
+| **\`SendMessage\` 중계 메시지 권한 분리** | 중계된 메시지는 **사용자 권한을 갖지 않음** — 수신측이 중계된 권한 요청을 거부하고 auto mode를 차단(보안 강화) | v2.1.166 |`
     }
   ],
 

@@ -367,7 +367,15 @@ const result = await query({
 > 센서(MCP)를 붙이면 주변을 감지하고, 어노테이션은 도구의 "사용 설명서"예요!
 
 > **핵심 요약**: 커스텀 도구로 클로드에게 실제 작업 능력을 부여하고, MCP 서버로 외부 서비스와 연결합니다.
-> 어노테이션으로 도구 특성을 알려주고, tools 옵션으로 사용 가능한 도구를 제한하며, 구조화 출력으로 정확한 JSON을 받을 수 있어요.`
+> 어노테이션으로 도구 특성을 알려주고, tools 옵션으로 사용 가능한 도구를 제한하며, 구조화 출력으로 정확한 JSON을 받을 수 있어요.
+
+### v2.1.158~166 업데이트 — 모델 폴백 & Auto mode
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`fallbackModel\` 다중 대체 모델** | 최대 3개 대체 모델을 순차 시도, \`--fallback-model\`이 인터랙티브 세션에도 적용 | v2.1.166 |
+| **\`MAX_THINKING_TOKENS=0\` / \`--thinking disabled\`** | 기본 thinking 모델의 thinking을 비활성화(3P 제공자 제외) | v2.1.166 |
+| **Auto mode 3P 제공자 지원** | Bedrock/Vertex/Foundry에서 Opus 4.7·4.8에 Auto mode 사용 가능 — \`CLAUDE_CODE_ENABLE_AUTO_MODE=1\` opt-in | v2.1.158 |`
     }
   ],
 

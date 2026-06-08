@@ -202,7 +202,13 @@ old_string="사과" → 에러! (1줄과 3줄 모두 매칭)
 
 > 대부분의 코드 수정은 **Edit**로 충분합니다!
 
-> **핵심 요약**: Edit는 파일에서 old_string을 찾아 new_string으로 교체하는 정밀 수정 도구입니다. old_string은 파일에서 유일해야 하며, replace_all로 모든 일치 항목을 한번에 바꿀 수 있어요.`
+> **핵심 요약**: Edit는 파일에서 old_string을 찾아 new_string으로 교체하는 정밀 수정 도구입니다. old_string은 파일에서 유일해야 하며, replace_all로 모든 일치 항목을 한번에 바꿀 수 있어요.
+
+### v2.1.160 업데이트 — grep 후 Edit 간소화
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **grep으로 본 파일은 Read 생략** | \`grep\`/\`egrep\`/\`fgrep\`으로 확인한 **단일 파일**은 read-before-edit 조건을 충족 → 별도 Read 없이 바로 Edit 가능 (검색→수정 흐름이 한 단계 짧아짐) | v2.1.160 |`
     }
   ],
 

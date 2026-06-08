@@ -1,11 +1,11 @@
 # CC Project 상태
 
 ## 현재 단계
-- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M12 유지보수)
-- **진행률:** 29/29 튜토리얼 완료
-- **CLI 기준 버전:** v2.1.126 (29개 전부 최신, 갱신 필요 0개)
-- **최근 작업:** M12 완료 — v2.1.126 갱신. 10개 콘텐츠 갱신(06/07/08/10/11/16/17/18/19/25)에 PostToolUse `updatedToolOutput` 일반화·MCP `alwaysLoad` + 자동 재시도·`claude project purge`·`claude plugin prune`·`/skills` 검색 박스·`CLAUDE_CODE_FORK_SUBAGENT=1` 비대화형·`--dangerously-skip-permissions` 확장·`skill_activated` `invocation_trigger` 등 v2.1.121~126 25+ 기능 분배 반영. 신규 튜토리얼 없음. Proofline PFS 95 / MQS 91.5 / Review 88 / RTS 94, 전 단계 PASS. 커밋 2건(7a2d906/87099ce) origin 푸시 완료 (2026-05-04)
-- **다음 사이클:** v2.1.131+ 출시 후 또는 신규 ⭐⭐⭐ 기능 출현 시 /update-check 재실행
+- **Phase:** 전체 완료 (M0~M6 + 인프라 + M7~M16 유지보수)
+- **진행률:** 31/31 튜토리얼 완료
+- **CLI 기준 버전:** v2.1.168 (31개 전부 최신, 갱신 필요 0개)
+- **최근 작업:** M16 완료 — v2.1.168 갱신(분배형, 신규 튜토리얼 없음). v2.1.156~166 7개 기능 릴리스 반영, 14개 콘텐츠 분배(02/03/05/06/08/09/10/14/16/17/18/19/20/30): **`workflow`→`ultracode` 트리거 키워드 변경**(30), **`.claude/skills` 플러그인 자동 로드**+`plugin init`(17), **Stop훅 `additionalContext`**(06), **deny glob**·`requiredMin/Max`·acceptEdits 빌드설정 프롬프트(19), **`fallbackModel`**·`MAX_THINKING_TOKENS=0`·OPUS override 제거(10/18), `\$` 이스케이프(08), `EnterWorktree` 세션중 전환(09), 셸 시작파일 프롬프트(14), Devin Desktop 리브랜드(20) 등. **자동화 인프라:** launchd 데일리 업데이트 체크(매일 09:00 KST) 구축. 백로그 BL-01(07/11/13 저영향 ⭐) 스코프아웃. 전체 31개 콘텐츠 구문 검증 통과 + 갭 0 확인 (2026-06-09)
+- **다음 사이클(M17):** 데일리 자동 체크가 새 버전 감지 시 `workbook/log/update-checks/`에 리포트 생성 → 검토 후 분배. BL-01 재개 조건 충족 시 함께 반영
 
 ## 튜토리얼 현황
 
@@ -35,6 +35,13 @@
 | 19 | [권한 심화](../../projects/19-permissions-deep/) | M6 심화 | 2 | 완료 |
 | 20 | [IDE 통합](../../projects/20-ide-integration/) | M6 심화 | 1 | 완료 |
 | 23 | [Ralph Loop](../../projects/23-ralph-loop/) | M6 심화 | 3 | 완료 |
+| 24 | [/loop & Cron](../../projects/24-loop-cron/) | M4 최신 | 2 | 완료 |
+| 25 | [Skills 2.0](../../projects/25-skills-2.0/) | M4 최신 | 3 | 완료 |
+| 26 | [팀 온보딩](../../projects/26-team-onboarding/) | M8 유지보수 | 2 | 완료 |
+| 27 | [프롬프트 캐싱 TTL](../../projects/27-prompt-caching/) | M9 유지보수 | 2 | 완료 |
+| 28 | [/ultrareview](../../projects/28-ultrareview/) | M10 유지보수 | 3 | 완료 |
+| 29 | [/goal 자율 목표](../../projects/29-goal-command/) | M13 유지보수 | 3 | 완료 |
+| 30 | [Dynamic Workflows](../../projects/30-dynamic-workflows/) | M15 유지보수 | 3 | 완료 |
 
 ## Phase별 요약
 
@@ -46,6 +53,7 @@
 | M4: 최신 기능 | 7/7 | 완료 |
 | M5: 확장 기능 | 2/2 | 완료 |
 | M6: 심화 활용 | 7/7 | 완료 |
+| M7~M15: 유지보수 | v2.1.92→2.1.154 | 완료 (신규 5개: 26/27/28/29/30) |
 
 ## 인프라
 
@@ -55,7 +63,7 @@
 | 버전 추적 시스템 | 완료 | version-track.json + check-updates.js |
 | v2.1.72 갱신 | 완료 | 6개 basedOn 2.1.72 + 20개 2.1.70 유지 (2026-03-10) |
 | `/update-check` 스킬 | 완료 | changelog 분석 + 튜토리얼 매칭 자동화 |
-| 콘텐츠 파일 | 완료 | content-01~25 + content-03d (26개) |
+| 콘텐츠 파일 | 완료 | content-01~30 + content-03d (31개) |
 | 학습 뷰 엔진 | 완료 | learn.js + quiz.js + challenges.js |
 | 샌드박스 엔진 | 완료 | sandbox-engine.js + terminal.js |
 

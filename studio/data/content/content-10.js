@@ -846,7 +846,17 @@ claude --version           # 버전 확인
 claude --help              # 도움말 보기
 claude --debug             # 디버그 모드
 claude --worktree          # 워크트리 모드
-\`\`\``,
+\`\`\`
+
+### v2.1.160~166 업데이트 — CLI 신기능
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`fallbackModel\` 다중 대체 모델** | 최대 3개 대체 모델을 순차 시도. \`--fallback-model\`이 **인터랙티브 세션에도** 적용(이전엔 헤드리스만) | v2.1.166 |
+| **\`CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE\` 제거** | v2.1.154에서 deprecated 예고된 환경변수가 **완전히 제거(no-op)** | v2.1.160 |
+| **슬래시 명령 자동완성 클릭 동작** | 자동완성 메뉴에서 슬래시 명령을 클릭하면 **즉시 실행하지 않고 입력창에 채움** — Enter로 실행 | v2.1.162 |
+| **\`MAX_THINKING_TOKENS=0\` thinking 비활성화** | \`MAX_THINKING_TOKENS=0\` / \`--thinking disabled\` / per-model 토글로 기본 thinking 모델의 thinking을 끔(3P 제공자 제외) | v2.1.166 |
+| **\`/effort\` 기본값 지속 확인 / \`claude update\` 대상 안내** | \`/effort\`가 선택 레벨을 새 세션 기본값으로 유지할지 확인하고, \`claude update\`가 다운로드 전 대상 버전을 안내 | v2.1.162/166 |`,
       checklist: [
         "claude auth login/status/logout 사용법을 알고 있다",
         "claude agents로 에이전트 목록을 확인할 수 있다",

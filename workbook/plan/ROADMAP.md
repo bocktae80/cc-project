@@ -123,4 +123,20 @@
 - [x] M15-04 — ⭐ 콘텐츠 보강 (19): `rm -rf $HOME`이 `HOME`에 trailing slash 있을 때 차단되지 않던 버그 수정(v2.1.154), Auto mode 분류기의 데이터 유출 감지 개선(특히 리포지토리 대량 전송)(v2.1.154), `$TMPDIR` 샌드박스/논샌드박스 Bash 일관성 수정(v2.1.154), managed settings `allowedMcpServers`/`deniedMcpServers` 단일 무효 엔트리가 전체 정책을 무시하던 문제 → 해당 엔트리만 drop + `claude doctor` 경고(v2.1.154)
 - [x] M15-05 — version-track.json 2.1.153 → 2.1.154 bump + 30개 → 31개 추적 + 영향 9개 튜토리얼 trackedFeatures/notes 보강 + 전체 31개 콘텐츠 구문 검증 통과 + check-updates.js --bump 2.1.154 + ROADMAP.md M15 기록
 
+### M16: 유지보수 — v2.1.168 갱신 (완료 5/5)
+
+> 분배형 유지보수(신규 튜토리얼 없음, M11/M12/M14 패턴). v2.1.156~166의 7개 기능 릴리스 반영. 미출시/버그픽스-only(155/159/164/165/167/168 등) 제외.
+
+- [x] M16-01 — ⭐⭐⭐ 콘텐츠 갱신 (30/17/06): 동적 워크플로우 트리거 키워드 **`workflow` → `ultracode`** 변경(v2.1.160, 사용자 동작 변경) + `/effort ultracode` + `/config` "Workflow keyword trigger" 설정/alt+w·Backspace 취소(v2.1.157), **`.claude/skills` 플러그인 자동 로드**(마켓플레이스 불필요) + `claude plugin init` 스캐폴딩 + `/plugin` 자동완성 + `/plugin list`(v2.1.157, 163), **Stop/SubagentStop 훅 `hookSpecificOutput.additionalContext` 반환**(에러 아님, 턴 계속)(v2.1.163)
+- [x] M16-02 — ⭐⭐⭐ 콘텐츠 갱신 (19/10/18): deny 룰 **tool-name glob 지원**(`*`=전체 차단)(v2.1.166), `acceptEdits` 빌드설정파일(`.npmrc` 등) 쓰기 전 프롬프트(v2.1.160), `requiredMinimum/MaximumVersion` managed 설정(v2.1.163), **`fallbackModel`** 최대 3개 대체 모델(인터랙티브 적용)(v2.1.166), `MAX_THINKING_TOKENS=0`/`--thinking disabled` thinking 비활성화(v2.1.166), Auto mode Bedrock/Vertex/Foundry 지원(v2.1.158), WebFetch 권한 룰 우선(v2.1.162)
+- [x] M16-03 — ⭐⭐~⭐ 콘텐츠 갱신 (02/03/05/08/09/14/16/20): grep으로 본 단일 파일 read-before-edit 충족(v2.1.160), `--tools`에 Grep/Glob 명시(v2.1.162), `claude agents` `agent` 필드+`--agent`·`--json waitingFor`·`SendMessage` 중계 권한 분리·done/total·백그라운드 버전 자동 업데이트(v2.1.157~166), `\$` 이스케이프 문법(v2.1.163), `EnterWorktree` 세션 중 전환+unlock(v2.1.157), 셸 시작 파일(`.zshenv` 등) 쓰기 전 프롬프트(v2.1.160), Windsurf → **Devin Desktop** 리브랜드(v2.1.162)
+- [x] M16-04 — 자동화 인프라: **launchd 데일리 업데이트 체크** 구축 — `scripts/daily-update-check.sh`(2단계: check-updates.js 갭 감지 → 갭 시 claude 헤드리스 분석 + macOS 알림, 읽기 전용) + `~/Library/LaunchAgents/com.kent.ccproject.update-check.plist`(매일 09:00 KST). cmux `claude`는 shim → 실 바이너리 `~/.local/bin/claude` 사용. 엔드투엔드 1회 실행 검증 통과
+- [x] M16-05 — version-track.json 2.1.154 → 2.1.168 bump + 전체 31개 basedOn 동기화 + 영향 14개 튜토리얼 trackedFeatures/notes 보강 + 전체 31개 콘텐츠 구문 검증 통과(`\$` 메타-이스케이프 렌더 검증 포함) + check-updates.js 갭 0 확인 + ROADMAP.md M16 기록
+
+## 백로그
+
+> 스코프아웃 항목 (재개 조건 명시 — zero-debt 정책).
+
+- [ ] **BL-01 — 저영향 ⭐ 콘텐츠 보강 (07/11/13)**: stdio MCP `--resume` 시 `CLAUDE_CODE_SESSION_ID` 수신(v2.1.163), `/mcp` 미사용 커넥터 "Show unused connectors" 접기(v2.1.161), Remote Control 상시 푸터 pill(v2.1.162). **재개 조건:** 차기 유지보수(M17+)에서 해당 튜토리얼(07/11/13)에 ⭐⭐ 이상 변경이 추가로 누적되어 함께 반영할 가치가 생길 때. 단독으로는 표시 변화(cosmetic)라 분배 보류.
+
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->
