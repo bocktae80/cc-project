@@ -1,0 +1,257 @@
+milestone: M16
+startedAt: "2026-06-08T01:40:00Z"
+updatedAt: "2026-06-09T02:00:00Z"
+status: completed
+currentStage: redteam
+exemption: null
+profile_note: >
+  변경 파일: content-{02,03,05,06,08,09,10,14,16,17,18,19,20,30}.js (정적 콘텐츠 객체 14개에
+  v2.1.156~166 업데이트 섹션 분배 추가), version-track.json (currentCLI 2.1.154→2.1.168,
+  lastChecked 2026-06-09, 31개 엔트리 basedOn 일괄 갱신, 영향 14개 trackedFeatures/notes 보강),
+  ROADMAP.md (M16 섹션 5/5 완료 + 백로그 BL-01 신설), STATUS.md (M16 완료 상태),
+  scripts/daily-update-check.sh (신규 — launchd 데일리 업데이트 체크 래퍼, 66줄).
+  실질적으로 교육 콘텐츠/메타데이터 분배(신규 튜토리얼 없음, M11/M12/M14 패턴)이므로 Red Team은
+  DTS 프로필을 주력, RTS(code/data)는 version-track 데이터 정합성 + 자동화 셸 스크립트
+  end-to-end 동작 검증에 보조 적용. 스킬 파일 변경 없음 → Skill Quality Gate 건너뜀.
+  v2.1.156~166의 7개 기능 릴리스를 14개 기존 튜토리얼에 분배 + 데일리 자동화 인프라 1건 구축.
+  미출시/버그픽스-only(155/159/164/165/167/168)는 제외, 저영향 ⭐ 3건(07/11/13)은 백로그 BL-01로
+  스코프아웃(재개 조건 명시).
+
+fidelity:
+  pfs: 94
+  iteration: 1
+  status: pass
+  source: "workbook/plan/ROADMAP.md (M16 섹션)"
+  evidence:
+    - plan: "M16-01 ⭐⭐⭐ 콘텐츠 갱신 (30/17/06)"
+      actual: >
+        content-30.js(동적 워크플로우 트리거 키워드 workflow→ultracode 변경 표 + 'workflow' 단어
+        트리거 중단·/effort ultracode·/config Workflow keyword trigger 설정·alt+w/Backspace 취소,
+        '자기 말로 요청하면 여전히 작동' 안내),
+        content-17.js(.claude/skills 플러그인 자동 로드·claude plugin init 스캐폴딩·/plugin 자동완성·
+        /plugin list 4행 표),
+        content-06.js(Stop/SubagentStop 훅 hookSpecificOutput.additionalContext 반환·tool_decision
+        tool_parameters·OTEL_RESOURCE_ATTRIBUTES 메트릭 라벨 3행 표 — 기존 v2.1.140~153 표에 이어 배치)
+      match: true
+    - plan: "M16-02 ⭐⭐⭐ 콘텐츠 갱신 (19/10/18)"
+      actual: >
+        content-19.js(deny 룰 tool-name glob·acceptEdits 빌드설정파일 프롬프트·requiredMinimum/
+        MaximumVersion·Auto mode 3P·WebFetch 권한 룰 우선 5행 표),
+        content-10.js(fallbackModel·OPUS_4_6_FAST_MODE_OVERRIDE 제거·슬래시 자동완성 클릭 채움·
+        MAX_THINKING_TOKENS=0·/effort 지속 확인 5행 표),
+        content-18.js(fallbackModel·MAX_THINKING_TOKENS/--thinking disabled·Auto mode 3P 3행 표)
+      match: true
+    - plan: "M16-03 ⭐⭐~⭐ 콘텐츠 갱신 (02/03/05/08/09/14/16/20)"
+      actual: >
+        content-02(grep 후 read-before-edit 충족), content-03(--tools Grep/Glob 명시),
+        content-05(claude agents agent 필드/--agent·--json waitingFor·SendMessage 중계 권한 분리),
+        content-08(\$ 이스케이프 문법 — 메타-이스케이프 \\$ 소스로 렌더 \$ 검증·/plugin list),
+        content-09(EnterWorktree 세션 중 전환+unlock), content-14(셸 시작 파일 쓰기 전 프롬프트),
+        content-16(claude agents done/total·백그라운드 버전 자동 업데이트·--json waitingFor),
+        content-20(Windsurf→Devin Desktop 리브랜드)
+      match: true
+    - plan: "M16-04 자동화 인프라 — launchd 데일리 업데이트 체크"
+      actual: >
+        scripts/daily-update-check.sh(2단계: check-updates.js 갭 감지 → 갭 시 claude 헤드리스 분석
+        리포트 + macOS 알림, 읽기 전용·파일 미수정),
+        ~/Library/LaunchAgents/com.kent.ccproject.update-check.plist(매일 09:00 KST, StartCalendarInterval).
+        cmux claude는 PATH 위임 shim이라 launchd 최소 환경에서 실패 → 실 바이너리 ~/.local/bin/claude
+        직접 사용 + PATH 선두 배치로 해결. launchctl kickstart 엔드투엔드 1회 실행 → 갭 감지 →
+        리포트 8.5KB 생성 → DONE 로그 → 알림 발송 검증 완료.
+      match: true
+    - plan: "M16-05 version-track 2.1.154→2.1.168 + 31개 동기화 + 14개 보강 + 31개 검증 + 갭 0 + ROADMAP M16"
+      actual: >
+        version-track.json currentCLI 2.1.154→2.1.168, lastChecked 2026-06-09, 31개 엔트리 basedOn
+        일괄 2.1.168. 영향 14개 trackedFeatures/notes 보강(각 항목 출처 v2.1.1XX 인라인 표기).
+        node require 평가 31/31 OK, check-updates.js 갭 0(모든 31개 최신 범위), \$ 메타-이스케이프
+        렌더 검증(백슬래시 1개). ROADMAP M16 5/5 + 백로그 BL-01 신설. STATUS M16 완료.
+      match: true
+
+passloop:
+  g1:
+    score: 85
+    round: 1
+    status: pass
+    notes: >
+      콘텐츠 분배 + 자동화 인프라 유형 — 전통적 RED(단위 테스트 선행)는 적용 대상이 아님.
+      대체 테스트: JS 파싱 기반 구문 검증 + unescaped ${ 스캔 + \$ 메타-이스케이프 렌더 검증 +
+      version-track 갭 0 + 자동화 스크립트 end-to-end 실행. M16 매핑표(14개 분배 + 인프라 1).
+      changelog 매칭은 데일리 자동 리포트(2026-06-08-report.md)에서 수행 → 본 세션은 분배 반영.
+  g1FunctionMap: []   # 새로 추가한 public 함수 없음 (정적 콘텐츠 섹션 + 셸 스크립트)
+  g2:
+    score: 96
+    round: 1
+    status: pass
+    evidence:
+      - action: "node require 평가 content-*.js (31개)"
+        result: "31/31 OK (escape 누락 0, 병렬 12개 에이전트 + 직접 2개(08/30) 모두 검증 통과)"
+      - action: "version-track.json JSON.parse + 갭 검사"
+        result: "valid, currentCLI=2.1.168, 31개 basedOn 2.1.168, check-updates.js 갭 0(모든 튜토리얼 최신 범위)"
+      - action: "unescaped ${ 스캔 (14개 변경 파일)"
+        result: "템플릿 리터럴 내 unescaped ${ 0건 (content-08:703 ${CLAUDE_SKILL_DIR}는 기존 큰따옴표 문자열·무해)"
+      - action: "content-08 \\$ 메타-이스케이프 렌더 검증"
+        result: "평가 후 문자열에 백틱+백슬래시(1개)+달러 시퀀스 존재 → 렌더 마크다운 `\\$` 정상"
+      - action: "자동화 스크립트 end-to-end (launchctl kickstart)"
+        result: "갭 감지 → 리포트 생성 → DONE 로그 → macOS 알림 발송, exit 0"
+  g2FunctionMap: []
+  g3:
+    score: 87
+    round: 1
+    status: pass
+    evidence:
+      - action: "naming/structure consistency 확인"
+        result: "14개 모두 '### v2.1.X~Y 업데이트' 섹션 헤더 + 표 컬럼(개선·설명·버전) — M11~M14 패턴 동일. concepts 마지막 블록 끝에 일관 배치(06은 기존 v2.1.140~153 표에 이어)"
+      - action: "파일 크기 확인 (code-convention-001: 600줄)"
+        result: "content-{05:846,06:1269,08:841,09:644,10:922,16:965,17:1238,18:1148,19:1375,20:856} 10개 600줄 초과(정적 교육 콘텐츠 JS 예외 유지, M7~M15 동일 분류). 02:465/03:530/14:526/30:525 한도 내. warning."
+      - action: "자동화 스크립트 컨벤션 (셸, 50줄/함수·600줄/파일)"
+        result: "scripts/daily-update-check.sh 66줄, set -uo pipefail, 빈 catch 없음, 절대경로/PATH 명시 — 단일 흐름 스크립트로 적정"
+      - action: "pipeline-completeness 3-Layer (자동화 인프라)"
+        result: "정의(plist StartCalendarInterval) → 실행(daily-update-check.sh) → 와이어업(launchctl bootstrap 등록, launchctl list 확인) 1:1 매핑 OK. 콘텐츠 분배는 projects.js/index.html 변경 없이 content+version-track만 보강(정의-실행 갭 0)"
+  g4:
+    score: 95
+    round: 1
+    status: pass
+    evidence:
+      - action: "check-updates.js 전체 리그레션"
+        result: "31/31 최신 범위 내, 회귀 없음, 갭 0"
+      - action: "version-track.json 31개 엔트리 유효성"
+        result: "모두 basedOn 2.1.168, lastUpdated 2026-06-09 — 누락 0 (18-agent-sdk sdkVersions 중첩 구조 정상)"
+      - action: "14개 콘텐츠 파일 업데이트 섹션 위치/렌더 무결성"
+        result: "14개 모두 concepts 마지막 블록 content 끝에 일관 배치, 기존 텍스트 변경 0(추가만), require 렌더 데이터 무결"
+      - action: "기존 17개 미변경 튜토리얼 basedOn 동기화"
+        result: "분배 대상 아닌 17개도 basedOn 2.1.168 일괄 갱신 → 다음 데일리 체크 false-positive 0"
+  mqs: 91.45   # 85*0.15 + 96*0.35 + 87*0.30 + 95*0.20 = 12.75 + 33.6 + 26.1 + 19.0 = 91.45
+
+simplify:
+  applied: false
+  skipped: true
+  skipReason: "content_data_js (정적 콘텐츠 객체 분배) + 단일 흐름 셸 스크립트(이미 명료, 중복 없음)"
+  targetFiles: 0
+  filesChanged: 0
+  improvements: 0
+
+review:
+  score: 88
+  verdict: pass
+  violations:
+    error: 0
+    warning: 1
+    info: 1
+  findings:
+    - rule: code-convention-001
+      severity: warning
+      detail: "변경 14개 중 10개 콘텐츠 파일이 600줄 초과(644~1375). 정적 교육 콘텐츠 객체라 분리 시 가독성 하락 → 프로젝트 예외(M7~M15 선례) 유지. 신규 셸 스크립트 66줄 한도 내."
+    - rule: commit-convention-001
+      severity: info
+      detail: "feat(studio) 스코프 + 한글 본문 본 커밋 예정. 본 Proofline 기록은 chore(proofline): M16 유지보수 Proofline 증명 기록 추가 별도 커밋(M7~M15 패턴 동일)."
+    - rule: ai-behavior-001
+      severity: ok
+      detail: "한국어 콘텐츠/커밋 준수, 요청 범위(M16 분배 + 자동화 구축) 준수. 불필요한 리팩토링 없음."
+    - rule: milestone-management-001
+      severity: ok
+      detail: "ROADMAP.md M16 5/5 완료 + 헤더 완료 마킹. M15(v2.1.154) → M16(v2.1.168) minor+1: 분배 14개(M11/M12/M14 패턴) + 자동화 인프라 1. — 통과."
+    - rule: pipeline-completeness-001
+      severity: ok
+      detail: "자동화 3-Layer(plist 정의 → 스크립트 실행 → launchctl 와이어업) 완결 + end-to-end 검증. 14개 분배는 version-track trackedFeatures/notes에 매핑 완결 — 선언/실행 갭 0."
+    - rule: zero-debt-policy
+      severity: ok
+      detail: "M16 5/5 완료, '나중에' 항목 없음. 저영향 ⭐ 3건(07/11/13)은 백로그 BL-01로 재개 조건('차기 유지보수에서 해당 튜토리얼에 ⭐⭐ 이상 누적 시') 명시하여 스코프아웃 — zero-debt 준수."
+    - rule: security-001
+      severity: ok
+      detail: "자동화 스크립트는 읽기 전용(파일 미수정/PR 없음), claude --allowedTools 화이트리스트, 절대경로 고정. 셸 시작 파일·시크릿 노출 없음. macOS osascript 알림만 외부 출력."
+
+skill_quality:
+  skipped: true
+  skipReason: "no_skill_changes (.claude/skills/update-check 미수정, workbook 스킬 변경 없음)"
+  changedSkills: []
+  status: skipped
+
+redteam:
+  profile: mixed   # 주력 DTS(콘텐츠 분배) + 보조 RTS(version-track 데이터 + 자동화 스크립트)
+  rts: 91.0
+  dts: 92.2
+  combinedScore: 91.8
+  round: 1
+  status: pass
+  dimensions:
+    # DTS 프로필 (문서/콘텐츠 중심) — 주력
+    accuracy: 91
+    completeness: 93
+    navigability: 90
+    clarity: 93
+    consistency: 94
+    maintainability: 92
+    # RTS 프로필 (코드/데이터 정합성 + 자동화) — 보조
+    rts_correctness: 95
+    rts_robustness: 91
+    rts_fp_fn: 88
+    rts_performance: 90
+    rts_consistency: 93
+    rts_coverage: 89
+  evidence:
+    accuracy:
+      action: "trackedFeatures v2.1.156~166 항목 vs 작성된 콘텐츠 본문 + 데일리 리포트 교차 검증"
+      result: >
+        14개 콘텐츠 본문의 v2.1.1XX 변경(workflow→ultracode, .claude/skills 자동 로드, Stop훅
+        additionalContext, deny glob, fallbackModel, MAX_THINKING_TOKENS=0, \$ 이스케이프,
+        EnterWorktree, 셸 시작파일 프롬프트, Devin Desktop 등)을 version-track trackedFeatures/notes와
+        1:1 대조 — 불일치 0. changelog 원문은 데일리 자동 리포트(2026-06-08)에서 gh api 수집·매칭됨.
+      score: 91
+    completeness:
+      action: "M16 계획 5개 워크아이템 vs 실제 구현 매핑"
+      result: >
+        5/5 완료. ⭐⭐⭐ 3그룹(30/17/06, 19/10/18) + ⭐⭐~⭐ 8개(02/03/05/08/09/14/16/20) 분배 +
+        자동화 인프라 1건 + version-track/ROADMAP/STATUS 동기화. 저영향 3건(07/11/13) BL-01 스코프아웃.
+      score: 93
+    navigability:
+      action: "콘텐츠 섹션 헤더 + ROADMAP 링크 + version-track 동기화 + 백로그"
+      result: >
+        14개 모두 'v2.1.X~Y 업데이트' 섹션 헤더로 일관 배치. ROADMAP M16 5/5 + BL-01 백로그.
+        version-track 31개 동기화. 데일리 리포트 경로(workbook/log/update-checks/)를 STATUS 다음 사이클에 명시.
+      score: 90
+    clarity:
+      action: "비유/표 일관성 + 한국어 가독성 + 동작 변경 전달력"
+      result: >
+        30번: workflow→ultracode를 이전/이후 대비표 + '자기 말로 요청하면 작동' 안내로 사용자 혼란 최소화,
+        08번: \$ 이스케이프를 실제 예시(\$5)로 설명, 19번: 권한 강화 5종을 한 표로 — 중학생/비개발자 타겟 적합
+      score: 93
+    consistency:
+      action: "기존 파일 섹션 패턴 vs M16 분배 섹션 패턴"
+      result: >
+        '### v2.1.X~Y 업데이트' 헤더 + 표 컬럼(개선/설명/버전) 일관. 06은 기존 v2.1.140~153 표 흐름에 이어
+        배치. 병렬 12개 + 직접 2개 산출물이 동일 양식 — 양식 편차 0.
+      score: 94
+    maintainability:
+      action: "version-track + ROADMAP + STATUS + proofline + 자동화 동기화"
+      result: >
+        31개 basedOn 2.1.168 일괄, 영향 14개에 trackedFeatures+notes 명시 보강(출처 버전 인라인).
+        데일리 자동화로 차기 사이클 진입점 자동화(새 버전 감지→리포트). .cpf/proofline/M16.yaml 재현 산물 보존.
+      score: 92
+    rts_correctness:
+      action: "node require 평가 + 갭 검사 + \\$ 렌더 검증"
+      result: "31/31 require OK + version-track valid + 갭 0. content-08 \\$ 메타-이스케이프 렌더 정상(백슬래시 1)"
+      score: 95
+    rts_robustness:
+      action: "unescaped ${ 스캔 + 자동화 스크립트 최소환경 동작"
+      result: "템플릿 리터럴 unescaped ${ 0. cmux shim 함정 발견·해결(실 바이너리 직접 참조), launchd 최소 PATH end-to-end 통과"
+      score: 91
+    rts_fp_fn:
+      action: "분배 중복/누락 + 미출시 버전 제외 검사"
+      result: "7개 기능 릴리스를 14개 튜토리얼에 분배 — 중복 0. 미출시/버그픽스-only(155/159/164/165/167/168) 정확히 제외, 저영향 3건 BL-01 명시"
+      score: 88
+    rts_performance:
+      action: "콘텐츠 객체 증가 + 자동화 토큰 비용"
+      result: "정적 로드 영향 미미. 자동화는 2단계(갭 무료 감지 → 갭 시에만 claude 분석)로 토큰 절약 설계"
+      score: 90
+    rts_consistency:
+      action: "M11/M12/M14 분배 패턴 답습 검증"
+      result: "신규 튜토리얼 0 + 분배 14 + version-track bump + ROADMAP/STATUS/proofline 갱신 패턴 일치. 자동화 인프라는 M16 신규 산물"
+      score: 93
+    rts_coverage:
+      action: "14/31 분배 + v2.1.156~166 묶음 + 자동화"
+      result: "45% 영향 튜토리얼 커버. 7개 기능 릴리스 주요 변경(트리거 리네임·플러그인 자동로드·훅·권한·모델 폴백 등) 매핑 + 차기 자동 감지 인프라"
+      score: 89
+
+loopbacks:
+  count: 0
+  history: []
