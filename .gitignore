@@ -6,5 +6,6 @@ node_modules/
 .claude/sessions/
 # .cpf 런타임 로그 (proofline/ 등 산출물은 트래킹 유지)
 .cpf/*.jsonl
+**/.cpf/*.jsonl
 # 데일리 업데이트 체크 런타임 로그/리포트 (launchd 산출물)
 workbook/log/update-checks/

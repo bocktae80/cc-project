@@ -856,7 +856,14 @@ claude --worktree          # 워크트리 모드
 | **\`CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE\` 제거** | v2.1.154에서 deprecated 예고된 환경변수가 **완전히 제거(no-op)** | v2.1.160 |
 | **슬래시 명령 자동완성 클릭 동작** | 자동완성 메뉴에서 슬래시 명령을 클릭하면 **즉시 실행하지 않고 입력창에 채움** — Enter로 실행 | v2.1.162 |
 | **\`MAX_THINKING_TOKENS=0\` thinking 비활성화** | \`MAX_THINKING_TOKENS=0\` / \`--thinking disabled\` / per-model 토글로 기본 thinking 모델의 thinking을 끔(3P 제공자 제외) | v2.1.166 |
-| **\`/effort\` 기본값 지속 확인 / \`claude update\` 대상 안내** | \`/effort\`가 선택 레벨을 새 세션 기본값으로 유지할지 확인하고, \`claude update\`가 다운로드 전 대상 버전을 안내 | v2.1.162/166 |`,
+| **\`/effort\` 기본값 지속 확인 / \`claude update\` 대상 안내** | \`/effort\`가 선택 레벨을 새 세션 기본값으로 유지할지 확인하고, \`claude update\`가 다운로드 전 대상 버전을 안내 | v2.1.162/166 |
+
+### v2.1.169 업데이트 — /cd & 안전 모드
+
+| 기능 | 설명 | 버전 |
+|------|------|------|
+| **\`/cd\` 명령** | 세션 도중 작업 디렉토리를 바꿔도 **프롬프트 캐시를 깨지 않음** — 디렉토리 이동 후에도 대화 맥락과 캐시가 유지되어 새 세션을 열 필요가 없음 | v2.1.169 |
+| **\`--safe-mode\` 플래그** | 모든 커스터마이즈(CLAUDE.md·플러그인·스킬·훅·MCP)를 비활성화하고 시작하는 트러블슈팅용 플래그. \`CLAUDE_CODE_SAFE_MODE\` 환경변수로도 켤 수 있음 | v2.1.169 |`,
       checklist: [
         "claude auth login/status/logout 사용법을 알고 있다",
         "claude agents로 에이전트 목록을 확인할 수 있다",

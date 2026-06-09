@@ -133,10 +133,21 @@
 - [x] M16-04 — 자동화 인프라: **launchd 데일리 업데이트 체크** 구축 — `scripts/daily-update-check.sh`(2단계: check-updates.js 갭 감지 → 갭 시 claude 헤드리스 분석 + macOS 알림, 읽기 전용) + `~/Library/LaunchAgents/com.kent.ccproject.update-check.plist`(매일 09:00 KST). cmux `claude`는 shim → 실 바이너리 `~/.local/bin/claude` 사용. 엔드투엔드 1회 실행 검증 통과
 - [x] M16-05 — version-track.json 2.1.154 → 2.1.168 bump + 전체 31개 basedOn 동기화 + 영향 14개 튜토리얼 trackedFeatures/notes 보강 + 전체 31개 콘텐츠 구문 검증 통과(`\$` 메타-이스케이프 렌더 검증 포함) + check-updates.js 갭 0 확인 + ROADMAP.md M16 기록
 
+### M17: 유지보수 — v2.1.169 갱신 (완료 4/4)
+
+> 분배형 유지보수(신규 튜토리얼 없음, M11/M12/M14/M16 패턴). v2.1.169 단일 릴리스 반영(167/168은 버그픽스-only 제외). **데일리 자동화가 최초로 감지한 버전** — 09:03 데일리 체크가 갭(2.1.168→169)을 정상 탐지했으나 claude 분석 단계가 일시적 소켓 에러로 실패 → `/update-check` 수동 복구 분석으로 진행.
+
+- [x] M17-01 — ⭐⭐⭐ 콘텐츠 갱신 (03d/10): **`--safe-mode` / `CLAUDE_CODE_SAFE_MODE`** — 모든 커스터마이즈(CLAUDE.md·플러그인·스킬·훅·MCP) 비활성화 트러블슈팅(03d=안전 모드 기준점, 10=플래그), **`/cd` 명령** — 세션 중 작업 디렉토리 변경 시 프롬프트 캐시 미파손(10)
+- [x] M17-02 — ⭐⭐ 콘텐츠 갱신 (27/08/16/14): `/cd` 캐시 적중 보존 디렉토리 이동(27), **`disableBundledSkills`** 설정+`CLAUDE_CODE_DISABLE_BUNDLED_SKILLS`로 번들 스킬/워크플로우/내장 명령 숨김(08), **`claude agents --json`** blocked/dispatch 세션 포함+`id`·`state` 필드 / `--all` 완료 세션 포함(16), 신뢰 안 된 설정의 **OTEL 클라이언트 인증서 경로** 신뢰 확인 강제(14)
+- [x] M17-03 — version-track.json 2.1.168 → 2.1.169 bump + 전체 31개 basedOn 동기화 + 영향 6개 튜토리얼 trackedFeatures/notes 보강 + 전체 31개 콘텐츠 구문 검증 통과 + check-updates.js 갭 0 확인
+- [x] M17-04 — 데일리 자동화 점검: launchd 등록·스케줄(09:00)·스크립트·로그 정상 확인, 09:03 실패 분석 `/update-check`로 복구. **개선 후보 BL-03 등록**(분석 단계 retry 로직)
+
 ## 백로그
 
 > 스코프아웃 항목 (재개 조건 명시 — zero-debt 정책).
 
 - [ ] **BL-01 — 저영향 ⭐ 콘텐츠 보강 (07/11/13)**: stdio MCP `--resume` 시 `CLAUDE_CODE_SESSION_ID` 수신(v2.1.163), `/mcp` 미사용 커넥터 "Show unused connectors" 접기(v2.1.161), Remote Control 상시 푸터 pill(v2.1.162). **재개 조건:** 차기 유지보수(M17+)에서 해당 튜토리얼(07/11/13)에 ⭐⭐ 이상 변경이 추가로 누적되어 함께 반영할 가치가 생길 때. 단독으로는 표시 변화(cosmetic)라 분배 보류.
+- [ ] **BL-02 — 저영향 ⭐ 콘텐츠 보강 (30/01/16/18)**: `/workflows` 턴 진행 중에도 즉시 열림(v2.1.169), CLAUDE.md "너무 김" 경고 임계값이 모델 컨텍스트 윈도우에 비례(v2.1.169), 백그라운드 세션 retire→wake 시 `--ide`/`--chrome`/`--bare`/`--remote-control` 플래그 보존(v2.1.169), Vertex/Foundry 5분 유휴 타임아웃 복원+`API_FORCE_IDLE_TIMEOUT=0` 옵트아웃(v2.1.169). **재개 조건:** 차기 유지보수(M18+)에서 해당 튜토리얼에 ⭐⭐ 이상 변경이 누적될 때. 단독으로는 미세 개선이라 분배 보류.
+- [ ] **BL-03 — 데일리 체크 분석 단계 retry 로직**: `scripts/daily-update-check.sh`의 claude 헤드리스 분석(`claude -p`)이 일시적 소켓/네트워크 에러로 실패할 때 1~2회 재시도. M17 트리거가 된 2026-06-09 09:03 실패(소켓 끊김)에서 노출됨. 탐지 단계는 성공·다음날 재탐지되므로 치명적이지 않으나 자동 분석 완결성을 높임. **재개 조건:** 데일리 분석 실패가 2회 이상 재발하거나, 자동화 견고성 개선 작업을 별도로 착수할 때.
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->
