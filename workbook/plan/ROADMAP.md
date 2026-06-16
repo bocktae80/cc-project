@@ -1,6 +1,6 @@
 # CC Project 로드맵
 
-> 최종 갱신: 2026-05-29
+> 최종 갱신: 2026-06-16
 
 ## 완료된 마일스톤
 
@@ -142,12 +142,21 @@
 - [x] M17-03 — version-track.json 2.1.168 → 2.1.169 bump + 전체 31개 basedOn 동기화 + 영향 6개 튜토리얼 trackedFeatures/notes 보강 + 전체 31개 콘텐츠 구문 검증 통과 + check-updates.js 갭 0 확인
 - [x] M17-04 — 데일리 자동화 점검: launchd 등록·스케줄(09:00)·스크립트·로그 정상 확인, 09:03 실패 분석 `/update-check`로 복구. **개선 후보 BL-03 등록**(분석 단계 retry 로직)
 
+### M18: 유지보수 — v2.1.178 갱신 (완료 4/4)
+
+> 분배형 유지보수(신규 튜토리얼 없음, M11/M12/M14/M16/M17 패턴). M17 이후 누적된 v2.1.170~178 9개 패치 반영(171/173/177 등 빈/사소 릴리스 제외). **ultracode 워크플로우**로 후보 46건 추출 → 실제 콘텐츠 파일 대조 적대 검증(UPDATE 32 / SKIP 14 / 신규 튜토리얼 0 / Critic 누락 0). 백로그 **BL-01(13)·BL-02(30/01/16) 재개 조건 충족**으로 동반 반영. **Proofline PASS**(정확성 12/12·major 0, DTS 가중평균 89.55, 전 차원 ≥75).
+
+- [x] M18-01 — ⭐⭐⭐ 콘텐츠 갱신 (19/10/05): **`Tool(param:value)` 권한 룰 문법**(도구 입력 파라미터 매칭 + `*` 와일드카드, 예 `Agent(model:opus)`로 Opus 서브에이전트 차단)(v2.1.178), **Claude Fable 5**(Mythos-class) 신규 모델 출시 — `/model` 피커 접근(v2.1.170), **중첩 서브에이전트** 최대 5단계 재귀 스폰(v2.1.172)
+- [x] M18-02 — ⭐⭐ 콘텐츠 갱신 (19/10/08/30/16/06/20/17/01/13/28): availableModels/enforceAvailableModels 거버넌스 강화 클러스터(v2.1.172~176), 중첩 `.claude/skills` `<dir>:<name>` 충돌 해소 + 근접 우선 해석(v2.1.178), auto mode 서브에이전트 사전평가(v2.1.178), workflow 키워드 명시구문 트리거 + purple shimmer(v2.1.178), `language` 설정·`footerLinksRegexes`·`/cd` 브랜치·`/model` Default 행(v2.1.174~176), hook `if` 경로 매칭·OTEL model 속성(v2.1.172~176), 서브에이전트 UX·VSCode usage/PowerShell/트랜스크립트(v2.1.170~178), `/plugin` 검색바·1M 자동컴팩션·`/rc` 진단·ultra 계정 안내(v2.1.172~178)
+- [x] M18-03 — ⭐ 보강 + 백로그 동반(zero-debt): `wheelScrollAccelerationEnabled`(10)·스킬 핫리로드 변경분만 재공지(08)·"Working" 고정 버그(16), **BL-01 13**(RC 상시 푸터 pill v2.1.162)·**BL-02 30/01/16**(/workflows 즉시 열림·CLAUDE.md 경고 임계값 비례·bg 세션 플래그 보존 v2.1.169) 동반 반영
+- [x] M18-04 — version-track.json 2.1.169 → 2.1.178 bump + 전체 31개 basedOn 동기화 + 영향 12개 trackedFeatures/notes 보강(+36) + 전체 31개 콘텐츠 구문 검증 통과(content-05 닫힘 백틱 desync 자가 수정) + check-updates.js 갭 0 확인 + Proofline 증명(DTS 89.55 PASS) + ROADMAP.md M18 기록
+
 ## 백로그
 
 > 스코프아웃 항목 (재개 조건 명시 — zero-debt 정책).
 
-- [ ] **BL-01 — 저영향 ⭐ 콘텐츠 보강 (07/11/13)**: stdio MCP `--resume` 시 `CLAUDE_CODE_SESSION_ID` 수신(v2.1.163), `/mcp` 미사용 커넥터 "Show unused connectors" 접기(v2.1.161), Remote Control 상시 푸터 pill(v2.1.162). **재개 조건:** 차기 유지보수(M17+)에서 해당 튜토리얼(07/11/13)에 ⭐⭐ 이상 변경이 추가로 누적되어 함께 반영할 가치가 생길 때. 단독으로는 표시 변화(cosmetic)라 분배 보류.
-- [ ] **BL-02 — 저영향 ⭐ 콘텐츠 보강 (30/01/16/18)**: `/workflows` 턴 진행 중에도 즉시 열림(v2.1.169), CLAUDE.md "너무 김" 경고 임계값이 모델 컨텍스트 윈도우에 비례(v2.1.169), 백그라운드 세션 retire→wake 시 `--ide`/`--chrome`/`--bare`/`--remote-control` 플래그 보존(v2.1.169), Vertex/Foundry 5분 유휴 타임아웃 복원+`API_FORCE_IDLE_TIMEOUT=0` 옵트아웃(v2.1.169). **재개 조건:** 차기 유지보수(M18+)에서 해당 튜토리얼에 ⭐⭐ 이상 변경이 누적될 때. 단독으로는 미세 개선이라 분배 보류.
+- [ ] **BL-01 — 저영향 ⭐ 콘텐츠 보강 (07/11)**: stdio MCP `--resume` 시 `CLAUDE_CODE_SESSION_ID` 수신(v2.1.163), `/mcp` 미사용 커넥터 "Show unused connectors" 접기(v2.1.161). **재개 조건:** 차기 유지보수에서 해당 튜토리얼(07/11)에 ⭐⭐ 이상 변경이 추가로 누적되어 함께 반영할 가치가 생길 때. 단독으로는 표시 변화(cosmetic)라 분배 보류. _(13 — RC 상시 푸터 pill v2.1.162는 M18에서 `/rc` 진단 ⭐⭐ 동반으로 반영 완료)_
+- [ ] **BL-02 — 저영향 ⭐ 콘텐츠 보강 (18)**: Vertex/Foundry 5분 유휴 타임아웃 복원+`API_FORCE_IDLE_TIMEOUT=0` 옵트아웃(v2.1.169). **재개 조건:** 차기 유지보수에서 18-agent-sdk에 ⭐⭐ 이상 변경이 누적될 때. 단독으로는 프로바이더 한정 미세 개선이라 분배 보류. _(30/01/16 — /workflows 즉시 열림·CLAUDE.md 경고 임계값·bg 세션 플래그 보존 v2.1.169은 M18에서 해당 튜토리얼 ⭐⭐ 동반으로 반영 완료)_
 - [ ] **BL-03 — 데일리 체크 분석 단계 retry 로직**: `scripts/daily-update-check.sh`의 claude 헤드리스 분석(`claude -p`)이 일시적 소켓/네트워크 에러로 실패할 때 1~2회 재시도. M17 트리거가 된 2026-06-09 09:03 실패(소켓 끊김)에서 노출됨. 탐지 단계는 성공·다음날 재탐지되므로 치명적이지 않으나 자동 분석 완결성을 높임. **재개 조건:** 데일리 분석 실패가 2회 이상 재발하거나, 자동화 견고성 개선 작업을 별도로 착수할 때.
 
 <!-- ID 마이그레이션 이력 (2026-03-19): P0~P6 → M0~M6 -->

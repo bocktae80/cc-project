@@ -791,7 +791,15 @@ try {
 
 | 개선 | 설명 | 버전 |
 |------|------|------|
-| **Windsurf → Devin Desktop** | \`/ide\` 메뉴, \`/terminal-setup\`, \`/scroll-speed\`에서 에디터 리브랜드에 맞춰 **Windsurf를 Devin Desktop으로** 표기 변경 | v2.1.162 |`,
+| **Windsurf → Devin Desktop** | \`/ide\` 메뉴, \`/terminal-setup\`, \`/scroll-speed\`에서 에디터 리브랜드에 맞춰 **Windsurf를 Devin Desktop으로** 표기 변경 | v2.1.162 |
+
+### v2.1.170~174 업데이트 — IDE / VSCode
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **[VSCode] \`/usage\` attribution** | \`/usage\` 다이얼로그가 cache misses, long context, subagents, skill/agent/plugin/MCP별 사용량 내역을 24h/7d 윈도우로 표시 | v2.1.174 |
+| **[VSCode] PowerShell 렌더 수정** | PowerShell 도구 호출이 raw JSON 대신 정상 명령 표시/권한 다이얼로그로 렌더, shell 출력 ANSI 이스케이프 제거 | v2.1.172 |
+| **[VSCode] 통합 터미널 트랜스크립트 저장** | VS Code 통합 터미널/CC 환경변수 상속 셸에서 트랜스크립트가 저장되고 \`--resume\`에 표시되도록 수정 | v2.1.170 |`,
       checklist: [
         "Cursor의 Agent 모드에서 Claude Code를 사용할 수 있다",
         "Cmd+I로 인라인 편집을 할 수 있다",

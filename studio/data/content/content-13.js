@@ -445,7 +445,14 @@ Continue at: https://claude.ai/code/ses_xxx
 | 팀원에게 세션 보여주기 | /rc |
 | 클라우드 결과 가져오기 | /teleport |
 
-> **보안 팁**: 세션에 API 키나 .env 내용이 노출되지 않았는지 확인 후 공유하세요!`,
+> **보안 팁**: 세션에 API 키나 .env 내용이 노출되지 않았는지 확인 후 공유하세요!
+
+### v2.1.162~178 업데이트 — Remote Control
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`/rc\` 오류 진단** | 빨간 "/rc failed" 푸터 인디케이터 + "/rc not yet enabled"가 원인을 분류(gate / check failure / stale entitlement / org policy) | v2.1.178 |
+| **Remote Control 상시 푸터 pill** | Remote Control 활성 시 footer에 "/rc active" 상시 pill 표시 | v2.1.162 |`,
       checklist: [
         "/rc로 리모트 컨트롤을 활성화할 수 있다",
         "공유 URL로 다른 기기에서 접속할 수 있다",

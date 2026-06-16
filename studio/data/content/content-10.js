@@ -863,7 +863,18 @@ claude --worktree          # 워크트리 모드
 | 기능 | 설명 | 버전 |
 |------|------|------|
 | **\`/cd\` 명령** | 세션 도중 작업 디렉토리를 바꿔도 **프롬프트 캐시를 깨지 않음** — 디렉토리 이동 후에도 대화 맥락과 캐시가 유지되어 새 세션을 열 필요가 없음 | v2.1.169 |
-| **\`--safe-mode\` 플래그** | 모든 커스터마이즈(CLAUDE.md·플러그인·스킬·훅·MCP)를 비활성화하고 시작하는 트러블슈팅용 플래그. \`CLAUDE_CODE_SAFE_MODE\` 환경변수로도 켤 수 있음 | v2.1.169 |`,
+| **\`--safe-mode\` 플래그** | 모든 커스터마이즈(CLAUDE.md·플러그인·스킬·훅·MCP)를 비활성화하고 시작하는 트러블슈팅용 플래그. \`CLAUDE_CODE_SAFE_MODE\` 환경변수로도 켤 수 있음 | v2.1.169 |
+
+### v2.1.170~178 업데이트 — Fable 5 & CLI 개선
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **Claude Fable 5 출시** ⭐⭐⭐ | Mythos-class 신규 모델(\`claude-fable-5\`) — \`/model\` 피커로 선택. v2.1.170으로 업데이트 시 접근 가능 | v2.1.170 |
+| **session title 대화 언어 생성** | 세션 제목이 대화 언어로 생성됨. 새 \`language\` 설정으로 특정 언어 고정 | v2.1.176 |
+| **\`footerLinksRegexes\` 설정** | 정규식 매칭 URL을 푸터 행에 링크 배지로 렌더(user/managed 설정). 기존 \`prUrlTemplate\` PR 배지의 형제 | v2.1.176 |
+| **\`/cd\`·워크트리 이동 브랜치 갱신** | \`/cd\`/워크트리 이동 후 세션이 이전 디렉토리의 git 브랜치를 잘못 보고하던 문제 수정 | v2.1.176 |
+| **\`/model\` 피커 Default 패밀리 행** | Default가 해석되는 모델 패밀리를 별도 행으로 표시(플랜별: Max/Team Premium/Enterprise→Opus, Pro/Team→Sonnet, pay-as-you-go API→Opus) | v2.1.174 |
+| **\`wheelScrollAccelerationEnabled\` 설정** | 풀스크린 모드의 마우스 휠 스크롤 가속 비활성화 | v2.1.174 |`,
       checklist: [
         "claude auth login/status/logout 사용법을 알고 있다",
         "claude agents로 에이전트 목록을 확인할 수 있다",

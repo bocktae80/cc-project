@@ -1310,7 +1310,22 @@ claude
 | **\`acceptEdits\` 빌드 설정 파일 프롬프트** | \`acceptEdits\` 모드가 코드 실행 권한을 부여하는 빌드 설정 파일(\`.npmrc\`/\`.yarnrc*\`/\`bunfig.toml\`/\`.bazelrc\`/\`.pre-commit-config.yaml\`/\`.devcontainer/\`)에 쓰기 전 프롬프트 | v2.1.160 |
 | **\`requiredMinimumVersion\`/\`requiredMaximumVersion\`** | managed 설정 — 허용 버전 범위 밖이면 Claude Code가 시작을 거부하고 승인된 버전으로 안내 | v2.1.163 |
 | **Auto mode 3P 제공자 지원** | Bedrock/Vertex/Foundry(Opus 4.7·4.8)에서 \`CLAUDE_CODE_ENABLE_AUTO_MODE=1\` opt-in | v2.1.158 |
-| **WebFetch 권한 룰 우선** | WebFetch 권한 룰이 기본 사전승인 도메인에도 적용 — 명시적 \`WebFetch(domain:...)\` deny/ask/allow가 우선 | v2.1.162 |`,
+| **WebFetch 권한 룰 우선** | WebFetch 권한 룰이 기본 사전승인 도메인에도 적용 — 명시적 \`WebFetch(domain:...)\` deny/ask/allow가 우선 | v2.1.162 |
+
+### v2.1.170~178 업데이트 — 권한 룰 문법 & 모델 거버넌스
+
+| 개선 | 설명 | 버전 |
+|------|------|------|
+| **\`Tool(param:value)\` 권한 룰 문법** | 도구의 **명명된 입력 파라미터**를 매칭하는 새 권한 문법(\`*\` 와일드카드 지원). 예: \`Agent(model:opus)\`로 Opus 모델 서브에이전트 차단 — 기존 위치 기반 패턴(\`Bash(npm *)\`)을 넘어 파라미터 값까지 제어 | v2.1.178 |
+| **\`enforceAvailableModels\` managed 설정** | \`availableModels\` 허용목록이 Default 모델까지 제약(Default가 비허용 모델이면 첫 허용 모델로 폴백). user/project 설정이 managed 목록을 넓힐 수 없음 | v2.1.175 |
+| **\`availableModels\` 강제 강화** | \`ANTHROPIC_DEFAULT_*_MODEL\` env로 차단 모델로 리디렉션 불가, \`/fast\`가 허용목록 밖 모델로 토글 거부 | v2.1.176 |
+| **\`availableModels\` 서브에이전트까지 강제** | 허용목록이 서브에이전트 모델 오버라이드·\`claude agents\` dispatch 피커·advisor 모델에도 적용(이전엔 메인 \`/model\` 피커만) | v2.1.172 |
+| **\`availableModels\` 매칭 수정** | 버전 특정 ID(\`claude-opus-4-8\`)가 \`/model\` 피커의 Opus/Sonnet 1M 행을 숨기던 버그 수정 | v2.1.172 |
+| **WebFetch 와일드카드 + 파일 룰 수정** | \`WebFetch(domain:*.example.com)\`가 서브도메인을 매칭(allow/deny/ask), \`Read(secrets-*/config.json)\` 같은 중간 와일드카드 룰이 시작 시 거부되던 버그 수정 | v2.1.172 |
+| **Auto mode 서브에이전트 사전 평가** | Auto mode 분류기가 서브에이전트 스폰을 **launch 전** 평가 — 스폰된 서브에이전트가 차단 액션을 검토 없이 요청하던 갭 차단 | v2.1.178 |
+| **Auto mode 분류기 Fable 5 폴백** | Opus 4.8 미활성 org에서 Fable 5 분류기가 실패 대신 **최선 가용 Opus 모델로 폴백** | v2.1.176 |
+| **중첩 스킬 권한 매칭 수정** | 중첩 \`.claude/skills\`의 \`<dir>:<name>\` 자격 스킬이 비대화형(print/CI) 실행에서 권한 프롬프트로 차단되던 버그 수정 | v2.1.178 |
+| **서브에이전트 \`disallowedTools\` MCP 스펙** | 서브에이전트 \`disallowedTools\`가 MCP 서버 레벨 스펙(\`mcp__server\`, \`mcp__server__*\`, \`mcp__*\`)을 존중(이전엔 조용히 무시) | v2.1.178 |`,
       checklist: [
         "역할별로 다른 권한 설정을 설계할 수 있다",
         "공통 차단 규칙(deny)의 중요성을 이해한다",
